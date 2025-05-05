@@ -14,6 +14,12 @@ Spaceship class >> with: aDice [
 	^ self new initializeWith: aDice
 ]
 
+{ #category : 'initialization' }
+Spaceship >> initialize [
+
+	position := 0
+]
+
 { #category : 'testing' }
 Spaceship >> isAtPosition: aPosition [
 
