@@ -5,6 +5,14 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+BoardTest >> should: test raise: aErrorClass withMessageError: aMessage [ 
+	self 
+		should: test
+		raise: aErrorClass 
+		withExceptionDo:  [: error | self assert: (error messageText) equals: aMessage].
+]
+
 { #category : 'tests' }
 BoardTest >> testBoardHasWormholes [
 
@@ -21,13 +29,24 @@ BoardTest >> testWhenNewBoardThenSizeIs20 [
 
 	| aBoard |
 	aBoard := Board new.
-	self assert: aBoard size equals: 20
+	self assert: (aBoard checkSize: 20).
 ]
 
 { #category : 'tests' }
 BoardTest >> testWhenNewBoardWithNSizeThenSizeIsN [
 
-	| aBoard |
-	aBoard := Board withSize: 30.
-	self assert: aBoard size equals: 30
+	| aBoard nSize |
+	nSize:= 30.
+	aBoard := Board withSize: nSize.
+	self assert: (aBoard checkSize: nSize).
+]
+
+{ #category : 'tests' }
+BoardTest >> testWhenSizeIsNegativeThenTheCreationOfTheBoardFails [
+
+	| nSize |
+	nSize:= -30.
+	self should: [Board withSize: nSize]
+		  raise: Error
+		  withMessageError: 'The length of the board should be positive'.
 ]

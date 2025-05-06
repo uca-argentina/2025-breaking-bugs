@@ -9,9 +9,14 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'accessing' }
+Board class >> checkSize: aSize [ 
+	(aSize <= 0) ifTrue: [Error signal: 'The length of the board should be positive'].
+]
+
 { #category : 'instance creation' }
 Board class >> withSize: boardSize [
-
+	self checkSize: boardSize.
 	^ self new initializeWithSize: boardSize
 ]
 
@@ -20,6 +25,12 @@ Board >> addWormholeFrom: start to: destination [
 	wormholes at: start put: destination.
 	wormholes at: destination put: start.
 	
+]
+
+{ #category : 'accessing' }
+Board >> checkSize: numberToCheck [
+
+	^ aSize = numberToCheck.
 ]
 
 { #category : 'initialization' }
@@ -45,10 +56,4 @@ Board >> initializeWithSize: boardSize [
 Board >> positionAfterLandingOn: aPosition [
 
 	^ wormholes at: aPosition
-]
-
-{ #category : 'accessing' }
-Board >> size [
-
-	^ aSize.
 ]
