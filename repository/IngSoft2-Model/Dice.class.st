@@ -9,8 +9,17 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-Dice class >> withSides: aNumberOfSides [ 
-	^ self new initializeWithSides: aNumberOfSides.
+Dice class >> numberOfSidesIsPositive: aNumberOfSides [
+
+	aNumberOfSides <= 0 ifTrue: [
+		Error signal: 'A dice should have a positive amount of sides' ]
+]
+
+{ #category : 'as yet unclassified' }
+Dice class >> withSides: aNumberOfSides [
+
+	self numberOfSidesIsPositive: aNumberOfSides.
+	^ self new initializeWithSides: aNumberOfSides
 ]
 
 { #category : 'initialization' }
@@ -32,4 +41,5 @@ Dice >> initializeWithSides: numberOfSides [
 Dice >> roll [
 
 	^ Random new nextIntegerBetween: 1 and: aNumberOfSides
+	
 ]
