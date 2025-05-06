@@ -2,7 +2,8 @@ Class {
 	#name : 'Spaceship',
 	#superclass : 'Object',
 	#instVars : [
-		'position'
+		'position',
+		'aDice'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -20,10 +21,25 @@ Spaceship >> initialize [
 	position := 0
 ]
 
+{ #category : 'initialization' }
+Spaceship >> initializeWith: dice [
+
+	aDice := dice
+]
+
 { #category : 'testing' }
 Spaceship >> isAtPosition: aPosition [
 
 	^ position = aPosition
+]
+
+{ #category : 'accessing' }
+Spaceship >> move [
+
+	| positionsToAdvance newPosition |
+	positionsToAdvance := aDice roll.
+	newPosition := position + positionsToAdvance.
+	self moveToPosition: newPosition
 ]
 
 { #category : 'as yet unclassified' }

@@ -38,6 +38,17 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 ]
 
 { #category : 'tests' }
+SpaceshipTest >> testWhenRollingADiceAndGettingA3ThenTheSpaceshipMoves3Positions [
+
+	| aSpaceship finalPosition |
+	aSpaceship := Spaceship with: (FixedDice onFace: 3).
+	finalPosition := 3.
+	aSpaceship move.
+
+	self assert: (aSpaceship isAtPosition: finalPosition)
+]
+
+{ #category : 'tests' }
 SpaceshipTest >> testWhenTryingToMoveToANegativePositionTheSpaceshipIsNotAllowed [
 
 	| aSpaceship finalPosition |
