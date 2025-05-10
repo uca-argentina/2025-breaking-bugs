@@ -25,11 +25,10 @@ FixedDice class >> onFace: aFaceNumber [
 { #category : 'initialization' }
 FixedDice >> initializeOnFace: aFaceNumber [
 
-	fixedFace := aFaceNumber
+	fixedFace := aFaceNumber.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'functions' }
 FixedDice >> roll [
-
-	^ fixedFace
+	^ fixedFace.
 ]
