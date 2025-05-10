@@ -18,19 +18,35 @@ Board class >> validate: aSize [
 		Error signal: 'The length of the board should be positive' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'validation' }
 Board class >> validate: wormholeEntry and: wormholeExit within: aBoardSize [
 
 	(wormholeEntry > aBoardSize or: wormholeExit > aBoardSize) ifTrue: [
 		Error signal: 'The wormhole cannot be outside of the board' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'validation' }
+Board class >> validate: wormholeEntry isLowerThan: wormholeExit [
+
+	wormholeEntry >= wormholeExit ifTrue: [
+		Error signal:
+			'Wormhole entry position value has to be lower than the exit position value' ]
+]
+
+{ #category : 'validation' }
 Board class >> validate: wormholeEntry notEqualTo: wormholeExit [
 
 	wormholeEntry = wormholeExit ifTrue: [
 		Error signal:
 			'The entry and the exit of the wormhole cannot be at the same position' ]
+]
+
+{ #category : 'validation' }
+Board class >> validateIsNotNegative: wormholeEntry and: wormholeExit [ 
+
+	wormholeEntry <= 0 ifTrue: [
+		Error signal:
+			'The wormhole cannot have negative entry' ]
 ]
 
 { #category : 'instance creation' }
@@ -39,14 +55,18 @@ Board class >> withSize: boardSize [
 	^ self new initializeWithSize: boardSize
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: aSize.
-
+	
+	self validateIsNotNegative: wormholeEntry and: wormholeExit.
+	
 	self validate: wormholeEntry and: wormholeExit within: aSize.
 
 	self validate: wormholeEntry notEqualTo: wormholeExit.
+	
+	self validate: wormholeEntry isLowerThan: wormholeExit.
 
 
 	^ self new
