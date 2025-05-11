@@ -62,14 +62,9 @@ Game >> initializeWithBoard: aBoard [
 ]
 
 { #category : 'roll' }
-Game >> rollDices [
-	"spaceships do: [ :aSpaceship | aSpaceship move ]."
+Game >> playTurn [
 
 	board move: spaceships.
-	"board moveIfWormhole: spaceships."
 	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
 		                      spaceships
-
-
-	"spaceships do: [ :aSpaceship | aSpaceship moveUpTo: boardSize ]."
 ]

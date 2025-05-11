@@ -41,9 +41,25 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 { #category : 'tests' }
 SpaceshipTest >> testWhenRollingADiceAndGettingA3ThenTheSpaceshipMoves3Positions [
 
-	| aSpaceship finalPosition |
-	aSpaceship := Spaceship with: (FixedDice onFace: 3).
+	| aSpaceship finalPosition dice |
+	dice := OrderedCollection new.
+	dice add: (FixedDice onFace: 3).
+	aSpaceship := Spaceship with: dice.
 	finalPosition := 3.
+	aSpaceship move.
+
+	self assert: (aSpaceship isAtPosition: finalPosition)
+]
+
+{ #category : 'tests' }
+SpaceshipTest >> testWhenRollingTwoDiceAndGettingA3InBothThenTheSpaceshipMoves6Positions [
+
+	| aSpaceship finalPosition dice |
+	dice := OrderedCollection new.
+	dice add: (FixedDice onFace: 3).
+	dice add: (FixedDice onFace: 3).
+	aSpaceship := Spaceship with: dice.
+	finalPosition := 6.
 	aSpaceship move.
 
 	self assert: (aSpaceship isAtPosition: finalPosition)

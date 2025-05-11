@@ -3,16 +3,16 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'aDice'
+		'dice'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'instance creation' }
-Spaceship class >> with: aDice [
+Spaceship class >> with: dice [
 
-	^ self new initializeWith: aDice
+	^ self new initializeWith: dice
 ]
 
 { #category : 'initialization' }
@@ -22,9 +22,9 @@ Spaceship >> initialize [
 ]
 
 { #category : 'initialization' }
-Spaceship >> initializeWith: dice [
+Spaceship >> initializeWith: aCollectionOfDice [
 
-	aDice := dice
+	dice := aCollectionOfDice
 ]
 
 { #category : 'testing' }
@@ -37,7 +37,10 @@ Spaceship >> isAtPosition: aPosition [
 Spaceship >> move [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := aDice roll.
+	positionsToAdvance := dice
+		                      inject: 0
+		                      into: [ :totalPositions :aDice |
+		                      totalPositions + aDice roll ].
 	newPosition := position + positionsToAdvance.
 	self moveToPosition: newPosition
 ]
@@ -55,7 +58,10 @@ Spaceship >> moveToPosition: aPosition [
 Spaceship >> moveUpTo: aBoardSize [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := aDice roll.
+	positionsToAdvance := dice
+		                      inject: 0
+		                      into: [ :totalPositions :aDice |
+		                      totalPositions + aDice roll ].
 	newPosition := position + positionsToAdvance.
 	newPosition := newPosition min: aBoardSize.
 	self moveToPosition: newPosition
