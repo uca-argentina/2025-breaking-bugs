@@ -54,12 +54,6 @@ Game >> hasSpaceships [
 ]
 
 { #category : 'initialization' }
-Game >> initialize [
-	theGameHasFinished := false.
-	spaceships := OrderedCollection new.
-]
-
-{ #category : 'initialization' }
 Game >> initializeWithBoard: aBoard [ 
 	theGameHasFinished := false.
 	spaceships := OrderedCollection new.
