@@ -111,7 +111,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 GameTest >> testWhenGameCreatedItDoesntFinish [
 
 	| aGame |
-	aGame := Game create.
+	aGame := Game new.
 	self deny: aGame finish
 ]
 

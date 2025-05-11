@@ -50,3 +50,13 @@ Spaceship >> moveToPosition: aPosition [
 	position := aPosition
 	"Para mi esta mal y se deberia sumar en vez de setear"
 ]
+
+{ #category : 'move' }
+Spaceship >> moveUpTo: aBoardSize [
+
+	| positionsToAdvance newPosition |
+	positionsToAdvance := aDice roll.
+	newPosition := position + positionsToAdvance.
+	newPosition := newPosition min: aBoardSize.
+	self moveToPosition: newPosition
+]

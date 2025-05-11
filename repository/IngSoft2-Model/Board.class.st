@@ -118,8 +118,28 @@ Board >> move: spaceships [
 	self moveIfLandedOnWormhole: spaceships
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
+Board >> moveIfLandedOnWormhole: spaceships [
+
+	| enteredWormhole |
+	spaceships do: [ :aSpaceship |
+		enteredWormhole := false.
+		(aSpaceship isAtPosition: wormholeEntry) ifTrue: [
+			aSpaceship moveToPosition: wormholeExit.
+			enteredWormhole := true ].
+		((aSpaceship isAtPosition: wormholeExit) and: enteredWormhole not)
+			ifTrue: [ aSpaceship moveToPosition: wormholeEntry ] ]
+]
+
+{ #category : 'behavior' }
 Board >> positionAfterLandingOn: aPosition [
 
 	^ wormholes at: aPosition
+]
+
+{ #category : 'behavior' }
+Board >> verifyIfAnySpaceshipReachedFinishLine: spaceships [
+
+	^ spaceships anySatisfy: [ :aSpaceship |
+		  aSpaceship isAtPosition: aSize ]
 ]

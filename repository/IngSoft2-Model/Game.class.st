@@ -11,14 +11,10 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'operations' }
-Game class >> create [
-	^ (self new) instance.
-]
-
 { #category : 'as yet unclassified' }
-Game class >> withBoard: aBoard [ 
-	^ (self new) instanceWithBoard: aBoard.
+Game class >> withBoard: aBoard [
+
+	^ self new initializeWithBoard: aBoard
 ]
 
 { #category : 'adding' }
@@ -57,16 +53,16 @@ Game >> hasSpaceships [
 	^ spaceships notEmpty.
 ]
 
-{ #category : 'accessing' }
-Game >> instance [
+{ #category : 'initialization' }
+Game >> initialize [
 	theGameHasFinished := false.
-	players := OrderedCollection new.
+	spaceships := OrderedCollection new.
 ]
 
 { #category : 'initialization' }
-Game >> instanceWithBoard: aBoard [ 
+Game >> initializeWithBoard: aBoard [ 
 	theGameHasFinished := false.
-	players := OrderedCollection new.
+	spaceships := OrderedCollection new.
 	board := aBoard.
 	dices := OrderedCollection new.
 ]
