@@ -74,4 +74,5 @@ Game >> instanceWithBoard: aBoard [
 { #category : 'roll' }
 Game >> rollDices [
     players do: [ :aPlayer | aPlayer move ].
+	 board moveIfWormhole: players.
 ]

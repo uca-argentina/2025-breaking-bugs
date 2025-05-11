@@ -111,6 +111,13 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 ]
 
 { #category : 'as yet unclassified' }
+Board >> moveIfWormhole: players [ 
+    players do: [:aPlayer |
+        (aPlayer isAtPosition: wormholeEntry)
+            ifTrue: [aPlayer moveToPosition: wormholeExit]].
+]
+
+{ #category : 'as yet unclassified' }
 Board >> positionAfterLandingOn: aPosition [
 
 	^ wormholes at: aPosition

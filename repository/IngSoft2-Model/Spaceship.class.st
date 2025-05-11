@@ -48,4 +48,5 @@ Spaceship >> moveToPosition: aPosition [
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition
+	"Para mi esta mal y se deberia sumar en vez de setear"
 ]

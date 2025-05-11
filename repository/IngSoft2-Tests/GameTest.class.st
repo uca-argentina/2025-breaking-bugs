@@ -6,6 +6,20 @@ Class {
 }
 
 { #category : 'tests' }
+GameTest >> testIsInvalidIfASpacehipMovesToWormholeEntryThenItEndsInAnotherPositionThanTheWormholeExitValue [
+
+	| aGame aSpaceship aBoard |
+	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 4).
+	aGame addPlayer: aSpaceship.
+	
+	aGame rollDices.
+	self deny: (aGame checkPositionOfPlayers: 19).
+	
+]
+
+{ #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 
 	| aGame aSpaceship aBoard |
@@ -15,6 +29,20 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 	aGame addPlayer: aSpaceship.
 	aGame rollDices.
 	self assert: (aGame checkPositionOfPlayers: 5).
+	
+]
+
+{ #category : 'tests' }
+GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitValue [
+
+	| aGame aSpaceship aBoard |
+	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 4).
+	aGame addPlayer: aSpaceship.
+	
+	aGame rollDices.
+	self assert: (aGame checkPositionOfPlayers: 9).
 	
 ]
 
