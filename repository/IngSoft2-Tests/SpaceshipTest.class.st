@@ -35,6 +35,7 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 	aSpaceship moveToPosition: finalPosition.
 
 	self assert: (aSpaceship isAtPosition: finalPosition)
+	"Este test esta mal"
 ]
 
 { #category : 'tests' }

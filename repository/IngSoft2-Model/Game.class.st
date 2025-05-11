@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'theGameHasFinished',
 		'players',
-		'board'
+		'board',
+		'dices'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -21,8 +22,18 @@ Game class >> withBoard: aBoard [
 ]
 
 { #category : 'adding' }
-Game >> add: aSpaceship [ 
+Game >> addDice: aDice [ 
+	dices add: aDice.
+]
+
+{ #category : 'adding' }
+Game >> addPlayer: aSpaceship [ 
   players add: aSpaceship.
+]
+
+{ #category : 'testing' }
+Game >> checkPositionOfPlayers: aPosition [
+    ^ players anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
 ]
 
 { #category : 'initialization' }
@@ -33,6 +44,12 @@ Game >> finish [
 { #category : 'testing' }
 Game >> hasABoard [
 	^ board notNil.
+]
+
+{ #category : 'testing' }
+Game >> hasDices [
+
+	^ dices notEmpty
 ]
 
 { #category : 'testing' }
@@ -51,4 +68,10 @@ Game >> instanceWithBoard: aBoard [
 	theGameHasFinished := false.
 	players := OrderedCollection new.
 	board := aBoard.
+	dices := OrderedCollection new.
+]
+
+{ #category : 'roll' }
+Game >> rollDices [
+    players do: [ :aPlayer | aPlayer move ].
 ]

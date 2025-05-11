@@ -82,7 +82,7 @@ Board >> addWormholeFrom: start to: destination [
 	
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Board >> checkSize: size [
 
 	^ aSize = size
@@ -94,7 +94,7 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 	^ wormholeEntry = aWormholeEntry and: wormholeExit = aWormholeExit
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 Board >> initializeWithSize: boardSize [
 
 	aSize := boardSize.
@@ -102,7 +102,7 @@ Board >> initializeWithSize: boardSize [
 	wormholes := Dictionary new
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
 
 	aSize := size.

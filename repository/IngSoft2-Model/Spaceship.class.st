@@ -33,7 +33,7 @@ Spaceship >> isAtPosition: aPosition [
 	^ position = aPosition
 ]
 
-{ #category : 'accessing' }
+{ #category : 'move' }
 Spaceship >> move [
 
 	| positionsToAdvance newPosition |
@@ -42,7 +42,7 @@ Spaceship >> move [
 	self moveToPosition: newPosition
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'move' }
 Spaceship >> moveToPosition: aPosition [
 
 	aPosition negative ifTrue: [

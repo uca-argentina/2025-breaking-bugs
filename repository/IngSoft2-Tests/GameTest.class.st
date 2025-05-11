@@ -6,6 +6,19 @@ Class {
 }
 
 { #category : 'tests' }
+GameTest >> testIsValidIfASpacehipMovesCertainPosition [
+
+	| aGame aSpaceship aBoard |
+	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 5).
+	aGame addPlayer: aSpaceship.
+	aGame rollDices.
+	self assert: (aGame checkPositionOfPlayers: 5).
+	
+]
+
+{ #category : 'tests' }
 GameTest >> testIsValidIfGameHasABoard [
 
 	| aGame aSize aBoard |
@@ -18,11 +31,24 @@ GameTest >> testIsValidIfGameHasABoard [
 { #category : 'tests' }
 GameTest >> testIsValidIfGameHasASpacehip [
 
-	| aGame aSpaceship |
-	aGame := Game create.
+	| aGame aSpaceship aBoard |
+	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
 	aSpaceship := Spaceship new.
-	aGame add: aSpaceship.
+	aGame addPlayer: aSpaceship.
 	self assert: (aGame hasPlayers).
+]
+
+{ #category : 'tests' }
+GameTest >> testIsValidIfGameHasAtLeastOneDice [
+
+	| aGame aSize aBoard aFixedDice |
+	aSize := 20.
+	aFixedDice := FixedDice onFace: 5.
+	aBoard := Board withSize: aSize andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
+	aGame addDice: aFixedDice.
+	self assert: (aGame hasDices).
 ]
 
 { #category : 'tests' }
