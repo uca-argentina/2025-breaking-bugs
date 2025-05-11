@@ -12,10 +12,10 @@ GameTest >> testIsInvalidIfASpacehipMovesToWormholeEntryThenItEndsInAnotherPosit
 	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
 	aGame := Game withBoard: aBoard.
 	aSpaceship := Spaceship with: (FixedDice onFace: 4).
-	aGame addPlayer: aSpaceship.
+	aGame addSpaceship: aSpaceship.
 	
 	aGame rollDices.
-	self deny: (aGame checkPositionOfPlayers: 19).
+	self deny: (aGame checkPositionOfSpaceships: 19).
 	
 ]
 
@@ -26,9 +26,9 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
 	aGame := Game withBoard: aBoard.
 	aSpaceship := Spaceship with: (FixedDice onFace: 5).
-	aGame addPlayer: aSpaceship.
+	aGame addSpaceship: aSpaceship.
 	aGame rollDices.
-	self assert: (aGame checkPositionOfPlayers: 5).
+	self assert: (aGame checkPositionOfSpaceships: 5).
 	
 ]
 
@@ -39,10 +39,24 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
 	aGame := Game withBoard: aBoard.
 	aSpaceship := Spaceship with: (FixedDice onFace: 4).
-	aGame addPlayer: aSpaceship.
+	aGame addSpaceship: aSpaceship.
 	
 	aGame rollDices.
-	self assert: (aGame checkPositionOfPlayers: 9).
+	self assert: (aGame checkPositionOfSpaceships: 9).
+	
+]
+
+{ #category : 'tests' }
+GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryValue [
+
+	| aGame aSpaceship aBoard |
+	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 9).
+	aGame addSpaceship: aSpaceship.
+	
+	aGame rollDices.
+	self assert: (aSpaceship isAtPosition: 4).
 	
 ]
 
@@ -63,8 +77,8 @@ GameTest >> testIsValidIfGameHasASpacehip [
 	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
 	aGame := Game withBoard: aBoard.
 	aSpaceship := Spaceship new.
-	aGame addPlayer: aSpaceship.
-	self assert: (aGame hasPlayers).
+	aGame addSpaceship: aSpaceship.
+	self assert: (aGame hasSpaceships).
 ]
 
 { #category : 'tests' }
@@ -80,9 +94,51 @@ GameTest >> testIsValidIfGameHasAtLeastOneDice [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
+
+	| aGame aBoard aSpaceship |
+	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 6).
+	aGame addSpaceship: aSpaceship.
+	
+	aGame rollDices.
+
+	self assert: aGame finish
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenGameCreatedItDoesntFinish [
 
 	| aGame |
 	aGame := Game create.
 	self deny: aGame finish
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
+
+	| aGame aBoard aSpaceship |
+	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 6.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 2).
+	aGame addSpaceship: aSpaceship.
+
+	aGame rollDices.
+
+	self assert: aGame finish
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
+
+	| aGame aBoard aSpaceship |
+	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
+	aGame := Game withBoard: aBoard.
+	aSpaceship := Spaceship with: (FixedDice onFace: 8).
+	aGame addSpaceship: aSpaceship.
+
+	aGame rollDices.
+
+	self assert: aGame finish
 ]

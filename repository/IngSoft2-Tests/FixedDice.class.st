@@ -1,6 +1,6 @@
 Class {
 	#name : 'FixedDice',
-	#superclass : 'Dice',
+	#superclass : 'Object',
 	#instVars : [
 		'fixedFace'
 	],

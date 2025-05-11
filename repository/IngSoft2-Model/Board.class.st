@@ -110,11 +110,12 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 	wormholeExit := aWormholeExit
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> moveIfWormhole: players [ 
-    players do: [:aPlayer |
-        (aPlayer isAtPosition: wormholeEntry)
-            ifTrue: [aPlayer moveToPosition: wormholeExit]].
+{ #category : 'accessing' }
+Board >> move: spaceships [
+
+	spaceships do: [ :aSpaceship | aSpaceship moveUpTo: aSize ].
+
+	self moveIfLandedOnWormhole: spaceships
 ]
 
 { #category : 'as yet unclassified' }

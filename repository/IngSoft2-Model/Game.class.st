@@ -3,9 +3,9 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'theGameHasFinished',
-		'players',
 		'board',
-		'dices'
+		'dices',
+		'spaceships'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -27,13 +27,13 @@ Game >> addDice: aDice [
 ]
 
 { #category : 'adding' }
-Game >> addPlayer: aSpaceship [ 
-  players add: aSpaceship.
+Game >> addSpaceship: aSpaceship [ 
+  spaceships add: aSpaceship.
 ]
 
 { #category : 'testing' }
-Game >> checkPositionOfPlayers: aPosition [
-    ^ players anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
+Game >> checkPositionOfSpaceships: aPosition [
+    ^ spaceships anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
 ]
 
 { #category : 'initialization' }
@@ -53,8 +53,8 @@ Game >> hasDices [
 ]
 
 { #category : 'testing' }
-Game >> hasPlayers [
-	^ players notEmpty.
+Game >> hasSpaceships [
+	^ spaceships notEmpty.
 ]
 
 { #category : 'accessing' }
@@ -73,6 +73,13 @@ Game >> instanceWithBoard: aBoard [
 
 { #category : 'roll' }
 Game >> rollDices [
-    players do: [ :aPlayer | aPlayer move ].
-	 board moveIfWormhole: players.
+	"spaceships do: [ :aSpaceship | aSpaceship move ]."
+
+	board move: spaceships.
+	"board moveIfWormhole: spaceships."
+	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
+		                      spaceships
+
+
+	"spaceships do: [ :aSpaceship | aSpaceship moveUpTo: boardSize ]."
 ]
