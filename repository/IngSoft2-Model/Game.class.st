@@ -5,7 +5,8 @@ Class {
 		'theGameHasFinished',
 		'board',
 		'dices',
-		'spaceships'
+		'spaceships',
+		'positionTable'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -71,6 +72,6 @@ Game >> playTurn [
 	self checkIfGameHasAlreadyFinished.
 	board move: spaceships ifGameDidntFinish: theGameHasFinished.
 	"board move: spaceships"
-	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
-		                      spaceships
+	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine: spaceships.
+	positionTable := theGameHasFinished ifTrue: [ board createPositionTable: spaceships ]
 ]
