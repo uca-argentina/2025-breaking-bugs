@@ -37,7 +37,7 @@ Dice >> initializeWithSides: numberOfSides [
 	aNumberOfSides := numberOfSides
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'roll' }
 Dice >> roll [
 
 	^ Random new nextIntegerBetween: 1 and: aNumberOfSides

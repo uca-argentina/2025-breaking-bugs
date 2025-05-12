@@ -26,17 +26,6 @@ BoardTest >> testBoardCreationFailsWhenWormholeEntryValueIsHigherThanExitValue [
 ]
 
 { #category : 'tests' }
-BoardTest >> testBoardHasWormholes [
-
-	| board |
-	board := Board withSize: 20.
-	board addWormholeFrom: 2 to: 15.
-	self assert: (board positionAfterLandingOn: 2) equals: 15.
-	self assert: (board positionAfterLandingOn: 15) equals: 2.
-	
-]
-
-{ #category : 'tests' }
 BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
 
 	| aBoard aSize |
@@ -51,7 +40,7 @@ BoardTest >> testWhenCreatingABoardWithSize20ThenSizeIs20 [
 
 	| aBoard aSize |
 	aSize := 20.
-	aBoard := Board withSize: aSize.
+	aBoard := Board withSize: aSize andWormholeFrom: 4 to: 9.
 	self assert: (aBoard checkSize: aSize)
 ]
 
@@ -60,7 +49,7 @@ BoardTest >> testWhenSizeIsNegativeThenTheCreationOfTheBoardFails [
 
 	| aSize |
 	aSize:= -30.
-	self should: [Board withSize: aSize]
+	self should: [Board withSize: aSize andWormholeFrom: 4 to: 9]
 		  raise: Error
 		  withMessageError: 'The length of the board should be positive'.
 ]

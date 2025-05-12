@@ -3,7 +3,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'aSize',
-		'wormholes',
 		'wormholeEntry',
 		'wormholeExit'
 	],
@@ -49,12 +48,6 @@ Board class >> validateIsNotNegative: wormholeEntry and: wormholeExit [
 			'The wormhole cannot have negative entry' ]
 ]
 
-{ #category : 'instance creation' }
-Board class >> withSize: boardSize [
-	self validate: boardSize.
-	^ self new initializeWithSize: boardSize
-]
-
 { #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
@@ -75,14 +68,7 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 		  to: wormholeExit
 ]
 
-{ #category : 'adding' }
-Board >> addWormholeFrom: start to: destination [ 
-	wormholes at: start put: destination.
-	wormholes at: destination put: start.
-	
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'testing' }
 Board >> checkSize: size [
 
 	^ aSize = size
@@ -94,15 +80,7 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 	^ wormholeEntry = aWormholeEntry and: wormholeExit = aWormholeExit
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> initializeWithSize: boardSize [
-
-	aSize := boardSize.
-
-	wormholes := Dictionary new
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'initialization' }
 Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
 
 	aSize := size.
@@ -110,8 +88,39 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 	wormholeExit := aWormholeExit
 ]
 
-{ #category : 'as yet unclassified' }
-Board >> positionAfterLandingOn: aPosition [
+{ #category : 'accessing' }
+Board >> move: spaceships [
 
-	^ wormholes at: aPosition
+	spaceships do: [ :aSpaceship | aSpaceship moveUpTo: aSize ].
+
+	self moveIfLandedOnWormhole: spaceships
+]
+
+{ #category : 'behavior' }
+Board >> move: aSpaceship ifAt: position thenMoveTo: finalPosition [
+
+	(aSpaceship isAtPosition: position) ifTrue: [
+		aSpaceship moveToPosition: finalPosition. 
+		^ true ].
+	^ false.
+]
+
+{ #category : 'behavior' }
+Board >> moveIfLandedOnWormhole: spaceships [
+
+	| enteredWormhole |
+	spaceships do: [ :aSpaceship |
+		enteredWormhole := self
+			                   move: aSpaceship
+			                   ifAt: wormholeEntry
+			                   thenMoveTo: wormholeExit.
+		enteredWormhole ifFalse: [
+			self move: aSpaceship ifAt: wormholeExit thenMoveTo: wormholeEntry ] ]
+]
+
+{ #category : 'behavior' }
+Board >> verifyIfAnySpaceshipReachedFinishLine: spaceships [
+
+	^ spaceships anySatisfy: [ :aSpaceship |
+		  aSpaceship isAtPosition: aSize ]
 ]
