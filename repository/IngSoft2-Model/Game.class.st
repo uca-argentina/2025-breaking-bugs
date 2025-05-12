@@ -28,6 +28,11 @@ Game >> addSpaceship: aSpaceship [
 ]
 
 { #category : 'testing' }
+Game >> checkIfGameHasAlreadyFinished [
+	theGameHasFinished ifTrue: [ Error signal: 'Cannot play a turn after the game has finished.' ]
+]
+
+{ #category : 'testing' }
 Game >> checkPositionOfSpaceships: aPosition [
     ^ spaceships anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
 ]
