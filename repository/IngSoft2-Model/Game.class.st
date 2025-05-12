@@ -43,6 +43,11 @@ Game >> finish [
 	^ theGameHasFinished.
 ]
 
+{ #category : 'behavior' }
+Game >> getPositionTable [
+	^ positionTable.
+]
+
 { #category : 'testing' }
 Game >> hasABoard [
 	^ board notNil.

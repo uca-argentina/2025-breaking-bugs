@@ -79,6 +79,11 @@ Board >> checkSize: size [
 	^ aSize = size
 ]
 
+{ #category : 'behavior' }
+Board >> createPositionTable: aCollection [ 
+	^ PositionTable with: aCollection andFinishLine: aSize.
+]
+
 { #category : 'testing' }
 Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 
