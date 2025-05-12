@@ -5,6 +5,16 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
+{ #category : 'asserting' }
+GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
+]
+
 { #category : 'tests' }
 GameTest >> testIsInvalidIfASpacehipMovesToWormholeEntryThenItEndsInAnotherPositionThanTheWormholeExitValue [
 
@@ -70,6 +80,24 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 	aGame playTurn.
 	self assert: (aSpaceship isAtPosition: 4).
 	
+]
+
+{ #category : 'tests' }
+GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
+
+	| aGame aBoard aSpaceship dice |
+	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
+	aGame := Game withBoard: aBoard.
+	dice := OrderedCollection new.
+	dice add: (FixedDice onFace: 8).
+	aSpaceship := Spaceship with: dice.
+	aGame addSpaceship: aSpaceship.
+
+	aGame playTurn.
+	self
+		should: [ aGame playTurn ]
+		raise: Error
+		withMessageText: 'Cannot play a turn after the game has finished.'.
 ]
 
 { #category : 'tests' }

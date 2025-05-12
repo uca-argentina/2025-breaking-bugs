@@ -63,7 +63,7 @@ Game >> initializeWithBoard: aBoard [
 
 { #category : 'roll' }
 Game >> playTurn [
-
+	self checkIfGameHasAlreadyFinished.
 	board move: spaceships ifGameDidntFinish: theGameHasFinished.
 	"board move: spaceships"
 	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
