@@ -15,6 +15,14 @@ Spaceship class >> with: dice [
 	^ self new initializeWith: dice
 ]
 
+{ #category : 'behavior' }
+Spaceship >> getAllDiceValuesFrom: diceCollection [
+
+	^ diceCollection
+		  inject: 0
+		  into: [ :totalPositions :aDie | totalPositions + aDie roll ]
+]
+
 { #category : 'initialization' }
 Spaceship >> initialize [
 
@@ -58,11 +66,19 @@ Spaceship >> moveToPosition: aPosition [
 Spaceship >> moveUpTo: aBoardSize [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := dice
-		                      inject: 0
-		                      into: [ :totalPositions :aDice |
-		                      totalPositions + aDice roll ].
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	newPosition := position + positionsToAdvance.
 	newPosition := newPosition min: aBoardSize.
+	self moveToPosition: newPosition
+]
+
+{ #category : 'move' }
+Spaceship >> moveUpTo: aBoardSize ifGameDidntFinish: gameHasFinished [
+
+	| newPosition |
+	newPosition := gameHasFinished
+		               ifTrue: [ position ]
+		               ifFalse: [
+		               position + (self getAllDiceValuesFrom: dice) min: aBoardSize ].
 	self moveToPosition: newPosition
 ]

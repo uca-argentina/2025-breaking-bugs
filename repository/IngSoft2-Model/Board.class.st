@@ -69,6 +69,11 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 ]
 
 { #category : 'testing' }
+Board >> checkIfSpaceshipWon: aSpaceship [ 
+	^ aSpaceship isAtPosition: aSize.
+]
+
+{ #category : 'testing' }
 Board >> checkSize: size [
 
 	^ aSize = size
@@ -103,6 +108,19 @@ Board >> move: aSpaceship ifAt: position thenMoveTo: finalPosition [
 		aSpaceship moveToPosition: finalPosition. 
 		^ true ].
 	^ false.
+]
+
+{ #category : 'accessing' }
+Board >> move: spaceships ifGameDidntFinish: aFlag [
+
+	| gameHasFinished |
+	gameHasFinished := aFlag.
+
+	spaceships do: [ :aSpaceship |
+		aSpaceship moveUpTo: aSize ifGameDidntFinish: gameHasFinished.
+			gameHasFinished := self checkIfSpaceshipWon: aSpaceship  ].
+
+	self moveIfLandedOnWormhole: spaceships.
 ]
 
 { #category : 'behavior' }
