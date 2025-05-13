@@ -87,5 +87,5 @@ BoardTest >> testWhenTryingToCreateAWormholeWithNegativeEntryThenCreationFails [
 	self
 		should: [ Board withSize: aSize andWormholeFrom: -5 to: 4 ]
 		raise: Error
-		withMessageError: 'The wormhole cannot have negative entry'. 
+		withMessageError: 'The wormhole cannot have negative entry or exit'. 
 ]

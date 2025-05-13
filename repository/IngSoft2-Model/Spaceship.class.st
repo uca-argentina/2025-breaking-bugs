@@ -10,8 +10,26 @@ Class {
 }
 
 { #category : 'instance creation' }
+Spaceship class >> new [
+
+	| aSpaceship dice |
+	aSpaceship := super new.
+	dice := OrderedCollection new.
+	dice add: Dice new.
+	^ aSpaceship initializeWith: dice
+]
+
+{ #category : 'instance creation' }
+Spaceship class >> verifyThereIsAtLeastADiceInTheCollection: dice [
+
+	dice isEmpty ifTrue: [
+		Error signal: 'Cannot create a spaceship without dice' ]
+]
+
+{ #category : 'instance creation' }
 Spaceship class >> with: dice [
 
+	self verifyThereIsAtLeastADiceInTheCollection: dice.
 	^ self new initializeWith: dice
 ]
 
@@ -20,18 +38,13 @@ Spaceship >> getAllDiceValuesFrom: diceCollection [
 
 	^ diceCollection
 		  inject: 0
-		  into: [ :totalPositions :aDie | totalPositions + aDie roll ]
-]
-
-{ #category : 'initialization' }
-Spaceship >> initialize [
-
-	position := 0
+		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
 { #category : 'initialization' }
 Spaceship >> initializeWith: aCollectionOfDice [
 
+	position := 0.
 	dice := aCollectionOfDice
 ]
 
@@ -45,10 +58,8 @@ Spaceship >> isAtPosition: aPosition [
 Spaceship >> move [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := dice
-		                      inject: 0
-		                      into: [ :totalPositions :aDice |
-		                      totalPositions + aDice roll ].
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+
 	newPosition := position + positionsToAdvance.
 	self moveToPosition: newPosition
 ]
@@ -59,7 +70,6 @@ Spaceship >> moveToPosition: aPosition [
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition
-	"Para mi esta mal y se deberia sumar en vez de setear"
 ]
 
 { #category : 'move' }
@@ -69,16 +79,5 @@ Spaceship >> moveUpTo: aBoardSize [
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	newPosition := position + positionsToAdvance.
 	newPosition := newPosition min: aBoardSize.
-	self moveToPosition: newPosition
-]
-
-{ #category : 'move' }
-Spaceship >> moveUpTo: aBoardSize ifGameDidntFinish: gameHasFinished [
-
-	| newPosition |
-	newPosition := gameHasFinished
-		               ifTrue: [ position ]
-		               ifFalse: [
-		               position + (self getAllDiceValuesFrom: dice) min: aBoardSize ].
 	self moveToPosition: newPosition
 ]

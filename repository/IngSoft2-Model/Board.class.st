@@ -41,24 +41,23 @@ Board class >> validate: wormholeEntry notEqualTo: wormholeExit [
 ]
 
 { #category : 'validation' }
-Board class >> validateIsNotNegative: wormholeEntry and: wormholeExit [ 
+Board class >> validateAreNotNegative: wormholeEntry and: wormholeExit [
 
-	wormholeEntry <= 0 ifTrue: [
-		Error signal:
-			'The wormhole cannot have negative entry' ]
+	(wormholeEntry <= 0 or: wormholeExit <= 0) ifTrue: [
+		Error signal: 'The wormhole cannot have negative entry or exit' ]
 ]
 
 { #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: aSize.
-	
-	self validateIsNotNegative: wormholeEntry and: wormholeExit.
-	
+
+	self validateAreNotNegative: wormholeEntry and: wormholeExit.
+
 	self validate: wormholeEntry and: wormholeExit within: aSize.
 
 	self validate: wormholeEntry notEqualTo: wormholeExit.
-	
+
 	self validate: wormholeEntry isLowerThan: wormholeExit.
 
 
@@ -69,14 +68,21 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 ]
 
 { #category : 'testing' }
-Board >> checkIfSpaceshipWon: aSpaceship [ 
-	^ aSpaceship isAtPosition: aSize.
+Board >> checkIfSpaceshipWon: aSpaceship [
+
+	^ aSpaceship isAtPosition: aSize
 ]
 
 { #category : 'testing' }
 Board >> checkSize: size [
 
 	^ aSize = size
+]
+
+{ #category : 'behavior' }
+Board >> createPositionTable: spaceships [
+
+	^ PositionTable with: spaceships and: aSize
 ]
 
 { #category : 'testing' }
@@ -96,44 +102,37 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 { #category : 'accessing' }
 Board >> move: spaceships [
 
-	spaceships do: [ :aSpaceship | aSpaceship moveUpTo: aSize ].
+	| gameHasFinished |
+	gameHasFinished := false.
 
-	self moveIfLandedOnWormhole: spaceships
+	spaceships do: [ :aSpaceship |
+		gameHasFinished ifFalse: [
+			aSpaceship moveUpTo: aSize.
+			self moveIfLandedOnWormhole: aSpaceship ].
+
+		gameHasFinished := self checkIfSpaceshipWon: aSpaceship ]
 ]
 
 { #category : 'behavior' }
 Board >> move: aSpaceship ifAt: position thenMoveTo: finalPosition [
 
 	(aSpaceship isAtPosition: position) ifTrue: [
-		aSpaceship moveToPosition: finalPosition. 
+		aSpaceship moveToPosition: finalPosition.
 		^ true ].
-	^ false.
-]
-
-{ #category : 'accessing' }
-Board >> move: spaceships ifGameDidntFinish: aFlag [
-
-	| gameHasFinished |
-	gameHasFinished := aFlag.
-
-	spaceships do: [ :aSpaceship |
-		aSpaceship moveUpTo: aSize ifGameDidntFinish: gameHasFinished.
-			gameHasFinished := self checkIfSpaceshipWon: aSpaceship  ].
-
-	self moveIfLandedOnWormhole: spaceships.
+	^ false
 ]
 
 { #category : 'behavior' }
-Board >> moveIfLandedOnWormhole: spaceships [
+Board >> moveIfLandedOnWormhole: aSpaceship [
 
-	| enteredWormhole |
-	spaceships do: [ :aSpaceship |
-		enteredWormhole := self
-			                   move: aSpaceship
-			                   ifAt: wormholeEntry
-			                   thenMoveTo: wormholeExit.
-		enteredWormhole ifFalse: [
-			self move: aSpaceship ifAt: wormholeExit thenMoveTo: wormholeEntry ] ]
+	| hasSpaceshipMovedToWormholeExit |
+	hasSpaceshipMovedToWormholeExit := self
+		                                   move: aSpaceship
+		                                   ifAt: wormholeEntry
+		                                   thenMoveTo: wormholeExit.
+
+	hasSpaceshipMovedToWormholeExit ifFalse: [
+		self move: aSpaceship ifAt: wormholeExit thenMoveTo: wormholeEntry ]
 ]
 
 { #category : 'behavior' }

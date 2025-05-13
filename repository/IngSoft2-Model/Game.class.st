@@ -2,75 +2,75 @@ Class {
 	#name : 'Game',
 	#superclass : 'Object',
 	#instVars : [
-		'theGameHasFinished',
 		'board',
-		'dices',
-		'spaceships'
+		'spaceships',
+		'positionTable',
+		'hasFinished'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-Game class >> withBoard: aBoard [
+{ #category : 'instance creation' }
+Game class >> with: aBoard and: spaceships [
 
-	^ self new initializeWithBoard: aBoard
-]
-
-{ #category : 'adding' }
-Game >> addDice: aDice [ 
-	dices add: aDice.
-]
-
-{ #category : 'adding' }
-Game >> addSpaceship: aSpaceship [ 
-  spaceships add: aSpaceship.
+	^ self new initializeWith: aBoard and: spaceships
 ]
 
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
-	theGameHasFinished ifTrue: [ Error signal: 'Cannot play a turn after the game has finished.' ]
+
+	hasFinished ifTrue: [
+		Error signal: 'Cannot play a turn after the game has finished.' ]
 ]
 
 { #category : 'testing' }
 Game >> checkPositionOfSpaceships: aPosition [
-    ^ spaceships anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
+
+	^ spaceships anySatisfy: [ :aSpaceship |
+		  aSpaceship isAtPosition: aPosition ]
 ]
 
-{ #category : 'initialization' }
-Game >> finish [
-	^ theGameHasFinished.
+{ #category : 'behavior' }
+Game >> getPositionTable [
+
+	^ positionTable
 ]
 
 { #category : 'testing' }
 Game >> hasABoard [
-	^ board notNil.
+
+	^ board notNil
 ]
 
-{ #category : 'testing' }
-Game >> hasDices [
+{ #category : 'initialization' }
+Game >> hasFinished [
 
-	^ dices notEmpty
+	^ hasFinished
 ]
 
 { #category : 'testing' }
 Game >> hasSpaceships [
-	^ spaceships notEmpty.
+
+	^ spaceships notEmpty
 ]
 
 { #category : 'initialization' }
-Game >> initializeWithBoard: aBoard [ 
-	theGameHasFinished := false.
-	spaceships := OrderedCollection new.
-	board := aBoard.
-	dices := OrderedCollection new.
+Game >> initializeWith: aBoard and: aCollectionOfSpacehips [
+
+	hasFinished := false.
+	spaceships := aCollectionOfSpacehips.
+	board := aBoard
 ]
 
 { #category : 'roll' }
 Game >> playTurn [
+
 	self checkIfGameHasAlreadyFinished.
-	board move: spaceships ifGameDidntFinish: theGameHasFinished.
-	"board move: spaceships"
-	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
-		                      spaceships
+	board move: spaceships.
+	hasFinished := board verifyIfAnySpaceshipReachedFinishLine:
+		                      spaceships.
+		
+	positionTable := hasFinished ifTrue: [
+		                 board createPositionTable: spaceships ]
 ]

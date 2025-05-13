@@ -35,7 +35,6 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 	aSpaceship moveToPosition: finalPosition.
 
 	self assert: (aSpaceship isAtPosition: finalPosition)
-	"Este test esta mal"
 ]
 
 { #category : 'tests' }
@@ -63,6 +62,18 @@ SpaceshipTest >> testWhenRollingTwoDiceAndGettingA3InBothThenTheSpaceshipMoves6P
 	aSpaceship move.
 
 	self assert: (aSpaceship isAtPosition: finalPosition)
+]
+
+{ #category : 'tests' }
+SpaceshipTest >> testWhenTryingToCreateASpaceshipWithoutDiceThenCreationFails [
+
+	| dice |
+	dice := OrderedCollection new.
+
+	self
+		should: [ Spaceship with: dice ]
+		raise: Error
+		withMessageText: 'Cannot create a spaceship without dice'
 ]
 
 { #category : 'tests' }
