@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'theGameHasFinished',
 		'board',
-		'dices',
 		'spaceships',
 		'positionTable'
 	],
@@ -12,16 +11,10 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-Game class >> withBoard: aBoard [
+{ #category : 'instance creation' }
+Game class >> with: aBoard and: spaceships [
 
-	^ self new initializeWithBoard: aBoard
-]
-
-{ #category : 'adding' }
-Game >> addDice: aDice [
-
-	dices add: aDice
+	^ self new initializeWith: aBoard and: spaceships
 ]
 
 { #category : 'adding' }
@@ -56,12 +49,6 @@ Game >> hasABoard [
 	^ board notNil
 ]
 
-{ #category : 'testing' }
-Game >> hasDices [
-
-	^ dices notEmpty
-]
-
 { #category : 'initialization' }
 Game >> hasFinished [
 
@@ -75,12 +62,11 @@ Game >> hasSpaceships [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWithBoard: aBoard [
+Game >> initializeWith: aBoard and: aCollectionOfSpacehips [
 
 	theGameHasFinished := false.
-	spaceships := OrderedCollection new.
-	board := aBoard.
-	dices := OrderedCollection new
+	spaceships := aCollectionOfSpacehips.
+	board := aBoard
 ]
 
 { #category : 'roll' }

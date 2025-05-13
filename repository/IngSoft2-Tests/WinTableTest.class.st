@@ -18,76 +18,95 @@ WinTableTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorM
 { #category : 'tests' }
 WinTableTest >> testFailMorePositionsThanSpaceships [
 
-	| aGame aBoard aSpaceship dice aPositionTable anOrderCollectionForTable |
+	| aGame aBoard aSpaceship dice aPositionTable anOrderCollectionForTable aGameBuilder |
 	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	aGame := Game withBoard: aBoard.
 	dice := OrderedCollection new.
 	dice add: (FixedDice onFace: 6).
 	aSpaceship := Spaceship with: dice.
-	aGame addSpaceship: aSpaceship.
-	anOrderCollectionForTable := OrderedCollection newFrom: #(10 2 5).
-	
+	aGameBuilder := GameBuilder new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: aBoard;
+		         build.
+	anOrderCollectionForTable := OrderedCollection newFrom: #( 10 2 5 ).
+
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
 	self
-		should: [ aPositionTable compareValuesWith: anOrderCollectionForTable ]
+		should: [
+		aPositionTable compareValuesWith: anOrderCollectionForTable ]
 		raise: Error
-		withMessageText: 'The positions passed has diferent size as the number of spaceships'
+		withMessageText:
+		'The positions passed has diferent size as the number of spaceships'
 ]
 
 { #category : 'tests' }
 WinTableTest >> testWhenGameEndItDontReturnALosser [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable anOrderCollectionForTable |
+	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable anOrderCollectionForTable aGameBuilder |
 	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	aGame := Game withBoard: aBoard.
 	dice := OrderedCollection new.
 	dice add: (FixedDice onFace: 6).
 	aSpaceship := Spaceship with: dice.
 	aSecondSpaceship := Spaceship with: dice.
-	aGame addSpaceship: aSpaceship.
-	aGame addSpaceship: aSecondSpaceship.
-	anOrderCollectionForTable := OrderedCollection newFrom: #(6 0).
-	
+
+	aGameBuilder := GameBuilder new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSecondSpaceship;
+		         addBoard: aBoard;
+		         build.
+
+	anOrderCollectionForTable := OrderedCollection newFrom: #( 6 0 ).
+
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
-	self deny: (aPositionTable winnerIs: aSecondSpaceship).
+	self deny: (aPositionTable winnerIs: aSecondSpaceship)
 ]
 
 { #category : 'tests' }
 WinTableTest >> testWhenGameEndReturnsPositionTable [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable anOrderCollectionForTable |
+	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable anOrderCollectionForTable aGameBuilder |
 	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	aGame := Game withBoard: aBoard.
 	dice := OrderedCollection new.
 	dice add: (FixedDice onFace: 6).
 	aSpaceship := Spaceship with: dice.
 	aSecondSpaceship := Spaceship with: dice.
-	aGame addSpaceship: aSpaceship.
-	aGame addSpaceship: aSecondSpaceship.
-	anOrderCollectionForTable := OrderedCollection newFrom: #(6 0).
-	
+
+	aGameBuilder := GameBuilder new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSecondSpaceship;
+		         addBoard: aBoard;
+		         build.
+
+	anOrderCollectionForTable := OrderedCollection newFrom: #( 6 0 ).
+
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
-	self assert: (aPositionTable compareValuesWith: anOrderCollectionForTable).
+	self assert:
+		(aPositionTable compareValuesWith: anOrderCollectionForTable)
 ]
 
 { #category : 'tests' }
 WinTableTest >> testWhenGameEndReturnsWinner [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable anOrderCollectionForTable |
+	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable aGameBuilder |
 	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	aGame := Game withBoard: aBoard.
 	dice := OrderedCollection new.
 	dice add: (FixedDice onFace: 6).
 	aSpaceship := Spaceship with: dice.
 	aSecondSpaceship := Spaceship with: dice.
-	aGame addSpaceship: aSpaceship.
-	aGame addSpaceship: aSecondSpaceship.
-	anOrderCollectionForTable := OrderedCollection newFrom: #(6 0).
-	
+
+	aGameBuilder := GameBuilder new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addSpaceship: aSecondSpaceship;
+		         addBoard: aBoard;
+		         build.
+
 	aGame playTurn.
 	aPositionTable := aGame getPositionTable.
-	self assert: (aPositionTable winnerIs: aSpaceship).
+	self assert: (aPositionTable winnerIs: aSpaceship)
 ]
