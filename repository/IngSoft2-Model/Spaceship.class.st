@@ -20,8 +20,16 @@ Spaceship class >> new [
 ]
 
 { #category : 'instance creation' }
+Spaceship class >> verifyThereIsAtLeastADiceInTheCollection: dice [
+
+	dice isEmpty ifTrue: [
+		Error signal: 'Cannot create a spaceship without dice' ]
+]
+
+{ #category : 'instance creation' }
 Spaceship class >> with: dice [
 
+	self verifyThereIsAtLeastADiceInTheCollection: dice.
 	^ self new initializeWith: dice
 ]
 

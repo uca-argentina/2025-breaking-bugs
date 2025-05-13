@@ -68,8 +68,9 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 ]
 
 { #category : 'testing' }
-Board >> checkIfSpaceshipWon: aSpaceship [ 
-	^ aSpaceship isAtPosition: aSize.
+Board >> checkIfSpaceshipWon: aSpaceship [
+
+	^ aSpaceship isAtPosition: aSize
 ]
 
 { #category : 'testing' }
@@ -79,8 +80,9 @@ Board >> checkSize: size [
 ]
 
 { #category : 'behavior' }
-Board >> createPositionTable: aCollection [ 
-	^ PositionTable with: aCollection andFinishLine: aSize.
+Board >> createPositionTable: spaceships [
+
+	^ PositionTable with: spaceships and: aSize
 ]
 
 { #category : 'testing' }
@@ -123,8 +125,13 @@ Board >> move: aSpaceship ifAt: position thenMoveTo: finalPosition [
 { #category : 'behavior' }
 Board >> moveIfLandedOnWormhole: aSpaceship [
 
-	(self move: aSpaceship ifAt: wormholeEntry thenMoveTo: wormholeExit)
-		ifFalse: [
+	| hasSpaceshipMovedToWormholeExit |
+	hasSpaceshipMovedToWormholeExit := self
+		                                   move: aSpaceship
+		                                   ifAt: wormholeEntry
+		                                   thenMoveTo: wormholeExit.
+
+	hasSpaceshipMovedToWormholeExit ifFalse: [
 		self move: aSpaceship ifAt: wormholeExit thenMoveTo: wormholeEntry ]
 ]
 
