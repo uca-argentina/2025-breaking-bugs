@@ -2,10 +2,10 @@ Class {
 	#name : 'Game',
 	#superclass : 'Object',
 	#instVars : [
-		'theGameHasFinished',
 		'board',
 		'spaceships',
-		'positionTable'
+		'positionTable',
+		'hasFinished'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,16 +17,10 @@ Game class >> with: aBoard and: spaceships [
 	^ self new initializeWith: aBoard and: spaceships
 ]
 
-{ #category : 'adding' }
-Game >> addSpaceship: aSpaceship [
-
-	spaceships add: aSpaceship
-]
-
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
 
-	theGameHasFinished ifTrue: [
+	hasFinished ifTrue: [
 		Error signal: 'Cannot play a turn after the game has finished.' ]
 ]
 
@@ -52,7 +46,7 @@ Game >> hasABoard [
 { #category : 'initialization' }
 Game >> hasFinished [
 
-	^ theGameHasFinished
+	^ hasFinished
 ]
 
 { #category : 'testing' }
@@ -64,7 +58,7 @@ Game >> hasSpaceships [
 { #category : 'initialization' }
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips [
 
-	theGameHasFinished := false.
+	hasFinished := false.
 	spaceships := aCollectionOfSpacehips.
 	board := aBoard
 ]
@@ -73,10 +67,10 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips [
 Game >> playTurn [
 
 	self checkIfGameHasAlreadyFinished.
-	board move: spaceships ifGameDidntFinish: theGameHasFinished.
-	"board move: spaceships"
-	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
+	board move: spaceships.
+	hasFinished := board verifyIfAnySpaceshipReachedFinishLine:
 		                      spaceships.
-	positionTable := theGameHasFinished ifTrue: [
+		
+	positionTable := hasFinished ifTrue: [
 		                 board createPositionTable: spaceships ]
 ]

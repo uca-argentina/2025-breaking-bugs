@@ -30,7 +30,7 @@ Spaceship >> getAllDiceValuesFrom: diceCollection [
 
 	^ diceCollection
 		  inject: 0
-		  into: [ :totalPositions :aDie | totalPositions + aDie roll ]
+		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
 { #category : 'initialization' }
@@ -50,10 +50,8 @@ Spaceship >> isAtPosition: aPosition [
 Spaceship >> move [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := dice
-		                      inject: 0
-		                      into: [ :totalPositions :aDice |
-		                      totalPositions + aDice roll ].
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+
 	newPosition := position + positionsToAdvance.
 	self moveToPosition: newPosition
 ]
@@ -73,16 +71,5 @@ Spaceship >> moveUpTo: aBoardSize [
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	newPosition := position + positionsToAdvance.
 	newPosition := newPosition min: aBoardSize.
-	self moveToPosition: newPosition
-]
-
-{ #category : 'move' }
-Spaceship >> moveUpTo: aBoardSize ifGameDidntFinish: gameHasFinished [
-
-	| newPosition |
-	newPosition := gameHasFinished
-		               ifTrue: [ position ]
-		               ifFalse: [
-		               position + (self getAllDiceValuesFrom: dice) min: aBoardSize ].
 	self moveToPosition: newPosition
 ]
