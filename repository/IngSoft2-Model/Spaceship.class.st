@@ -3,28 +3,49 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'aDice'
+		'dice'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'instance creation' }
-Spaceship class >> with: aDice [
+Spaceship class >> new [
 
-	^ self new initializeWith: aDice
+	| aSpaceship dice |
+	aSpaceship := super new.
+	dice := OrderedCollection new.
+	dice add: Dice new.
+	^ aSpaceship initializeWith: dice
+]
+
+{ #category : 'instance creation' }
+Spaceship class >> verifyThereIsAtLeastADiceInTheCollection: dice [
+
+	dice isEmpty ifTrue: [
+		Error signal: 'Cannot create a spaceship without dice' ]
+]
+
+{ #category : 'instance creation' }
+Spaceship class >> with: dice [
+
+	self verifyThereIsAtLeastADiceInTheCollection: dice.
+	^ self new initializeWith: dice
+]
+
+{ #category : 'behavior' }
+Spaceship >> getAllDiceValuesFrom: diceCollection [
+
+	^ diceCollection
+		  inject: 0
+		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
 { #category : 'initialization' }
-Spaceship >> initialize [
+Spaceship >> initializeWith: aCollectionOfDice [
 
-	position := 0
-]
-
-{ #category : 'initialization' }
-Spaceship >> initializeWith: dice [
-
-	aDice := dice
+	position := 0.
+	dice := aCollectionOfDice
 ]
 
 { #category : 'testing' }
@@ -33,19 +54,30 @@ Spaceship >> isAtPosition: aPosition [
 	^ position = aPosition
 ]
 
-{ #category : 'accessing' }
+{ #category : 'move' }
 Spaceship >> move [
 
 	| positionsToAdvance newPosition |
-	positionsToAdvance := aDice roll.
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+
 	newPosition := position + positionsToAdvance.
 	self moveToPosition: newPosition
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'move' }
 Spaceship >> moveToPosition: aPosition [
 
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition
+]
+
+{ #category : 'move' }
+Spaceship >> moveUpTo: aBoardSize [
+
+	| positionsToAdvance newPosition |
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+	newPosition := position + positionsToAdvance.
+	newPosition := newPosition min: aBoardSize.
+	self moveToPosition: newPosition
 ]

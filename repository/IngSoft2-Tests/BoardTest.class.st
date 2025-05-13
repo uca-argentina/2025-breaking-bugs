@@ -14,14 +14,15 @@ BoardTest >> should: test raise: aErrorClass withMessageError: aMessage [
 ]
 
 { #category : 'tests' }
-BoardTest >> testBoardHasWormholes [
+BoardTest >> testBoardCreationFailsWhenWormholeEntryValueIsHigherThanExitValue [
 
-	| board |
-	board := Board withSize: 20.
-	board addWormholeFrom: 2 to: 15.
-	self assert: (board positionAfterLandingOn: 2) equals: 15.
-	self assert: (board positionAfterLandingOn: 15) equals: 2.
-	
+	| aSize |
+	aSize := 20.
+
+	self
+		should: [ Board withSize: aSize andWormholeFrom: 15 to: 12 ]
+		raise: Error
+		withMessageError: 'Wormhole entry position value has to be lower than the exit position value'
 ]
 
 { #category : 'tests' }
@@ -39,7 +40,7 @@ BoardTest >> testWhenCreatingABoardWithSize20ThenSizeIs20 [
 
 	| aBoard aSize |
 	aSize := 20.
-	aBoard := Board withSize: aSize.
+	aBoard := Board withSize: aSize andWormholeFrom: 4 to: 9.
 	self assert: (aBoard checkSize: aSize)
 ]
 
@@ -48,7 +49,7 @@ BoardTest >> testWhenSizeIsNegativeThenTheCreationOfTheBoardFails [
 
 	| aSize |
 	aSize:= -30.
-	self should: [Board withSize: aSize]
+	self should: [Board withSize: aSize andWormholeFrom: 4 to: 9]
 		  raise: Error
 		  withMessageError: 'The length of the board should be positive'.
 ]
@@ -75,4 +76,16 @@ BoardTest >> testWhenTryingToCreateAWormholeOutsideTheBoardThenCreationFails [
 		should: [ Board withSize: aSize andWormholeFrom: 15 to: 21 ]
 		raise: Error
 		withMessageError: 'The wormhole cannot be outside of the board'
+]
+
+{ #category : 'tests' }
+BoardTest >> testWhenTryingToCreateAWormholeWithNegativeEntryThenCreationFails [
+
+	| aSize |
+	aSize := 20.
+
+	self
+		should: [ Board withSize: aSize andWormholeFrom: -5 to: 4 ]
+		raise: Error
+		withMessageError: 'The wormhole cannot have negative entry or exit'. 
 ]
