@@ -10,13 +10,8 @@ Class {
 }
 
 { #category : 'instance creation' }
-PositionTable class >> with: aCollection [ 
-	^ (self new) instanceWith: aCollection .
-]
-
-{ #category : 'instance creation' }
 PositionTable class >> with: spaceships andFinishLine: aFinishLine [
-	^ (self new) instanceWith: spaceships andFinishLine: aFinishLine .
+	^ (self new) instanceWith: spaceships and: aFinishLine .
 ]
 
 { #category : 'checking' }
@@ -28,15 +23,15 @@ PositionTable >> checkIf: aCollection hasTheSameLengthAs: aCollection2 [
 ]
 
 { #category : 'checking' }
-PositionTable >> compareValuesWith: aCollection [ 
+PositionTable >> compareValuesWith: aCollection [
+
 	| allMatch |
 	allMatch := true.
-	
+
 	self checkIf: spaceships hasTheSameLengthAs: aCollection.
 
 	spaceships with: aCollection do: [ :aSpaceship :aValue |
-		(allMatch := aSpaceship isAtPosition: aValue) ifFalse: [^ false].
-	].
+		(allMatch := aSpaceship isAtPosition: aValue) ifFalse: [ ^ false ] ].
 
 	^ allMatch
 ]
@@ -47,12 +42,15 @@ PositionTable >> getWinner [
 ]
 
 { #category : 'initialization' }
-PositionTable >> instanceWith: aCollection andFinishLine: aFinishLine [
-	spaceships := aCollection.
-	winner := aCollection detect: [ :aSpaceship | aSpaceship isAtPosition: aFinishLine ].
+PositionTable >> instanceWith: aCollectionOfSpaceships and: aFinishLine [
+
+	spaceships := aCollectionOfSpaceships.
+	winner := aCollectionOfSpaceships detect: [ :aSpaceship |
+		          aSpaceship isAtPosition: aFinishLine ]
 ]
 
 { #category : 'behavior' }
-PositionTable >> winnerIs: aSpaceship [ 
-	^ aSpaceship = winner.
+PositionTable >> winnerIs: aSpaceship [
+
+	^ aSpaceship = winner
 ]

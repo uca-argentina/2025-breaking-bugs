@@ -44,5 +44,5 @@ GameCreationTest >> testWhenGameCreatedItDoesntFinish [
 	| aGame aBoard |
 	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 5.
 	aGame := Game withBoard: aBoard.
-	self deny: aGame finish
+	self deny: aGame hasFinished
 ]

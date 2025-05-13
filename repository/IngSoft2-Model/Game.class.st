@@ -19,38 +19,41 @@ Game class >> withBoard: aBoard [
 ]
 
 { #category : 'adding' }
-Game >> addDice: aDice [ 
-	dices add: aDice.
+Game >> addDice: aDice [
+
+	dices add: aDice
 ]
 
 { #category : 'adding' }
-Game >> addSpaceship: aSpaceship [ 
-  spaceships add: aSpaceship.
+Game >> addSpaceship: aSpaceship [
+
+	spaceships add: aSpaceship
 ]
 
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
-	theGameHasFinished ifTrue: [ Error signal: 'Cannot play a turn after the game has finished.' ]
+
+	theGameHasFinished ifTrue: [
+		Error signal: 'Cannot play a turn after the game has finished.' ]
 ]
 
 { #category : 'testing' }
 Game >> checkPositionOfSpaceships: aPosition [
-    ^ spaceships anySatisfy: [ :aSpaceship | aSpaceship isAtPosition: aPosition ].
-]
 
-{ #category : 'initialization' }
-Game >> finish [
-	^ theGameHasFinished.
+	^ spaceships anySatisfy: [ :aSpaceship |
+		  aSpaceship isAtPosition: aPosition ]
 ]
 
 { #category : 'behavior' }
 Game >> getPositionTable [
-	^ positionTable.
+
+	^ positionTable
 ]
 
 { #category : 'testing' }
 Game >> hasABoard [
-	^ board notNil.
+
+	^ board notNil
 ]
 
 { #category : 'testing' }
@@ -59,24 +62,35 @@ Game >> hasDices [
 	^ dices notEmpty
 ]
 
+{ #category : 'initialization' }
+Game >> hasFinished [
+
+	^ theGameHasFinished
+]
+
 { #category : 'testing' }
 Game >> hasSpaceships [
-	^ spaceships notEmpty.
+
+	^ spaceships notEmpty
 ]
 
 { #category : 'initialization' }
-Game >> initializeWithBoard: aBoard [ 
+Game >> initializeWithBoard: aBoard [
+
 	theGameHasFinished := false.
 	spaceships := OrderedCollection new.
 	board := aBoard.
-	dices := OrderedCollection new.
+	dices := OrderedCollection new
 ]
 
 { #category : 'roll' }
 Game >> playTurn [
+
 	self checkIfGameHasAlreadyFinished.
 	board move: spaceships ifGameDidntFinish: theGameHasFinished.
 	"board move: spaceships"
-	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine: spaceships.
-	positionTable := theGameHasFinished ifTrue: [ board createPositionTable: spaceships ]
+	theGameHasFinished := board verifyIfAnySpaceshipReachedFinishLine:
+		                      spaceships.
+	positionTable := theGameHasFinished ifTrue: [
+		                 board createPositionTable: spaceships ]
 ]

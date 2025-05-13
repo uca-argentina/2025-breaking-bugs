@@ -115,7 +115,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 	
 	aGame playTurn.
 
-	self assert: aGame finish.
+	self assert: aGame hasFinished.
 	self assert: (aSpaceship2 isAtPosition: 0).
 ]
 
@@ -132,7 +132,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 	
 	aGame playTurn.
 
-	self assert: aGame finish
+	self assert: aGame hasFinished
 ]
 
 { #category : 'tests' }
@@ -148,7 +148,7 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 
 	aGame playTurn.
 
-	self assert: aGame finish
+	self assert: aGame hasFinished
 ]
 
 { #category : 'tests' }
@@ -164,7 +164,7 @@ GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 
 	aGame playTurn.
 
-	self assert: aGame finish
+	self assert: aGame hasFinished
 ]
 
 { #category : 'tests' }
@@ -181,5 +181,5 @@ GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds 
 
 	aGame playTurn.
 
-	self assert: aGame finish
+	self assert: aGame hasFinished
 ]

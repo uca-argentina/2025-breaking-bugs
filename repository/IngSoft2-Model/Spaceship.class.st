@@ -10,6 +10,16 @@ Class {
 }
 
 { #category : 'instance creation' }
+Spaceship class >> new [
+
+	| aSpaceship dice |
+	aSpaceship := super new.
+	dice := OrderedCollection new.
+	dice add: Dice new.
+	^ aSpaceship initializeWith: dice
+]
+
+{ #category : 'instance creation' }
 Spaceship class >> with: dice [
 
 	^ self new initializeWith: dice
@@ -24,14 +34,9 @@ Spaceship >> getAllDiceValuesFrom: diceCollection [
 ]
 
 { #category : 'initialization' }
-Spaceship >> initialize [
-
-	position := 0
-]
-
-{ #category : 'initialization' }
 Spaceship >> initializeWith: aCollectionOfDice [
 
+	position := 0.
 	dice := aCollectionOfDice
 ]
 

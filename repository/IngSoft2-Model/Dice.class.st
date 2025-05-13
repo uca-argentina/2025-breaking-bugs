@@ -9,6 +9,15 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+Dice class >> new [
+
+	| aDefaultNumberOfSides dice |
+	aDefaultNumberOfSides := 6.
+	dice := super new.
+	^ dice initializeWithSides: aDefaultNumberOfSides
+]
+
+{ #category : 'as yet unclassified' }
 Dice class >> numberOfSidesIsPositive: aNumberOfSides [
 
 	aNumberOfSides <= 0 ifTrue: [
@@ -20,15 +29,6 @@ Dice class >> withSides: aNumberOfSides [
 
 	self numberOfSidesIsPositive: aNumberOfSides.
 	^ self new initializeWithSides: aNumberOfSides
-]
-
-{ #category : 'initialization' }
-Dice >> initialize [
-
-	| defaultNumberOfSides |
-	defaultNumberOfSides := 6.
-
-	aNumberOfSides := defaultNumberOfSides
 ]
 
 { #category : 'initialization' }
