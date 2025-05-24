@@ -68,15 +68,31 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 ]
 
 { #category : 'testing' }
-Board >> checkIfSpaceshipWon: aSpaceship [
+Board >> checkIfSpaceshipWon: aSpaceshipPosition [
 
-	^ aSpaceship isAtPosition: aSize
+	^ aSpaceshipPosition = aSize.
 ]
 
 { #category : 'testing' }
 Board >> checkSize: size [
 
 	^ aSize = size
+]
+
+{ #category : 'testing' }
+Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
+
+	^ aSpaceshipPosition = wormholeEntry
+		  ifTrue: [ wormholeExit ]
+		  ifFalse: [
+			  aSpaceshipPosition = wormholeExit
+				  ifTrue: [ wormholeEntry ]
+				  ifFalse: [ aSpaceshipPosition ] ]
+]
+
+{ #category : 'testing' }
+Board >> correctPositionIfPassTheLine: aSpaceshipPosition [
+    ^ aSpaceshipPosition min: aSize.
 ]
 
 { #category : 'behavior' }
@@ -97,47 +113,4 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 	aSize := size.
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
-]
-
-{ #category : 'accessing' }
-Board >> move: spaceships [
-
-	| gameHasFinished |
-	gameHasFinished := false.
-
-	spaceships do: [ :aSpaceship |
-		gameHasFinished ifFalse: [
-			aSpaceship moveUpTo: aSize.
-			self moveIfLandedOnWormhole: aSpaceship ].
-
-		gameHasFinished := self checkIfSpaceshipWon: aSpaceship ]
-]
-
-{ #category : 'behavior' }
-Board >> move: aSpaceship ifAt: position thenMoveTo: finalPosition [
-
-	(aSpaceship isAtPosition: position) ifTrue: [
-		aSpaceship moveToPosition: finalPosition.
-		^ true ].
-	^ false
-]
-
-{ #category : 'behavior' }
-Board >> moveIfLandedOnWormhole: aSpaceship [
-
-	| hasSpaceshipMovedToWormholeExit |
-	hasSpaceshipMovedToWormholeExit := self
-		                                   move: aSpaceship
-		                                   ifAt: wormholeEntry
-		                                   thenMoveTo: wormholeExit.
-
-	hasSpaceshipMovedToWormholeExit ifFalse: [
-		self move: aSpaceship ifAt: wormholeExit thenMoveTo: wormholeEntry ]
-]
-
-{ #category : 'behavior' }
-Board >> verifyIfAnySpaceshipReachedFinishLine: spaceships [
-
-	^ spaceships anySatisfy: [ :aSpaceship |
-		  aSpaceship isAtPosition: aSize ]
 ]

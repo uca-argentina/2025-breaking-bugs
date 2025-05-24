@@ -16,22 +16,54 @@ GameBuilderTest >> should: anErrorBlock raise: anErrorClass withMessageText: err
 ]
 
 { #category : 'tests' }
+GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
+
+	| aBoard aSpaceship aGameBuilder aDice aGame |
+	aBoard := Board withSize: 9 andWormholeFrom: 2 to: 5.
+	aSpaceship := Spaceship new.
+	aGameBuilder := GameBuilder new.
+	aDice := Dice new.
+	aGameBuilder addSpaceship: aSpaceship.
+	aGameBuilder addBoard: aBoard.
+	aGameBuilder addDice: aDice.
+	aGame := aGameBuilder build.
+	aGame playTurn. 
+	
+
+	
+]
+
+{ #category : 'tests' }
 GameBuilderTest >> testWhenTryingToBuildAGameWithoutABoardBuildFails [
 
-	| aSpaceship dice aGameBuilder |
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 5).
-	aSpaceship := Spaceship with: dice.
-
+	| aSpaceship aGameBuilder aDice |
+	aSpaceship := Spaceship new.
+	aDice := Dice new.
 	aGameBuilder := GameBuilder new.
-
+	aGameBuilder addSpaceship: aSpaceship.
+	aGameBuilder addDice: aDice.
 	self
 		should: [
-			aGameBuilder
-				addSpaceship: aSpaceship;
-				build ]
+			aGameBuilder 	build ]
 		raise: Error
 		withMessageText: 'Cannot build a game without a board'
+	
+]
+
+{ #category : 'tests' }
+GameBuilderTest >> testWhenTryingToBuildAGameWithoutDiceBuildFails [
+
+	| aBoard aGameBuilder aSpaceship |
+	aBoard := Board withSize: 9 andWormholeFrom: 2 to: 5.
+	aSpaceship := Spaceship new.
+	aGameBuilder := GameBuilder new.
+	aGameBuilder addSpaceship: aSpaceship.
+	aGameBuilder addBoard: aBoard.
+
+	self
+		should: [ aGameBuilder build ]
+		raise: Error
+		withMessageText: 'Cannot build a game without dice'
 ]
 
 { #category : 'tests' }

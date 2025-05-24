@@ -16,34 +16,8 @@ PositionTable class >> with: spaceships and: aFinishLine [
 ]
 
 { #category : 'checking' }
-PositionTable >> checkIf: aCollection hasTheSameLengthAs: aCollection2 [
-
-	aCollection size = aCollection2 size ifFalse: [
-		Error signal:
-			'The positions passed has diferent size as the number of spaceships' ].
-]
-
-{ #category : 'checking' }
-PositionTable >> compareValuesWith: expectedPositions [
-
-	| allMatch |
-	allMatch := true.
-
-	self checkIf: spaceships hasTheSameLengthAs: expectedPositions.
-
-	spaceships
-		with: expectedPositions
-		do: [ :aSpaceship :anExpectedPosition |
-			(allMatch := aSpaceship isAtPosition: anExpectedPosition) ifFalse: [
-				^ false ] ].
-
-	^ allMatch
-]
-
-{ #category : 'behavior' }
-PositionTable >> getWinner [
-
-	^ winner
+PositionTable >> getSpaceshipsPositions [
+    ^ spaceships collect: [ :aSpaceship | aSpaceship getPosition ].
 ]
 
 { #category : 'initialization' }

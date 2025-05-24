@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'asserting' }
+PositionTableTest >> compareValues: spaceshipsPositions with: expectedPositions [
+    ^ spaceshipsPositions = expectedPositions
+]
+
+{ #category : 'asserting' }
 PositionTableTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
 
 	self
@@ -16,97 +21,76 @@ PositionTableTest >> should: anErrorBlock raise: anErrorClass withMessageText: e
 ]
 
 { #category : 'tests' }
-PositionTableTest >> testFailMorePositionsThanSpaceships [
+PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 
-	| aGame aBoard aSpaceship dice aPositionTable expectedPositions aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship := Spaceship with: dice.
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 10);
 		         build.
-	expectedPositions := OrderedCollection newFrom: #( 10 2 5 ).
 
 	aGame playTurn.
-	aPositionTable := aGame getPositionTable.
 	self
-		should: [
-		aPositionTable compareValuesWith: expectedPositions ]
+		should: [ aGame getPositionTable ]
 		raise: Error
 		withMessageText:
-		'The positions passed has diferent size as the number of spaceships'
+		'Cannot get position table before game ends.'
 ]
 
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable expectedPositions aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship := Spaceship with: dice.
-	aSecondSpaceship := Spaceship with: dice.
-
+	| aGame aSecondSpaceship aPositionTable expectedPositions aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSecondSpaceship := Spaceship new.
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSecondSpaceship;
-		         addBoard: aBoard;
+		         addSpaceship: Spaceship new;
+					addSpaceship: aSecondSpaceship; 
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	expectedPositions := OrderedCollection newFrom: #( 6 0 ).
-
 	aGame playTurn.
-	aPositionTable := aGame getPositionTable.
-	self assert:
-		(aPositionTable compareValuesWith: expectedPositions)
+	aPositionTable := (aGame getPositionTable).
+
+	expectedPositions := OrderedCollection newFrom: #( 20 0 ).
+	self assert: (self compareValues: (aPositionTable getSpaceshipsPositions) with: expectedPositions)
 ]
 
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship := Spaceship with: dice.
-	aSecondSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aPositionTable aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addSpaceship: aSecondSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 20);
 		         build.
 
 	aGame playTurn.
-	aPositionTable := aGame getPositionTable.
+	aPositionTable := (aGame getPositionTable).
 	self assert: (aPositionTable isWinner: aSpaceship)
 ]
 
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheFinishLine [
 
-	| aGame aBoard aSpaceship aSecondSpaceship dice aPositionTable expectedPositions aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship := Spaceship with: dice.
-	aSecondSpaceship := Spaceship with: dice.
-
+	| aGame aSecondSpaceship aPositionTable aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSecondSpaceship := Spaceship new.
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addSpaceship: aSecondSpaceship;
-		         addBoard: aBoard;
+		         addSpaceship: Spaceship new;
+					addSpaceship: aSecondSpaceship; 
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	expectedPositions := OrderedCollection newFrom: #( 6 0 ).
-
 	aGame playTurn.
-	aPositionTable := aGame getPositionTable.
-	self deny: (aPositionTable isWinner: aSecondSpaceship)
+	aPositionTable := (aGame getPositionTable).
+	self deny: (aPositionTable isWinner: aSecondSpaceship).
 ]
