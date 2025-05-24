@@ -11,6 +11,11 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'creation' }
+Game class >> with: aBoard and: spaceships and: dice [ 
+	^ self new initializeWith: aBoard and: spaceships and: dice.
+]
+
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
 
