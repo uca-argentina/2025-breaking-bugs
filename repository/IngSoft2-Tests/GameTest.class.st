@@ -27,7 +27,8 @@ GameTest >> testFullGameSimulationWithWinner [
 					addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 15);
-					addDice: (FixedDice onFace: 4);
+					addDice: (FixedDice onFace: 3);
+					addDice: (FixedDice onFace: 1);
 		         build.
 
 	aGame playRound.
