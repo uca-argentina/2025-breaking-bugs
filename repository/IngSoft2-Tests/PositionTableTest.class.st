@@ -32,7 +32,7 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 		         addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self
 		should: [ aGame getPositionTable ]
 		raise: Error
@@ -53,7 +53,7 @@ PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	aPositionTable := (aGame getPositionTable).
 
 	expectedPositions := OrderedCollection newFrom: #( 20 0 ).
@@ -72,7 +72,7 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerCanBeKnown [
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	aPositionTable := (aGame getPositionTable).
 	self assert: (aPositionTable isWinner: aSpaceship)
 ]
@@ -90,7 +90,7 @@ PositionTableTest >> testWhenGameEndsThenTheWinnerIsNotASpaceshipThatIsNotOnTheF
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	aPositionTable := (aGame getPositionTable).
 	self deny: (aPositionTable isWinner: aSecondSpaceship).
 ]

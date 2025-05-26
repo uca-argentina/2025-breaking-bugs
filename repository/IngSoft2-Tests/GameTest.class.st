@@ -16,6 +16,29 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testFullGameSimulationWithWinner [
+
+	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |
+	aGameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	finishLine := 19.
+	aGame := aGameBuilder
+					addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 15);
+					addDice: (FixedDice onFace: 4);
+		         build.
+
+	aGame playRound.
+	aGame playRound.
+
+	self assert: aGame hasFinished.
+	self assert: (aSpaceship1 isAtPosition: finishLine).
+	self assert: (aSpaceship2 isAtPosition: 15)
+]
+
+{ #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 
 	| aGame aSpaceship aGameBuilder |
@@ -29,7 +52,7 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 					addDice: (FixedDice onFace: 5);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 5)
 ]
 
@@ -45,7 +68,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 					addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 9)
 ]
 
@@ -61,7 +84,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		         addDice: (FixedDice onFace: 9);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 4)
 ]
 
@@ -77,9 +100,9 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self
-		should: [ aGame playTurn. ]
+		should: [ aGame playRound. ]
 		raise: Error
 		withMessageText: 'Cannot play a turn after the game has finished.'
 ]
@@ -99,7 +122,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 					addDice: (FixedDice onFace: finishLine);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished.
 	self assert: (aSpaceship1 isAtPosition: finishLine).
@@ -120,7 +143,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: aGame hasFinished
 ]
 
@@ -151,7 +174,7 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 		         addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished
 ]
@@ -168,7 +191,7 @@ GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 					addDice: (FixedDice onFace: 25);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished.
 ]
@@ -186,7 +209,7 @@ GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds 
 					addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished
 ]

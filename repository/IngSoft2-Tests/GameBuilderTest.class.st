@@ -27,7 +27,7 @@ GameBuilderTest >> testGameCreationSucceedsWithValidComponents [
 	aGameBuilder addBoard: aBoard.
 	aGameBuilder addDice: aDice.
 	aGame := aGameBuilder build.
-	aGame playTurn. 
+	aGame playRound. 
 	
 
 	

@@ -54,22 +54,22 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 ]
 
 { #category : 'roll' }
-Game >> playSpaceshipTurn: aSpaceship [
-	| numberOfSquares newPosition|
-	numberOfSquares := self getAllDiceValuesFrom: dice.
-	
-	newPosition := numberOfSquares + aSpaceship getPosition.
-	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition :=  board correctPositionIfPassTheLine: newPosition.
-	hasFinished := board checkIfSpaceshipWon: newPosition.
-	aSpaceship moveToPosition: newPosition.
-]
-
-{ #category : 'roll' }
-Game >> playTurn [
+Game >> playRound [
 
 	self checkIfGameHasAlreadyFinished.
 	spaceships do: [ :aSpaceship |
     self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
 
+]
+
+{ #category : 'roll' }
+Game >> playSpaceshipTurn: aSpaceship [
+	| positionsToAdvance newPosition|
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+	
+	newPosition := positionsToAdvance + aSpaceship getPosition.
+	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
+	newPosition :=  board correctPositionIfPassTheLine: newPosition.
+	hasFinished := board checkIfSpaceshipWon: newPosition.
+	aSpaceship moveToPosition: newPosition.
 ]
