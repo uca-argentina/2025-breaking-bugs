@@ -22,7 +22,7 @@ CircularBoard class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormho
 
 { #category : 'testing' }
 CircularBoard >> checkIfSpaceshipWon: aSpaceshipPosition [ 
-	^ (aSpaceshipPosition > size)
+	^ false.
 ]
 
 { #category : 'testing' }
