@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'spaceships',
-		'aBoard'
+		'aBoard',
+		'dice'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -13,6 +14,11 @@ Class {
 GameBuilder >> addBoard: board [
 
 	aBoard := board
+]
+
+{ #category : 'adding' }
+GameBuilder >> addDice: aDice [ 
+	dice add: aDice.
 ]
 
 { #category : 'adding' }
@@ -26,20 +32,29 @@ GameBuilder >> build [
 
 	self verifyABoardHasBeenAdded.
 	self verifyAtLeastOneSpaceshipHasBeenAdded.
+	self verifyAtLeastOneDiceHasBeenAdded.
 
-	^ Game with: aBoard and: spaceships
+	^ Game with: aBoard and: spaceships and: dice.
 ]
 
 { #category : 'initialization' }
 GameBuilder >> initialize [
 
-	spaceships := OrderedCollection new
+	spaceships := OrderedCollection new.
+	dice := OrderedCollection new.
 ]
 
 { #category : 'building' }
 GameBuilder >> verifyABoardHasBeenAdded [
 
 	aBoard ifNil: [ Error signal: 'Cannot build a game without a board' ]
+]
+
+{ #category : 'building' }
+GameBuilder >> verifyAtLeastOneDiceHasBeenAdded [
+
+	dice isEmpty ifTrue: [
+		Error signal: 'Cannot build a game without dice' ]
 ]
 
 { #category : 'building' }
