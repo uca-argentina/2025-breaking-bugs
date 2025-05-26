@@ -63,6 +63,27 @@ Game >> playRound [
 ]
 
 { #category : 'roll' }
+Game >> playRound2 [
+
+	self checkIfGameHasAlreadyFinished.
+	spaceships do: [ :aSpaceship |
+    self hasFinished ifFalse: [ self playSpaceshipTurn2: aSpaceship ] ].
+
+]
+
+{ #category : 'roll' }
+Game >> playSpaceshipTurn2: aSpaceship [
+	| positionsToAdvance newPosition|
+	positionsToAdvance := self getAllDiceValuesFrom: dice.
+	
+	newPosition := positionsToAdvance + aSpaceship getPosition.
+	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
+	newPosition :=  board correctPositionIf: aSpaceship passTheLine: newPosition.
+	
+	aSpaceship moveToPosition: newPosition.
+]
+
+{ #category : 'roll' }
 Game >> playSpaceshipTurn: aSpaceship [
 	| positionsToAdvance newPosition|
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
