@@ -16,101 +16,94 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
-GameTest >> testIsInvalidIfASpacehipMovesToWormholeEntryThenItEndsInAnotherPositionThanTheWormholeExitValue [
+GameTest >> testFullGameSimulationWithWinner [
 
-	| aGame aSpaceship aBoard dice aGameBuilder |
-	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 3).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |
 	aGameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	finishLine := 19.
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+					addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 15);
+					addDice: (FixedDice onFace: 3);
+					addDice: (FixedDice onFace: 1);
 		         build.
 
-	aGame playTurn.
-	self deny: (aGame checkPositionOfSpaceships: 19)
+	aGame playRound.
+	aGame playRound.
+
+	self assert: aGame hasFinished.
+	self assert: (aSpaceship1 isAtPosition: finishLine).
+	self assert: (aSpaceship2 isAtPosition: 15)
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 
-	| aGame aSpaceship aBoard dice aGameBuilder |
-	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
-
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 5).
-	aSpaceship := Spaceship with: dice.
+	| aGame aSpaceship aGameBuilder |
+	
 
 	aGameBuilder := GameBuilder new.
-
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 5);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 5)
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitValue [
 
-	| aGame aSpaceship aBoard dice aGameBuilder |
-	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 4).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playTurn.
-	self assert: (aGame checkPositionOfSpaceships: 9)
+	aGame playRound.
+	self assert: (aSpaceship isAtPosition: 9)
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryValue [
 
-	| aGame aSpaceship aBoard dice aGameBuilder |
-	aBoard := Board withSize: 20 andWormholeFrom: 4 to: 9.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 9).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 9);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 4)
 ]
 
 { #category : 'tests' }
 GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 
-	| aGame aBoard aSpaceship dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 8).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 	self
-		should: [ aGame playTurn ]
+		should: [ aGame playRound. ]
 		raise: Error
 		withMessageText: 'Cannot play a turn after the game has finished.'
 ]
@@ -118,79 +111,71 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 { #category : 'tests' }
 GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds [
 
-	| aGame aBoard aSpaceship1 aSpaceship2 dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship1 := Spaceship with: dice.
-	aSpaceship2 := Spaceship with: dice.
-
+	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine |
 	aGameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	finishLine := 20.
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship1;
+					addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: finishLine);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished.
+	self assert: (aSpaceship1 isAtPosition: finishLine).
 	self assert: (aSpaceship2 isAtPosition: 0)
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenASpaceshipReachesTheFinishLineTheGameEnds [
 
-	| aGame aBoard aSpaceship dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 6).
-	aSpaceship := Spaceship with: dice.
+	| aGame aSpaceship aGameBuilder |
+	
 
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playTurn.
-
+	aGame playRound.
 	self assert: aGame hasFinished
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenGameCreatedItDoesntFinish [
 
-	| aGame aBoard aGameBuilder aSpaceship dice |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 5.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 4).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame  aGameBuilder |
+	
 	aGameBuilder := GameBuilder new.
 	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addSpaceship: Spaceship new;
+		         addBoard: (Board withSize: 6 andWormholeFrom: 2 to: 5);
+				   addDice: (FixedDice onFace: 4);
 		         build.
+	
 	self deny: aGame hasFinished
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 
-	| aGame aBoard aSpaceship dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 6.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 2).
-	aSpaceship := Spaceship with: dice.
-
+		| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 20);
+		         addDice: (FixedDice onFace: 4);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished
 ]
@@ -198,40 +183,34 @@ GameTest >> testWhenLandingOnAWormholeConnectedToTheFinishLineTheGameEnds [
 { #category : 'tests' }
 GameTest >> testWhenTheSpaceshipMovesBeyondTheFinishLineTheGameEnds [
 
-	| aGame aBoard aSpaceship dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 8).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 25);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
-	self assert: aGame hasFinished
+	self assert: aGame hasFinished.
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenTheSpaceshipMovesWithTwoDicesBeyondTheFinishLineTheGameEnds [
 
-	| aGame aBoard aSpaceship dice aGameBuilder |
-	aBoard := Board withSize: 6 andWormholeFrom: 2 to: 3.
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 2).
-	dice add: (FixedDice onFace: 4).
-	aSpaceship := Spaceship with: dice.
-
+	| aGame aSpaceship aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
-		         addBoard: aBoard;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 11);
+					addDice: (FixedDice onFace: 10);
 		         build.
 
-	aGame playTurn.
+	aGame playRound.
 
 	self assert: aGame hasFinished
 ]
