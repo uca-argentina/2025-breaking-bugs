@@ -15,6 +15,11 @@ Spaceship >> getPosition [
 	^ position
 ]
 
+{ #category : 'behavior' }
+Spaceship >> incrementLapsBy: lapsIncremented [
+	laps := laps + lapsIncremented.
+]
+
 { #category : 'initialization' }
 Spaceship >> initialize [
 
@@ -26,6 +31,11 @@ Spaceship >> initialize [
 Spaceship >> isAtPosition: aPosition [
 
 	^ position = aPosition
+]
+
+{ #category : 'behavior' }
+Spaceship >> lapsCompleted [
+	^ laps.
 ]
 
 { #category : 'move' }
