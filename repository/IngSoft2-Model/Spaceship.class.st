@@ -3,7 +3,7 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'position',
-		'dice'
+		'laps'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,6 +19,7 @@ Spaceship >> getPosition [
 Spaceship >> initialize [
 
 	position := 0.
+	laps := 0.
 ]
 
 { #category : 'testing' }
