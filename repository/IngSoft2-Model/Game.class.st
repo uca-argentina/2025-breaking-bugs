@@ -16,6 +16,16 @@ Game class >> with: aBoard and: spaceships and: dice [
 	^ self new initializeWith: aBoard and: spaceships and: dice.
 ]
 
+{ #category : 'behavior' }
+Game >> checkForBattleIfNeededWith: aSpaceship [
+	| opponent |
+	opponent := spaceships detect: [ :other | other ~= aSpaceship and: [ other getPosition = aSpaceship getPosition ] ] ifNone: [ nil ].
+
+	opponent ifNotNil: [
+		board resolveBattleBetween: aSpaceship and: opponent with: dice ].
+
+]
+
 { #category : 'testing' }
 Game >> checkIfGameHasAlreadyFinished [
 
@@ -72,4 +82,7 @@ Game >> playSpaceshipTurn: aSpaceship [
 	newPosition :=  board correctPositionIf: aSpaceship passTheLine: newPosition.
 	hasFinished := board checkIfSpaceshipWon: newPosition.
 	aSpaceship moveToPosition: newPosition.
+	
+	self checkForBattleIfNeededWith: aSpaceship.
+
 ]
