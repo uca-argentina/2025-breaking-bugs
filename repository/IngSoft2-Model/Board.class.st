@@ -105,12 +105,28 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 
 { #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition [ 
-	^ aSpaceshipPosition min: aSize.
+	"^ aSpaceshipPosition min: aSize."
+	
+	| lapsCompleted newPosition |
+	lapsCompleted := aSpaceshipPosition // aSize .
+	newPosition := aSpaceshipPosition \\ aSize .
+	aSpaceship incrementLapsBy: lapsCompleted.
+
+	^ newPosition 
 ]
 
-{ #category : 'testing' }
-Board >> correctPositionIfPassTheLine: aSpaceshipPosition [
-    ^ aSpaceshipPosition min: aSize.
+{ #category : 'behavior' }
+Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
+	"^ aSpaceshipPosition min: aSize."
+
+	| lapsCompleted newPosition |
+	lapsCompleted := aSpaceshipPosition // aSize.
+	newPosition := aSpaceshipPosition \\ aSize.
+	aSpaceship incrementLapsBy: lapsCompleted.
+
+	aSpaceship lapsCompleted < lapLimit ifTrue: [ ^ newPosition ].
+
+	^ aSize
 ]
 
 { #category : 'behavior' }
@@ -127,6 +143,7 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 
 { #category : 'initialization' }
 Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
+
 
 	aSize := size.
 	wormholeEntry := aWormholeEntry.

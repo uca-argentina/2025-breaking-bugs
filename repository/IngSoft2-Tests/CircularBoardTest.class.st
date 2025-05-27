@@ -68,8 +68,9 @@ CircularBoardTest >> testPositionResetsAfterPassingBoardLimit [
 		         addSpaceship: aSpaceship;
 		         addBoard: (aCircularBoard);
 					addDice: (FixedDice onFace: 25);
+					setLapsToWinTo: 2;
 		         build.
 
 	aGame playRound.
-	self assert: (aSpaceship isAtPosition: 5)
+	self assert: (aSpaceship getPosition )equals: 5.
 ]

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'spaceships',
 		'aBoard',
-		'dice'
+		'dice',
+		'lapsToWin'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -34,7 +35,7 @@ GameBuilder >> build [
 	self verifyAtLeastOneSpaceshipHasBeenAdded.
 	self verifyAtLeastOneDiceHasBeenAdded.
 
-	^ Game with: aBoard and: spaceships and: dice.
+	^ Game with: aBoard and: spaceships and: dice and: lapsToWin.
 ]
 
 { #category : 'initialization' }
@@ -42,6 +43,13 @@ GameBuilder >> initialize [
 
 	spaceships := OrderedCollection new.
 	dice := OrderedCollection new.
+	lapsToWin := 1.
+]
+
+{ #category : 'initialization' }
+GameBuilder >> setLapsToWinTo: numberOfLaps [
+
+	lapsToWin := numberOfLaps
 ]
 
 { #category : 'building' }

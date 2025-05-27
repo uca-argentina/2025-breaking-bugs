@@ -6,7 +6,8 @@ Class {
 		'spaceships',
 		'dice',
 		'hasFinished',
-		'battle'
+		'battle',
+		'lapsToWin'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -14,7 +15,12 @@ Class {
 
 { #category : 'creation' }
 Game class >> with: aBoard and: spaceships and: dice [ 
-	^ self new initializeWith: aBoard and: spaceships and: dice.
+	^ self new initializeWith: aBoard and: spaceships and: dice and: 1.
+]
+
+{ #category : 'creation' }
+Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
+	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
 ]
 
 { #category : 'testing' }
@@ -32,11 +38,22 @@ Game >> getAllDiceValuesFrom: diceCollection [
 		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> getBoardSize [
+	^ board getSize 
+]
+
 { #category : 'behavior' }
 Game >> getPositionTable [
     hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
+]
+
+{ #category : 'as yet unclassified' }
+Game >> getSpaceships [
+
+	^ spaceships
 ]
 
 { #category : 'initialization' }
@@ -52,6 +69,17 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	spaceships := aCollectionOfSpacehips.
 	board := aBoard.
 	dice := aCollectionOfDice.
+	battle := Battle with: spaceships and: dice.
+]
+
+{ #category : 'initialization' }
+Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
+
+	hasFinished := false.
+	spaceships := aCollectionOfSpacehips.
+	board := aBoard.
+	dice := aCollectionOfDice.
+	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
 ]
 
@@ -85,15 +113,21 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 
 { #category : 'roll' }
 Game >> playSpaceshipTurn: aSpaceship [
-	| positionsToAdvance newPosition|
+
+	| positionsToAdvance newPosition |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
-	
+
 	newPosition := positionsToAdvance + aSpaceship getPosition.
 	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition :=  board correctPositionIf: aSpaceship passTheLine: newPosition.
-	hasFinished := board checkIfSpaceshipWon: newPosition.
+	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
+
+	"hasFinished := board checkIfSpaceshipWon: newPosition."
+	
+	hasFinished := aSpaceship lapsCompleted >= lapsToWin. 
 	aSpaceship moveToPosition: newPosition.
 	
-	battle checkForBattleIfNeededWith: aSpaceship.
-
+	"board applyTileEffectTo: aSpaceship."
+	"newPosition := board correctPositionIf: aSpaceship passTheLine: aSpaceship getPosition.
+	aSpaceship moveToPosition: newPosition."
+	battle checkForBattleIfNeededWith: aSpaceship
 ]
