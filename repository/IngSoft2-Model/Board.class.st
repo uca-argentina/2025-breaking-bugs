@@ -132,7 +132,3 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
 ]
-
-{ #category : 'behavior' }
-Board >> resolveBattleBetween: aSpaceship and: opponent with: dice [
-]

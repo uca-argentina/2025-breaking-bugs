@@ -41,28 +41,8 @@ CircularBoard >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition [
 
 ]
 
-{ #category : 'behavior' }
-CircularBoard >> getAllDiceValuesFrom: diceCollection [
-
-	^ diceCollection
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
-]
-
 { #category : 'initialization' }
 CircularBoard >> intializeWithSize: aSize andWormholeFrom: aWormholeEntry to: aWormholeExit [
 	size := aSize.
 	board := Board withSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit.
-]
-
-{ #category : 'behavior' }
-CircularBoard >> resolveBattleBetween: aSpaceship and: opponent with: dice [ 
-	
-	| loser spaceShipDiceValue oponentDiceValue |
-	loser := opponent.
-	spaceShipDiceValue := self getAllDiceValuesFrom: dice. 
-	oponentDiceValue := self getAllDiceValuesFrom: dice. 
-	spaceShipDiceValue > oponentDiceValue ifTrue: [ loser :=  aSpaceship].
-	loser lowerAShield. 
-	loser moveToPosition: 0.
 ]

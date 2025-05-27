@@ -4,11 +4,20 @@ Class {
 	#instVars : [
 		'position',
 		'laps',
-		'shields'
+		'shields',
+		'turnsPenalize'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'behavior' }
+Spaceship >> canPlay [
+	^ self getShields > 0
+
+
+
+]
 
 { #category : 'testing' }
 Spaceship >> getPosition [
@@ -32,6 +41,7 @@ Spaceship >> initialize [
 	position := 0.
 	laps := 0.
 	shields := 3.
+	turnsPenalize := -1.
 ]
 
 { #category : 'testing' }
@@ -47,7 +57,7 @@ Spaceship >> lapsCompleted [
 
 { #category : 'behavior' }
 Spaceship >> lowerAShield [
-	shields > 1 ifTrue: [ shields := shields - 1].
+	shields > 0 ifTrue: [ shields := shields - 1].
 ]
 
 { #category : 'move' }
@@ -56,4 +66,19 @@ Spaceship >> moveToPosition: aPosition [
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition
+]
+
+{ #category : 'behavior' }
+Spaceship >> penalize [
+	turnsPenalize := turnsPenalize + 1.
+	turnsPenalize ~= 2 ifTrue: [ ^self ].
+	
+	self rechargeShields.
+	turnsPenalize := 0.
+
+]
+
+{ #category : 'behavior' }
+Spaceship >> rechargeShields [
+	shields := 3.
 ]

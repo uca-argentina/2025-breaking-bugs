@@ -27,16 +27,17 @@ GameTest >> testFullGameSimulationWithWinner [
 					addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 15);
-					addDice: (FixedDice onFace: 3);
+					addDice: (SequentialFixedDice onFaces: #(3 7));
 					addDice: (FixedDice onFace: 1);
 		         build.
 
 	aGame playRound.
 	aGame playRound.
 
-	self assert: aGame hasFinished.
+	
 	self assert: (aSpaceship1 isAtPosition: finishLine).
-	self assert: (aSpaceship2 isAtPosition: 15)
+	self assert: (aSpaceship2 isAtPosition: 8).
+	self assert: aGame hasFinished.
 ]
 
 { #category : 'tests' }
