@@ -103,6 +103,11 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 				  ifFalse: [ aSpaceshipPosition ] ]
 ]
 
+{ #category : 'behavior' }
+Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition [ 
+	^ aSpaceshipPosition min: aSize.
+]
+
 { #category : 'testing' }
 Board >> correctPositionIfPassTheLine: aSpaceshipPosition [
     ^ aSpaceshipPosition min: aSize.

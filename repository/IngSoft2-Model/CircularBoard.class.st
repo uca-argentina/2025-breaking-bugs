@@ -22,7 +22,7 @@ CircularBoard class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormho
 
 { #category : 'testing' }
 CircularBoard >> checkIfSpaceshipWon: aSpaceshipPosition [ 
-	^ (aSpaceshipPosition > size)
+	^ false.
 ]
 
 { #category : 'testing' }
@@ -39,11 +39,6 @@ CircularBoard >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition [
     aSpaceship incrementLapsBy: lapsCompleted.
     ^ newPosition = 0 ifTrue: [size] ifFalse: [newPosition].
 
-]
-
-{ #category : 'testing' }
-CircularBoard >> correctPositionIfPassTheLine: aSpaceshipPosition [
-    (aSpaceshipPosition > size) ifTrue: [ ^ aSpaceshipPosition - size ]
 ]
 
 { #category : 'initialization' }

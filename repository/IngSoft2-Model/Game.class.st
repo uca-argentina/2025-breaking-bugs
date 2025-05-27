@@ -5,7 +5,8 @@ Class {
 		'board',
 		'spaceships',
 		'dice',
-		'hasFinished'
+		'hasFinished',
+		'battle'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -51,36 +52,35 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	spaceships := aCollectionOfSpacehips.
 	board := aBoard.
 	dice := aCollectionOfDice.
+	battle := Battle with: spaceships and: dice.
 ]
 
-{ #category : 'roll' }
+{ #category : 'behavior' }
 Game >> playRound [
+	| activeSpaceships penalizeSpaceships |
 
 	self checkIfGameHasAlreadyFinished.
-	spaceships do: [ :aSpaceship |
-    self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
+	activeSpaceships := spaceships select: [ :aSpaceship | aSpaceship canPlay ].
+	activeSpaceships do: [ :aSpaceship |
+		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
+
+	penalizeSpaceships := spaceships select: [ :aSpaceship | aSpaceship getShields = 0 ].
+	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ].
+
+	
 
 ]
 
-{ #category : 'roll' }
-Game >> playRound2 [
+{ #category : 'behavior' }
+Game >> playRoundSkipping: aSpaceshipCollection [ 
 
 	self checkIfGameHasAlreadyFinished.
-	spaceships do: [ :aSpaceship |
-    self hasFinished ifFalse: [ self playSpaceshipTurn2: aSpaceship ] ].
-
-]
-
-{ #category : 'roll' }
-Game >> playSpaceshipTurn2: aSpaceship [
-	| positionsToAdvance newPosition|
-	positionsToAdvance := self getAllDiceValuesFrom: dice.
+	(spaceships reject: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
+	do: [ :aSpaceship |
+		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
 	
-	newPosition := positionsToAdvance + aSpaceship getPosition.
-	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition :=  board correctPositionIf: aSpaceship passTheLine: newPosition.
-	
-	aSpaceship moveToPosition: newPosition.
+	aSpaceshipCollection do: [ :aSpaceship | aSpaceship rechargeShields ].
+
 ]
 
 { #category : 'roll' }
@@ -90,7 +90,10 @@ Game >> playSpaceshipTurn: aSpaceship [
 	
 	newPosition := positionsToAdvance + aSpaceship getPosition.
 	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition :=  board correctPositionIfPassTheLine: newPosition.
+	newPosition :=  board correctPositionIf: aSpaceship passTheLine: newPosition.
 	hasFinished := board checkIfSpaceshipWon: newPosition.
 	aSpaceship moveToPosition: newPosition.
+	
+	battle checkForBattleIfNeededWith: aSpaceship.
+
 ]

@@ -18,7 +18,7 @@ CircularBoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 					addDice: (FixedDice onFace: 25);
 		         build.
 
-	aGame playRound2.
+	aGame playRound.
 	self assert: aSpaceship lapsCompleted equals: 1
 ]
 
@@ -33,10 +33,10 @@ CircularBoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceshi
 		         addSpaceship: aSpaceship;
 					addSpaceship: Spaceship new;
 		         addBoard: (aCircularBoard);
-					addDice: (FixedDice onFace: 25);
+					addDice: (FixedDice onFace: 20);
 		         build.
 
-	aGame playRound2.
+	aGame playRound.
 	self assert: aSpaceship lapsCompleted equals: 1
 ]
 
@@ -50,10 +50,10 @@ CircularBoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (aCircularBoard);
-					addDice: (FixedDice onFace: 41);
+					addDice: (FixedDice onFace: 40);
 		         build.
 
-	aGame playRound2.
+	aGame playRound.
 	self assert: aSpaceship lapsCompleted equals: 2
 ]
 
@@ -70,6 +70,6 @@ CircularBoardTest >> testPositionResetsAfterPassingBoardLimit [
 					addDice: (FixedDice onFace: 25);
 		         build.
 
-	aGame playRound2.
+	aGame playRound.
 	self assert: (aSpaceship isAtPosition: 5)
 ]
