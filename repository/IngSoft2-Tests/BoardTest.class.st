@@ -26,6 +26,31 @@ BoardTest >> testBoardCreationFailsWhenWormholeEntryValueIsHigherThanExitValue [
 ]
 
 { #category : 'tests' }
+BoardTest >> testBoardIsCreatedWithCorrectEffectProportions [
+	| board tiles effectsCount |
+	
+	board := Board withRandomEffectsAndSize: 100 andWormholeFrom: 5 to: 15.
+	tiles := board getTiles . 
+
+	effectsCount := Dictionary new.
+	
+	tiles do: [ :tile |
+		| effectClass |
+		effectClass := tile getEffect class.
+		effectsCount at: effectClass ifAbsentPut: [ 0 ].
+		effectsCount at: effectClass put: (effectsCount at: effectClass) + 1.
+	].
+
+	self assert: (effectsCount at: NoEffect ) equals: 40.
+	self assert: (effectsCount at: BlackHole ) equals: 20.
+	self assert: (effectsCount at: HyperSpaceJump ) equals: 20.
+	self assert: (effectsCount at: MoonWalk ) equals: 10.
+	self assert: (effectsCount at: HyperJump ) equals: 8.
+	self assert: (effectsCount at: AtomicBomb ) equals: 2.
+
+]
+
+{ #category : 'tests' }
 BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
 
 	| aBoard aSize |

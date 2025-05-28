@@ -33,7 +33,7 @@ Game >> getAllDiceValuesFrom: diceCollection [
 		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Game >> getBoardSize [
 	^ board getSize 
 ]
@@ -45,7 +45,7 @@ Game >> getPositionTable [
 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Game >> getSpaceships [
 
 	^ spaceships
@@ -117,7 +117,7 @@ Game >> playSpaceshipTurn: aSpaceship [
 		               passTheLine: aSpaceship getPosition
 		               withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-	flag:=board isAtomicBombAt: lastPositionBeforeEffect.
+	flag:=board hasAtomicBombAt: lastPositionBeforeEffect.
 	( flag)ifFalse:[ battle checkForBattleIfNeededWith: aSpaceship].
 	hasFinished := aSpaceship lapsCompleted >= lapsToWin.
 	

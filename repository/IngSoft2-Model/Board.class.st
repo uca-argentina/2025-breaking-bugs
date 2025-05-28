@@ -62,6 +62,23 @@ Board class >> validateWith: wormholeEntry and: wormholeExit within: aSize [
 ]
 
 { #category : 'creation' }
+Board class >> withRandomEffectsAndSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
+	self validate: aSize.
+
+	self validateAreNotNegative: wormholeEntry and: wormholeExit.
+
+	self validate: wormholeEntry and: wormholeExit within: aSize.
+
+	self validate: wormholeEntry notEqualTo: wormholeExit.
+
+	self validate: wormholeEntry isLowerThan: wormholeExit.
+
+
+	^self new initializeWithRandomEffects: true andSize:aSize andWormholeFrom: wormholeEntry to: wormholeExit .
+
+]
+
+{ #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: aSize.
@@ -74,9 +91,9 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: wormholeEntry isLowerThan: wormholeExit.
 
-
 	^ self new
-		  intializeWithSize: aSize
+		  initializeWithRandomEffects: false
+		  andSize: aSize
 		  andWormholeFrom: wormholeEntry
 		  to: wormholeExit
 ]
@@ -136,9 +153,58 @@ Board >> createPositionTable: spaceships [
 ]
 
 { #category : 'initialization' }
+Board >> generatesRandomEffects [
+
+	| effects total tilesPerEffect extraEffects randomizedEffects |
+	
+	total := aSize.  "aSize debe estar definido en el objeto"
+	
+	tilesPerEffect := Dictionary new.
+	tilesPerEffect at: NoEffect put: (total * 40 // 100).
+	tilesPerEffect at: BlackHole put: (total * 20 // 100).
+	tilesPerEffect at: HyperSpaceJump put: (total * 20 // 100).
+	tilesPerEffect at: MoonWalk put: (total * 10 // 100).
+	tilesPerEffect at: HyperJump put: (total * 8 // 100).
+	tilesPerEffect at: AtomicBomb put: (total * 2 // 100).
+
+	"Completar con efectos si la suma no da exactamente total"
+	extraEffects := total - (tilesPerEffect values sum).
+	1 to: extraEffects do: [ :i | 
+		tilesPerEffect at: NoEffect put: (tilesPerEffect at: NoEffect) + 1. 
+	].
+
+	"Construir la lista de efectos"
+	effects := OrderedCollection new.
+	tilesPerEffect keysAndValuesDo: [ :effectClass :qty |
+		qty timesRepeat: [ effects add: effectClass new ].
+	].
+
+	"Mezclar aleatoriamente"
+	randomizedEffects := effects shuffled.
+
+	"Generar los tiles con esos efectos"
+	^ randomizedEffects collect: [ :effect | Tile with: effect ].
+
+]
+
+{ #category : 'initialization' }
 Board >> getSize [
 
 	^ aSize
+]
+
+{ #category : 'accessing' }
+Board >> getTiles [
+
+	^ tiles
+]
+
+{ #category : 'accessing' }
+Board >> hasAtomicBombAt: aPosition [	
+ | tile |
+tile := tiles at: aPosition .
+^ tile getEffect class = AtomicBomb
+
 ]
 
 { #category : 'testing' }
@@ -148,18 +214,12 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 ]
 
 { #category : 'initialization' }
-Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
+Board >> initializeWithRandomEffects: useRandomEffects andSize:size andWormholeFrom: aWormholeEntry to: aWormholeExit [ 
 
 	aSize := size.
-	tiles := (1 to: size) collect: [ :i | Tile with: NoEffect new ].
+	    tiles := useRandomEffects 
+        ifTrue: [ self generatesRandomEffects ]
+        ifFalse: [ (1 to: size) collect: [ :i | Tile with: NoEffect new ] ].
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
-]
-
-{ #category : 'accessing' }
-Board >> isAtomicBombAt: aPosition [	
- | tile |
-tile := tiles at: aPosition .
-^ tile getEffect class = AtomicBomb
-
 ]

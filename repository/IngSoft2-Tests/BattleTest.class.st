@@ -137,6 +137,28 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 ]
 
 { #category : 'tests' }
+BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
+
+	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	aSecondOponent := Spaceship new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+					addSpaceship: aSpaceship2;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
+		         build.
+
+	aGame playRound.
+	self assert: aSpaceship getPosition equals: 9.
+	self assert: aSpaceship getShields equals: 3.
+	self assert: aSpaceship2 getPosition equals: 0.
+	self assert: aSpaceship2 getShields equals: 2.
+]
+
+{ #category : 'tests' }
 BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndLosesShield [
 
 	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |

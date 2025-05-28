@@ -14,19 +14,19 @@ Tile class >> with: anEffect [
 	^ self new initializeWith: anEffect
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Tile >> applyEffectTo: aSpaceship [
 
 	effect applyTo: aSpaceship
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Tile >> applyEffectTo: aSpaceship in: aGame [
 
 	effect applyTo: aSpaceship in: aGame
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Tile >> getEffect [
 ^ effect 
 ]

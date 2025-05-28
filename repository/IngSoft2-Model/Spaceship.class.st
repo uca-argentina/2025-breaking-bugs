@@ -23,6 +23,12 @@ Spaceship >> decrementLapsBy: lapsIncremented [
 	laps := laps - lapsIncremented
 ]
 
+{ #category : 'behavior' }
+Spaceship >> getLapsCompleted [
+
+	^ laps
+]
+
 { #category : 'testing' }
 Spaceship >> getPosition [
 
