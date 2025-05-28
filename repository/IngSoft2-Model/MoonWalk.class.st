@@ -26,7 +26,7 @@ MoonWalk >> applyTo: aSpaceship in: aGame [
 		newPosition := ship getPosition - numberOfPositionsToGoBack
 		               \\ boardSize.
 		(ship getPosition - numberOfPositionsToGoBack) negative ifTrue: [
-			ship incrementLapsBy: -1 ].
+			ship decrementLapsBy: 1 ].
 		ship moveToPosition: newPosition ]
 ]
 

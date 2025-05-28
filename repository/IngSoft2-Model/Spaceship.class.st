@@ -17,6 +17,12 @@ Spaceship >> canPlay [
 	^ self getShields > 0
 ]
 
+{ #category : 'behavior' }
+Spaceship >> decrementLapsBy: lapsIncremented [
+
+	laps := laps - lapsIncremented
+]
+
 { #category : 'testing' }
 Spaceship >> getPosition [
 

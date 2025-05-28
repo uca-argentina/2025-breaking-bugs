@@ -21,6 +21,6 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleThenItIsMovedBack4Positions [
 		         build.
 	aGame playRound.
 	
-	self assert: (aSpaceship isAtPosition: 0)
+	self assert: (aSpaceship isAtPosition:1).
 
 ]

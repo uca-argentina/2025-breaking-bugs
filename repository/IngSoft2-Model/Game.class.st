@@ -98,7 +98,7 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 { #category : 'roll' }
 Game >> playSpaceshipTurn: aSpaceship [
 
-	| positionsToAdvance newPosition |
+	| positionsToAdvance newPosition  lastPositionBeforeEffect flag |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 
 	newPosition := positionsToAdvance + aSpaceship getPosition.
@@ -108,10 +108,7 @@ Game >> playSpaceshipTurn: aSpaceship [
 		               correctPositionIf: aSpaceship
 		               passTheLine: newPosition
 		               withLapLimit: lapsToWin.
-
-	"hasFinished := board checkIfSpaceshipWon: newPosition."
-
-
+	lastPositionBeforeEffect:=newPosition.
 	aSpaceship moveToPosition: newPosition.
 
 	board applyTileEffectTo: aSpaceship in: self.
@@ -120,6 +117,8 @@ Game >> playSpaceshipTurn: aSpaceship [
 		               passTheLine: aSpaceship getPosition
 		               withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-	battle checkForBattleIfNeededWith: aSpaceship.
-	hasFinished := aSpaceship lapsCompleted >= lapsToWin
+	flag:=board isAtomicBombAt: lastPositionBeforeEffect.
+	( flag)ifFalse:[ battle checkForBattleIfNeededWith: aSpaceship].
+	hasFinished := aSpaceship lapsCompleted >= lapsToWin.
+	
 ]

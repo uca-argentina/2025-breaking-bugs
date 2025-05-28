@@ -119,9 +119,12 @@ Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLi
 	| lapsCompleted newPosition |
 	lapsCompleted := aSpaceshipPosition // aSize.
 	newPosition := aSpaceshipPosition \\ aSize.
-	aSpaceship incrementLapsBy: lapsCompleted.
+	"(aSpaceship lapsCompleted < lapLimit ) ifTrue:[aSpaceship incrementLapsBy: lapsCompleted]."
 
-	aSpaceship lapsCompleted < lapLimit ifTrue: [ ^ newPosition ].
+	"aSpaceship lapsCompleted < lapLimit ifTrue: [ ^ newPosition ]."
+	(aSpaceship lapsCompleted < lapLimit ) ifTrue: [ 
+		aSpaceship incrementLapsBy: lapsCompleted.
+		(newPosition = 0 ) ifTrue: [^ 1] ifFalse:[^ newPosition ]].
 
 	^ aSize
 ]
@@ -151,4 +154,12 @@ Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeEx
 	tiles := (1 to: size) collect: [ :i | Tile with: NoEffect new ].
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
+]
+
+{ #category : 'accessing' }
+Board >> isAtomicBombAt: aPosition [	
+ | tile |
+tile := tiles at: aPosition .
+^ tile getEffect class = AtomicBomb
+
 ]
