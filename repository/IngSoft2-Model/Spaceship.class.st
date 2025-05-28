@@ -42,6 +42,11 @@ Spaceship >> getShields [
 ]
 
 { #category : 'behavior' }
+Spaceship >> hasReached: lapsToWin [
+	^ laps >= lapsToWin
+]
+
+{ #category : 'behavior' }
 Spaceship >> incrementLapsBy: lapsIncremented [
 
 	laps := laps + lapsIncremented

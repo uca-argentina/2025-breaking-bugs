@@ -148,7 +148,7 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
+		         addDice: (SequentialFixedDice onFaces: #(4 4 4 4 ));
 		         build.
 
 	aGame playRound.

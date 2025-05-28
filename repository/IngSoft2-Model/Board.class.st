@@ -101,7 +101,7 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 { #category : 'initialization' }
 Board >> add: anEffect at: aPosition [
 
-	tiles at: aPosition put: (Tile with: anEffect)
+	tiles at: (aPosition+1) put: (Tile with: anEffect)
 ]
 
 { #category : 'initialization' }
@@ -109,7 +109,7 @@ Board >> applyTileEffectTo: aSpaceship in: aGame [
 
 	| position tile |
 	position := aSpaceship getPosition.
-	tile := tiles at: position.
+	tile := tiles at: (position+1).
 	tile applyEffectTo: aSpaceship in: aGame
 ]
 
@@ -139,9 +139,9 @@ Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLi
 	"(aSpaceship lapsCompleted < lapLimit ) ifTrue:[aSpaceship incrementLapsBy: lapsCompleted]."
 
 	"aSpaceship lapsCompleted < lapLimit ifTrue: [ ^ newPosition ]."
-	(aSpaceship lapsCompleted < lapLimit ) ifTrue: [ 
+	(aSpaceship hasReached: lapLimit ) ifFalse: [ 
 		aSpaceship incrementLapsBy: lapsCompleted.
-		(newPosition = 0 ) ifTrue: [^ 1] ifFalse:[^ newPosition ]].
+		^ newPosition ].
 
 	^ aSize
 ]
@@ -202,7 +202,7 @@ Board >> getTiles [
 { #category : 'accessing' }
 Board >> hasAtomicBombAt: aPosition [	
  | tile |
-tile := tiles at: aPosition .
+tile := tiles at: (aPosition+1) .
 ^ tile getEffect class = AtomicBomb
 
 ]

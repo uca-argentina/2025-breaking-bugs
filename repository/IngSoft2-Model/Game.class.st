@@ -73,13 +73,11 @@ Game >> playRound [
 
 	| activeSpaceships penalizeSpaceships |
 	self checkIfGameHasAlreadyFinished.
-	activeSpaceships := spaceships select: [ :aSpaceship |
-		                    aSpaceship canPlay ].
+	activeSpaceships := spaceships select: [ :aSpaceship | aSpaceship canPlay ].
 	activeSpaceships do: [ :aSpaceship |
 		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
 
-	penalizeSpaceships := spaceships select: [ :aSpaceship |
-		                      aSpaceship getShields = 0 ].
+	penalizeSpaceships := spaceships select: [ :aSpaceship | aSpaceship getShields = 0 ].
 	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
 ]
 
@@ -98,27 +96,23 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 { #category : 'roll' }
 Game >> playSpaceshipTurn: aSpaceship [
 
-	| positionsToAdvance newPosition  lastPositionBeforeEffect flag |
+	| positionsToAdvance newPosition  flag |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 
 	newPosition := positionsToAdvance + aSpaceship getPosition.
-	newPosition := board correctPositionAfterWormholeIfNeeded:
-		               newPosition.
-	newPosition := board
-		               correctPositionIf: aSpaceship
-		               passTheLine: newPosition
-		               withLapLimit: lapsToWin.
-	lastPositionBeforeEffect:=newPosition.
+	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
+	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-
+	flag:=board hasAtomicBombAt: newPosition.
+	
 	board applyTileEffectTo: aSpaceship in: self.
 	newPosition := board
 		               correctPositionIf: aSpaceship
 		               passTheLine: aSpaceship getPosition
 		               withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-	flag:=board hasAtomicBombAt: lastPositionBeforeEffect.
+	
 	( flag)ifFalse:[ battle checkForBattleIfNeededWith: aSpaceship].
-	hasFinished := aSpaceship lapsCompleted >= lapsToWin.
+	hasFinished := aSpaceship hasReached: lapsToWin.
 	
 ]
