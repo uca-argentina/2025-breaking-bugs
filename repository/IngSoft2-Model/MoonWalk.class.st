@@ -23,11 +23,8 @@ MoonWalk >> applyTo: aSpaceship in: aGame [
 		                   each == aSpaceship ].
 
 	otherSpaceships do: [ :ship |
-		newPosition := ship getPosition - numberOfPositionsToGoBack
-		               \\ boardSize.
-		(ship getPosition - numberOfPositionsToGoBack) negative ifTrue: [
-			ship decrementLapsBy: 1 ].
-		ship moveToPosition: newPosition ]
+		newPosition := aGame correctPositionOf: ship to: numberOfPositionsToGoBack.
+		ship moveToPosition: newPosition]
 ]
 
 { #category : 'initialization' }

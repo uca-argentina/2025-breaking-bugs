@@ -6,12 +6,6 @@ Class {
 }
 
 { #category : 'operations' }
-NoEffect >> applyTo: aSpaceship [
-
-	
-]
-
-{ #category : 'operations' }
 NoEffect >> applyTo: aSpaceship in: aGame [
 
 	

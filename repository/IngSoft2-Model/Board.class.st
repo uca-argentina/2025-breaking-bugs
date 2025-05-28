@@ -132,18 +132,21 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 
 { #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-
 	| lapsCompleted newPosition |
 	lapsCompleted := aSpaceshipPosition // aSize.
 	newPosition := aSpaceshipPosition \\ aSize.
-	"(aSpaceship lapsCompleted < lapLimit ) ifTrue:[aSpaceship incrementLapsBy: lapsCompleted]."
 
-	"aSpaceship lapsCompleted < lapLimit ifTrue: [ ^ newPosition ]."
-	(aSpaceship hasReached: lapLimit ) ifFalse: [ 
-		aSpaceship incrementLapsBy: lapsCompleted.
-		^ newPosition ].
+	(aSpaceship hasReached: lapLimit) ifTrue: [ 
+		^ aSize 
+	].
 
-	^ aSize
+	(aSpaceship getLapsCompleted = 0 and: [ newPosition < 0 ]) ifTrue: [
+		^ 0
+	].
+
+	aSpaceship incrementLapsBy: lapsCompleted.
+	^ newPosition
+
 ]
 
 { #category : 'behavior' }

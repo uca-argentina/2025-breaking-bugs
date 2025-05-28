@@ -6,17 +6,11 @@ Class {
 }
 
 { #category : 'operations' }
-HyperSpaceJump >> applyTo: aSpaceship [
+HyperSpaceJump >> applyTo: aSpaceship in: aGame [
+
 
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
 	aSpaceship moveToPosition: actualPosition + 4.
 	aSpaceship lowerAShield
-]
-
-{ #category : 'operations' }
-HyperSpaceJump >> applyTo: aSpaceship in: aGame [
-
-
-	self applyTo: aSpaceship
 ]

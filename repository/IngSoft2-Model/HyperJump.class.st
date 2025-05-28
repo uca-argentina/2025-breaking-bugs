@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'operations' }
-HyperJump >> applyTo: aSpaceship [
+HyperJump >> applyTo: aSpaceship in: aGame [
 
 	| parsecsToAdvance newPosition |
 	amountsOfParsecsToAdvance size = currentIndex ifTrue: [
@@ -21,12 +21,6 @@ HyperJump >> applyTo: aSpaceship [
 
 	newPosition := aSpaceship getPosition + (parsecsToAdvance // 2).
 	aSpaceship moveToPosition: newPosition
-]
-
-{ #category : 'operations' }
-HyperJump >> applyTo: aSpaceship in: aGame [
-
-	self applyTo: aSpaceship
 ]
 
 { #category : 'initialization' }

@@ -19,7 +19,7 @@ Spaceship >> canPlay [
 
 { #category : 'behavior' }
 Spaceship >> decrementLapsBy: lapsIncremented [
-
+	
 	laps := laps - lapsIncremented
 ]
 
@@ -65,11 +65,6 @@ Spaceship >> initialize [
 Spaceship >> isAtPosition: aPosition [
 
 	^ position = aPosition
-]
-
-{ #category : 'behavior' }
-Spaceship >> lapsCompleted [
-	^ laps.
 ]
 
 { #category : 'behavior' }

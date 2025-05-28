@@ -25,6 +25,27 @@ Game >> checkIfGameHasAlreadyFinished [
 		Error signal: 'Cannot play a turn after the game has finished.' ]
 ]
 
+{ #category : 'roll' }
+Game >> correctPositionOf: aSpaceship to: numberOfPositionsToGoBack [
+	| currentPosition newPosition boardSize currentLap |
+	boardSize := self getBoardSize.
+	currentPosition := aSpaceship getPosition.
+	currentLap := aSpaceship getLapsCompleted.
+	
+	newPosition := currentPosition - numberOfPositionsToGoBack.
+
+	newPosition < 0 ifTrue: [
+		currentLap = 0 ifTrue: [
+			^ 0
+		]. 
+		aSpaceship decrementLapsBy: 1.
+		^ boardSize + newPosition 
+	].
+
+	^ newPosition
+
+]
+
 { #category : 'behavior' }
 Game >> getAllDiceValuesFrom: diceCollection [
 
