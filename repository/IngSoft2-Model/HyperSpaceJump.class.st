@@ -17,5 +17,6 @@ HyperSpaceJump >> applyTo: aSpaceship [
 { #category : 'operations' }
 HyperSpaceJump >> applyTo: aSpaceship in: aGame [
 
+
 	self applyTo: aSpaceship
 ]

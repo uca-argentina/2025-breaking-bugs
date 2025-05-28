@@ -75,23 +75,27 @@ PositionTableTest >> testWhenGameEndsThenTheRankingCanBeKnown [
 					addSpaceship: aThirdSpaceship;
 					addSpaceship: aFourthSpaceship ; 
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 15);
-		         addDice: (SequentialFixedDice onFaces: #(20 4 12 6 20 6 5 1));
+		         addDice: (SequentialFixedDice onFaces: #(22 4 10 5 20 10 7 1));
 					setLapsToWinTo: 2;
 		         build.
 
 	aGame playRound.
 	aGame playRound.
+	
 	aPosicionTable := (aGame getPositionTable ).
 	
 	aRankingPosition := aPosicionTable getRanking.
 	expectedRanking := { aFirstSpaceship. aSecondSpaceship. aThirdSpaceship. aFourthSpaceship }.
 	"nave 1: ganadora
-	nave2: posicion 1 vueltas 1
+	nave2: posicion 0 vueltas 1
 	nave3: posicion 17 vueltas 0
-	nave4: posicion 7 vueltas 0 "
+	nave4: posicion 6 vueltas 0 "
 	
 	self assert: aRankingPosition size equals: expectedRanking size.
-	
+"	self assert: (aRankingPosition at: 1 )equals: (expectedRanking at: 1).
+	self assert: (aRankingPosition at: 2 )equals: (expectedRanking at: 2).
+	self assert: (aRankingPosition at: 4 )equals: (expectedRanking at: 4).
+	self assert: (aRankingPosition at: 3 )equals: (expectedRanking at: 3)."
 	1 to: aRankingPosition size do: [ :i |
 		self assert: (aRankingPosition at: i) equals: (expectedRanking at: i) ].
 

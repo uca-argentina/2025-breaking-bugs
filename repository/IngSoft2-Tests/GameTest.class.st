@@ -16,6 +16,52 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testFullGameSimulationWithEffectsAndWinner [
+
+	| aGame aSpaceship1 aSpaceship2  aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 |
+	aGameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
+	aSpaceship4 := Spaceship new.
+	finishLine := 25.
+	aBoard := (Board withSize: finishLine andWormholeFrom: 4 to: 15).
+	aBoard add: BlackHole new at: 9.
+	aBoard add: AtomicBomb new at: 3.
+	aBoard add: HyperJump new at: 10.
+	aBoard add: (MoonWalk for:1) at:20.
+	aBoard add: HyperSpaceJump new at: 16.
+	aGame := aGameBuilder
+					addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+					addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship4;
+		         addBoard: aBoard;
+					addDice: (SequentialFixedDice onFaces: #(2 7 8 14 18 50));
+					addDice: (FixedDice onFace: 1);
+					setLapsToWinTo: 2;
+		         build.
+
+	aGame playRound.
+	
+
+	
+	self assert: (aSpaceship1 isAtPosition:1).
+	self assert: (aSpaceship2 isAtPosition: 5).
+	self assert: (aSpaceship3 isAtPosition: 15).
+	self assert: (aSpaceship4 isAtPosition: 20).
+	
+	aGame playRound.
+	
+	self assert: (aSpaceship1 isAtPosition: 20).
+	self assert: (aSpaceship2 isAtPosition: finishLine).
+	self assert: (aSpaceship3 isAtPosition: 14).
+	self assert: (aSpaceship4 isAtPosition: 19).
+	
+	self assert: aGame hasFinished.
+]
+
+{ #category : 'tests' }
 GameTest >> testFullGameSimulationWithWinner [
 
 	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |

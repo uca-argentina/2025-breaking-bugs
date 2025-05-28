@@ -98,7 +98,7 @@ Game >> playSpaceshipTurn: aSpaceship [
 
 	| positionsToAdvance newPosition  flag |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
-
+	
 	newPosition := positionsToAdvance + aSpaceship getPosition.
 	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
 	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.

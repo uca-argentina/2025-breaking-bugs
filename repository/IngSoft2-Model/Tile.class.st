@@ -15,12 +15,6 @@ Tile class >> with: anEffect [
 ]
 
 { #category : 'behavior' }
-Tile >> applyEffectTo: aSpaceship [
-
-	effect applyTo: aSpaceship
-]
-
-{ #category : 'behavior' }
 Tile >> applyEffectTo: aSpaceship in: aGame [
 
 	effect applyTo: aSpaceship in: aGame

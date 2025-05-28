@@ -39,7 +39,6 @@ SequentialFixedDice >> initializeOnFace: aFaceNumberCollection [
 
 { #category : 'behavior' }
 SequentialFixedDice >> roll [
-	faceNumberCollection size = currentIndex ifTrue: [ currentIndex := 0 ].
-	currentIndex := currentIndex + 1.
+	currentIndex := currentIndex \\ faceNumberCollection size + 1.
 	^ faceNumberCollection at: currentIndex.
 ]
