@@ -6,8 +6,15 @@ Class {
 }
 
 { #category : 'operations' }
-BlackHole >> applyTo: aSpaceship [ 
+BlackHole >> applyTo: aSpaceship [
+
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
-	aSpaceship moveToPosition: (actualPosition - 4)
+	aSpaceship moveToPosition: actualPosition - 4
+]
+
+{ #category : 'operations' }
+BlackHole >> applyTo: aSpaceship in: aGame [
+
+	self applyTo: aSpaceship
 ]

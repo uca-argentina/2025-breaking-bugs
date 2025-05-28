@@ -24,7 +24,7 @@ BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 40 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 40 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
 		         build.
 
@@ -48,7 +48,7 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #("turn"2 2 "battle"10 12 "turn"1 3 "battle"10 12 "turn"2 5 "battle"10 12 "turn"1 "turn"1 "turn"2 4));
 		         build.
 
@@ -77,7 +77,7 @@ BattleTest >> testSpaceshipRecoversShieldsAfterSkippingTurn [
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
 		         build.
 
@@ -100,7 +100,7 @@ BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #("turn"2 2 "battle"10 12 "turn"1 3 "battle"10 12 "turn"2 5 "battle"10 12 "turn"4 2));
 		         build.
 
@@ -125,7 +125,7 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14));
 		         build.
 
@@ -147,7 +147,7 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 					addSpaceship: aSpaceship2;
-		         addBoard: (CircularBoard withSize: 20 andWormholeFrom: 4 to: 9);
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (SequentialFixedDice onFaces: #(4 4 12 14 ));
 		         build.
 

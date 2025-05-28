@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'aSize',
 		'wormholeEntry',
-		'wormholeExit'
+		'wormholeExit',
+		'tiles'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -80,10 +81,19 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 		  to: wormholeExit
 ]
 
-{ #category : 'testing' }
-Board >> checkIfSpaceshipWon: aSpaceshipPosition [
+{ #category : 'initialization' }
+Board >> add: anEffect at: aPosition [
 
-	^ aSpaceshipPosition = aSize.
+	tiles at: aPosition put: (Tile with: anEffect)
+]
+
+{ #category : 'initialization' }
+Board >> applyTileEffectTo: aSpaceship in: aGame [
+
+	| position tile |
+	position := aSpaceship getPosition.
+	tile := tiles at: position.
+	tile applyEffectTo: aSpaceship in: aGame
 ]
 
 { #category : 'testing' }
@@ -104,20 +114,7 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 ]
 
 { #category : 'behavior' }
-Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition [ 
-	"^ aSpaceshipPosition min: aSize."
-	
-	| lapsCompleted newPosition |
-	lapsCompleted := aSpaceshipPosition // aSize .
-	newPosition := aSpaceshipPosition \\ aSize .
-	aSpaceship incrementLapsBy: lapsCompleted.
-
-	^ newPosition 
-]
-
-{ #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-	"^ aSpaceshipPosition min: aSize."
 
 	| lapsCompleted newPosition |
 	lapsCompleted := aSpaceshipPosition // aSize.
@@ -135,6 +132,12 @@ Board >> createPositionTable: spaceships [
 	^ PositionTable with: spaceships and: aSize
 ]
 
+{ #category : 'initialization' }
+Board >> getSize [
+
+	^ aSize
+]
+
 { #category : 'testing' }
 Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 
@@ -144,8 +147,8 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 { #category : 'initialization' }
 Board >> intializeWithSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
 
-
 	aSize := size.
+	tiles := (1 to: size) collect: [ :i | Tile with: NoEffect new ].
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
 ]

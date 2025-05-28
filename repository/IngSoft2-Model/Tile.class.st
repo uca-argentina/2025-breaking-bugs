@@ -20,6 +20,12 @@ Tile >> applyEffectTo: aSpaceship [
 	effect applyTo: aSpaceship
 ]
 
+{ #category : 'as yet unclassified' }
+Tile >> applyEffectTo: aSpaceship in: aGame [
+
+	effect applyTo: aSpaceship in: aGame
+]
+
 { #category : 'initialization' }
 Tile >> initializeWith: anEffect [
 

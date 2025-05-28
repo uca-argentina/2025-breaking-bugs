@@ -13,10 +13,8 @@ Class {
 
 { #category : 'behavior' }
 Spaceship >> canPlay [
+
 	^ self getShields > 0
-
-
-
 ]
 
 { #category : 'testing' }
@@ -27,12 +25,14 @@ Spaceship >> getPosition [
 
 { #category : 'behavior' }
 Spaceship >> getShields [
-	^ shields.
+
+	^ shields
 ]
 
 { #category : 'behavior' }
 Spaceship >> incrementLapsBy: lapsIncremented [
-	laps := laps + lapsIncremented.
+
+	laps := laps + lapsIncremented
 ]
 
 { #category : 'initialization' }
@@ -70,12 +70,12 @@ Spaceship >> moveToPosition: aPosition [
 
 { #category : 'behavior' }
 Spaceship >> penalize [
-	turnsPenalize := turnsPenalize + 1.
-	turnsPenalize ~= 2 ifTrue: [ ^self ].
-	
-	self rechargeShields.
-	turnsPenalize := 0.
 
+	turnsPenalize := turnsPenalize + 1.
+	turnsPenalize ~= 2 ifTrue: [ ^ self ].
+
+	self rechargeShields.
+	turnsPenalize := 0
 ]
 
 { #category : 'behavior' }

@@ -14,11 +14,6 @@ Class {
 }
 
 { #category : 'creation' }
-Game class >> with: aBoard and: spaceships and: dice [ 
-	^ self new initializeWith: aBoard and: spaceships and: dice and: 1.
-]
-
-{ #category : 'creation' }
 Game class >> with: aBoard and: spaceships and: dice and: lapsToWin [
 	^ self new initializeWith: aBoard and: spaceships and: dice and: lapsToWin.
 ]
@@ -63,16 +58,6 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice [
-
-	hasFinished := false.
-	spaceships := aCollectionOfSpacehips.
-	board := aBoard.
-	dice := aCollectionOfDice.
-	battle := Battle with: spaceships and: dice.
-]
-
-{ #category : 'initialization' }
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
 
 	hasFinished := false.
@@ -85,18 +70,17 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 
 { #category : 'behavior' }
 Game >> playRound [
-	| activeSpaceships penalizeSpaceships |
 
+	| activeSpaceships penalizeSpaceships |
 	self checkIfGameHasAlreadyFinished.
-	activeSpaceships := spaceships select: [ :aSpaceship | aSpaceship canPlay ].
+	activeSpaceships := spaceships select: [ :aSpaceship |
+		                    aSpaceship canPlay ].
 	activeSpaceships do: [ :aSpaceship |
 		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
 
-	penalizeSpaceships := spaceships select: [ :aSpaceship | aSpaceship getShields = 0 ].
-	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ].
-
-	
-
+	penalizeSpaceships := spaceships select: [ :aSpaceship |
+		                      aSpaceship getShields = 0 ].
+	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
 ]
 
 { #category : 'behavior' }
@@ -118,16 +102,24 @@ Game >> playSpaceshipTurn: aSpaceship [
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 
 	newPosition := positionsToAdvance + aSpaceship getPosition.
-	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
+	newPosition := board correctPositionAfterWormholeIfNeeded:
+		               newPosition.
+	newPosition := board
+		               correctPositionIf: aSpaceship
+		               passTheLine: newPosition
+		               withLapLimit: lapsToWin.
 
 	"hasFinished := board checkIfSpaceshipWon: newPosition."
-	
-	hasFinished := aSpaceship lapsCompleted >= lapsToWin. 
+
+
 	aSpaceship moveToPosition: newPosition.
-	
-	"board applyTileEffectTo: aSpaceship."
-	"newPosition := board correctPositionIf: aSpaceship passTheLine: aSpaceship getPosition.
-	aSpaceship moveToPosition: newPosition."
-	battle checkForBattleIfNeededWith: aSpaceship
+
+	board applyTileEffectTo: aSpaceship in: self.
+	newPosition := board
+		               correctPositionIf: aSpaceship
+		               passTheLine: aSpaceship getPosition
+		               withLapLimit: lapsToWin.
+	aSpaceship moveToPosition: newPosition.
+	battle checkForBattleIfNeededWith: aSpaceship.
+	hasFinished := aSpaceship lapsCompleted >= lapsToWin
 ]

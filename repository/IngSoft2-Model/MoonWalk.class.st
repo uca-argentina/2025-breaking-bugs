@@ -15,24 +15,19 @@ MoonWalk class >> for: aNumberOfPositionToGoBack [
 ]
 
 { #category : 'operations' }
-MoonWalk >> applyTo: aSpaceship [ 
-	| actualPosition |
-	actualPosition := aSpaceship getPosition.
-	aSpaceship moveToPosition: (actualPosition - 4)
-]
-
-{ #category : 'operations' }
 MoonWalk >> applyTo: aSpaceship in: aGame [
-	| boardSize otherSpaceships newPosition|
+
+	| boardSize otherSpaceships newPosition |
 	boardSize := aGame getBoardSize.
-	otherSpaceships := aGame getSpaceships reject: [ :each | each = aSpaceship ].
+	otherSpaceships := aGame getSpaceships reject: [ :each |
+		                   each == aSpaceship ].
 
 	otherSpaceships do: [ :ship |
-		
-		newPosition := ((ship getPosition - numberOfPositionsToGoBack ) \\ boardSize) + 1.
-		ship moveToPosition: newPosition
-	].
-
+		newPosition := ship getPosition - numberOfPositionsToGoBack
+		               \\ boardSize.
+		(ship getPosition - numberOfPositionsToGoBack) negative ifTrue: [
+			ship incrementLapsBy: -1 ].
+		ship moveToPosition: newPosition ]
 ]
 
 { #category : 'initialization' }

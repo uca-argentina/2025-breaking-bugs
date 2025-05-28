@@ -13,3 +13,9 @@ HyperSpaceJump >> applyTo: aSpaceship [
 	aSpaceship moveToPosition: actualPosition + 4.
 	aSpaceship lowerAShield
 ]
+
+{ #category : 'operations' }
+HyperSpaceJump >> applyTo: aSpaceship in: aGame [
+
+	self applyTo: aSpaceship
+]
