@@ -9,23 +9,40 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'as yet unclassified' }
+HyperJump class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
+
+	| parsecList current |
+	current := maxParsecs.
+	parsecList := OrderedCollection new.
+
+	[ current > 0 ] whileTrue: [
+		parsecList add: current.
+		current := current - stepSize ].
+
+	^ self new initializeWithParsecs: parsecList asArray
+]
+
 { #category : 'operations' }
 HyperJump >> applyTo: aSpaceship in: aGame [
 
-	| parsecsToAdvance newPosition |
+	| parsecsToAdvance newPosition sizeOfTileInParsecs |
+	sizeOfTileInParsecs := 2.
+
 	amountsOfParsecsToAdvance size = currentIndex ifTrue: [
 		currentIndex := 0 ].
 	currentIndex := currentIndex + 1.
 
 	parsecsToAdvance := amountsOfParsecsToAdvance at: currentIndex.
 
-	newPosition := aSpaceship getPosition + (parsecsToAdvance // 2).
+	newPosition := aSpaceship getPosition
+	               + (parsecsToAdvance // sizeOfTileInParsecs).
 	aSpaceship moveToPosition: newPosition
 ]
 
 { #category : 'initialization' }
-HyperJump >> initialize [
+HyperJump >> initializeWithParsecs: aParsecsArray [
 
-	amountsOfParsecsToAdvance := { 10. 20. 30 }.
+	amountsOfParsecsToAdvance := aParsecsArray.
 	currentIndex := 0
 ]

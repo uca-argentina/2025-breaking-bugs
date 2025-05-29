@@ -203,11 +203,11 @@ Board >> getTiles [
 ]
 
 { #category : 'accessing' }
-Board >> hasAtomicBombAt: aPosition [	
- | tile |
-tile := tiles at: (aPosition+1) .
-^ tile getEffect class = AtomicBomb
+Board >> hasAtomicBombAt: aPosition [
 
+	| tile |
+	tile := tiles at: aPosition + 1.
+	^ tile getEffect class = AtomicBomb
 ]
 
 { #category : 'testing' }
@@ -217,12 +217,13 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWithRandomEffects: useRandomEffects andSize:size andWormholeFrom: aWormholeEntry to: aWormholeExit [ 
+Board >> initializeWithRandomEffects: useRandomEffects andSize: size andWormholeFrom: aWormholeEntry to: aWormholeExit [
 
 	aSize := size.
-	    tiles := useRandomEffects 
-        ifTrue: [ self generatesRandomEffects ]
-        ifFalse: [ (1 to: size) collect: [ :i | Tile with: NoEffect new ] ].
+	tiles := useRandomEffects
+		         ifTrue: [ self generatesRandomEffects ]
+		         ifFalse: [
+		         (1 to: size) collect: [ :i | Tile with: NoEffect new ] ].
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
 ]
