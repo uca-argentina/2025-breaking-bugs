@@ -18,6 +18,12 @@ GameBuilder >> addBoard: board [
 ]
 
 { #category : 'adding' }
+GameBuilder >> addBoardwithSize: aSize andWormholeFrom: whormholeEntry to: whormholeExit [
+
+	aBoard := Board withSize: aSize andWormholeFrom: whormholeEntry to: whormholeExit.
+]
+
+{ #category : 'adding' }
 GameBuilder >> addDice: aDice [ 
 	dice add: aDice.
 ]
