@@ -16,11 +16,31 @@ FixedDiceTest >> should: anErrorBlock raise: anErrorClass withMessageText: error
 ]
 
 { #category : 'tests' }
+FixedDiceTest >> testSequentialFixedDiceCannotBeCreatedWithNegativeFaceValues [
+
+	self
+		should: [ SequentialFixedDice onFaces: #(-5 2) ]
+		raise: Error
+		withMessageText: 'Only positive values are allowed for sequential fixed dice faces'
+]
+
+{ #category : 'tests' }
 FixedDiceTest >> testWhenRollingAFixedDiceAtFace5Then5IsTheResult [
 	
 	| aFixedDice |
 	aFixedDice := FixedDice onFace: 5.
 	
+	self assert: aFixedDice roll equals: 5.
+]
+
+{ #category : 'tests' }
+FixedDiceTest >> testWhenRollingAFixedDiceWithACollectionThenItReturnsEachValueInOrder [
+	
+	| aFixedDice |
+	aFixedDice := SequentialFixedDice onFaces: #(5 2).
+	
+	self assert: aFixedDice roll equals: 5.
+	self assert: aFixedDice roll equals: 2.
 	self assert: aFixedDice roll equals: 5.
 ]
 
