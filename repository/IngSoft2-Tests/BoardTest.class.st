@@ -36,6 +36,74 @@ BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
 ]
 
 { #category : 'tests' }
+BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
+
+	| aGameBuilder aSpaceship aGame |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+		         addDice: (FixedDice onFace: 25);
+		         setLapsToWinTo: 2;
+		         build.
+
+	aGame playRound.
+	self assert: aSpaceship getLapsCompleted equals: 1
+]
+
+{ #category : 'tests' }
+BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
+	
+	| aGameBuilder aSpaceship aGame |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+					addSpaceship: Spaceship new;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 20);
+		         build.
+
+	aGame playRound.
+	self assert: aSpaceship getLapsCompleted equals: 1
+]
+
+{ #category : 'tests' }
+BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
+	
+	| aGameBuilder aSpaceship aGame |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 40);
+					setLapsToWinTo: 3;
+		         build.
+
+	aGame playRound.
+	self assert: aSpaceship getLapsCompleted equals: 2
+]
+
+{ #category : 'tests' }
+BoardTest >> testPositionResetsAfterPassingBoardLimit [
+	
+	| aGameBuilder aSpaceship aGame  |
+	aGameBuilder := GameBuilder new.
+	aSpaceship := Spaceship new.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
+					addDice: (FixedDice onFace: 25);
+					setLapsToWinTo: 2;
+		         build.
+
+	aGame playRound.
+	self assert: (aSpaceship getPosition )equals: 5.
+]
+
+{ #category : 'tests' }
 BoardTest >> testWhenCreatingABoardWithSize20ThenSizeIs20 [
 
 	| aBoard aSize |

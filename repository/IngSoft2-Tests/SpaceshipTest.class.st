@@ -6,14 +6,6 @@ Class {
 }
 
 { #category : 'tests' }
-SpaceshipTest >> getAllDiceValuesFrom: diceCollection [
-
-	^ diceCollection
-		  inject: 0
-		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
-]
-
-{ #category : 'tests' }
 SpaceshipTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
 
 	self
@@ -41,35 +33,6 @@ SpaceshipTest >> testWhenMoving3PositionsThen3IsTheFinalPosition [
 	finalPosition := 3.
 
 	aSpaceship moveToPosition: finalPosition.
-
-	self assert: (aSpaceship isAtPosition: finalPosition)
-]
-
-{ #category : 'tests' }
-SpaceshipTest >> testWhenRollingADiceAndGettingA3ThenTheSpaceshipMoves3Positions [
-
-	| aSpaceship finalPosition dice numberOfSquares |
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 3).
-	aSpaceship := Spaceship new.
-	numberOfSquares := self getAllDiceValuesFrom: dice.
-	finalPosition := 3.
-	aSpaceship moveToPosition: numberOfSquares.
-
-	self assert: (aSpaceship isAtPosition: finalPosition)
-]
-
-{ #category : 'tests' }
-SpaceshipTest >> testWhenRollingTwoDiceAndGettingA3InBothThenTheSpaceshipMoves6Positions [
-
-	| aSpaceship finalPosition dice numberOfSquares |
-	dice := OrderedCollection new.
-	dice add: (FixedDice onFace: 3).
-	dice add: (FixedDice onFace: 3).
-	numberOfSquares := self getAllDiceValuesFrom: dice.
-	aSpaceship := Spaceship new.
-	aSpaceship moveToPosition: numberOfSquares.
-	finalPosition := 6.
 
 	self assert: (aSpaceship isAtPosition: finalPosition)
 ]

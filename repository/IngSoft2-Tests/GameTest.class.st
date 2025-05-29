@@ -16,6 +16,60 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testFullGameSimulationWithEffectsAndWinner [
+
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection |
+	aGameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new.
+	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
+	aSpaceship4 := Spaceship new.
+	finishLine := 25.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder
+		with: BlackHole new at: 9;
+		with: AtomicBomb new at: 3;
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalk for: 1) at: 20;
+		with: HyperSpaceJump new at: 16.
+
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 4
+		          to: 15
+		          and: aTileCollection.
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship4;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 50 ));
+		         addDice: (FixedDice onFace: 1);
+		         setLapsToWinTo: 2;
+		         build.
+
+	aGame playRound.
+
+
+
+	self assert: (aSpaceship1 isAtPosition: 1).
+	self assert: (aSpaceship2 isAtPosition: 5).
+	self assert: (aSpaceship3 isAtPosition: 0).
+	self assert: (aSpaceship4 isAtPosition: 20).
+
+	aGame playRound.
+
+	self assert: (aSpaceship1 isAtPosition: 20).
+	self assert: (aSpaceship2 isAtPosition: finishLine).
+	self assert: (aSpaceship3 isAtPosition: 24).
+	self assert: (aSpaceship4 isAtPosition: 19).
+
+	self assert: aGame hasFinished
+]
+
+{ #category : 'tests' }
 GameTest >> testFullGameSimulationWithWinner [
 
 	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |
@@ -27,16 +81,17 @@ GameTest >> testFullGameSimulationWithWinner [
 					addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
 		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 15);
-					addDice: (FixedDice onFace: 3);
+					addDice: (SequentialFixedDice onFaces: #(3 7));
 					addDice: (FixedDice onFace: 1);
 		         build.
 
 	aGame playRound.
 	aGame playRound.
 
-	self assert: aGame hasFinished.
+	
 	self assert: (aSpaceship1 isAtPosition: finishLine).
-	self assert: (aSpaceship2 isAtPosition: 15)
+	self assert: (aSpaceship2 isAtPosition: 8).
+	self assert: aGame hasFinished.
 ]
 
 { #category : 'tests' }
