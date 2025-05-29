@@ -156,14 +156,6 @@ Board >> getSize [
 	^ aSize
 ]
 
-{ #category : 'accessing' }
-Board >> hasAtomicBombAt: aPosition [
-
-	| tile |
-	tile := tiles at: aPosition + 1.
-	^ tile getEffect class = AtomicBomb
-]
-
 { #category : 'testing' }
 Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 

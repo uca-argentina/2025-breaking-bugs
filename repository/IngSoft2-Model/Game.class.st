@@ -7,7 +7,8 @@ Class {
 		'dice',
 		'hasFinished',
 		'battle',
-		'lapsToWin'
+		'lapsToWin',
+		'activatedAtomicBomb'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -93,6 +94,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 Game >> playRound [
 
 	| activeSpaceships penalizeSpaceships |
+	activatedAtomicBomb := false.
 	self checkIfGameHasAlreadyFinished.
 	activeSpaceships := spaceships select: [ :aSpaceship | aSpaceship canPlay ].
 	activeSpaceships do: [ :aSpaceship |
@@ -117,14 +119,13 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 { #category : 'roll' }
 Game >> playSpaceshipTurn: aSpaceship [
 
-	| positionsToAdvance newPosition  flag |
+	| positionsToAdvance newPosition |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	
 	newPosition := positionsToAdvance + aSpaceship getPosition.
 	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
 	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-	flag:=board hasAtomicBombAt: newPosition.
 	
 	board applyTileEffectTo: aSpaceship in: self.
 	newPosition := board
@@ -133,7 +134,13 @@ Game >> playSpaceshipTurn: aSpaceship [
 		               withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
 	
-	( flag)ifFalse:[ battle checkForBattleIfNeededWith: aSpaceship].
+	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
 	hasFinished := aSpaceship hasReached: lapsToWin.
 	
+]
+
+{ #category : 'initialization' }
+Game >> setToNotBattle: aBattleOption [
+
+	^ activatedAtomicBomb := aBattleOption.
 ]

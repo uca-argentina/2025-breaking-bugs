@@ -24,12 +24,12 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 		         addSpaceship: aSpaceship2;
 					addSpaceship: aSpaceship3;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #(4 4 5));
+		         addDice: (SequentialFixedDice onFaces: #(4 5 6));
 		         build.
 		
 	aGame playRound.
 
-	self assert: aSpaceship getPosition equals: 1.
+	self assert: aSpaceship getPosition equals: 0.
 	self assert: aSpaceship2 getPosition equals: 5.
 	self assert: aSpaceship3 getPosition equals: 6.
 	self assert: aSpaceship getShields equals:2.

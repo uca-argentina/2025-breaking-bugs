@@ -16,6 +16,56 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testAllTheEffectsOnGame [
+	| game s1 s2 s3 s4 board gameBuilder finishLine tileBuilder tileCollection |
+
+	gameBuilder := GameBuilder new.
+	s1 := Spaceship new. s2 := Spaceship new. s3 := Spaceship new. s4 := Spaceship new.
+	finishLine := 25.
+
+	tileBuilder := TilesBuilder with: finishLine.
+	tileBuilder
+		with: AtomicBomb new at: 3;
+		with: BlackHole new at: 9;
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalk for: 2) at: 19;
+		with: HyperSpaceJump new at: 16.
+
+	tileCollection := tileBuilder build.
+
+	board := Board withSize: finishLine andWormholeFrom: 4 to: 15 and: tileCollection.
+
+	game := gameBuilder
+		addSpaceship: s1; addSpaceship: s2; addSpaceship: s3; addSpaceship: s4;
+		addBoard: board;
+		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4));
+		setLapsToWinTo: 2;
+		build.
+
+	"Ronda 1"
+	game playRound.
+
+	self assert: s1 getPosition equals: 0.  "AtomicBomb → todos a 0"
+	self assert: s2 getPosition equals: 5.  "9 → BlackHole → 5"
+	self assert: s3 getPosition equals: 5.
+	self assert: s4 getPosition equals: 15.
+
+	"Ronda 2"
+	game playRound.
+
+	self assert: s1 getPosition equals: 23. "Pisa HyperJump → avanza 10 parsecs"
+	self assert: s2 getPosition equals: 18. "Pisa HyperSpaceJump → avanza 4"
+	self assert: s3 getPosition equals: 19. "MoonWalk, pero no retrocede"
+	self assert: s4 getPosition equals: 17.  "Retrocedido por MoonWalk (estaba en 4)"
+
+	self assert: s1 getShields equals: 2.
+	self assert: s2 getShields equals: 1. "Pierde 1 por HyperSpaceJump"
+	self assert: s3 getShields equals: 2.
+	self assert: s4 getShields equals: 2.
+
+]
+
+{ #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection |
@@ -30,7 +80,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		with: BlackHole new at: 9;
 		with: AtomicBomb new at: 3;
 		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalk for: 1) at: 20;
+		with: (MoonWalk for: 1) at: 19;
 		with: HyperSpaceJump new at: 16.
 
 	aTileCollection := aTileBuilder build.
@@ -39,6 +89,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		          andWormholeFrom: 4
 		          to: 15
 		          and: aTileCollection.
+		
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
@@ -54,17 +105,22 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 
 
-	self assert: (aSpaceship1 isAtPosition: 1).
-	self assert: (aSpaceship2 isAtPosition: 5).
-	self assert: (aSpaceship3 isAtPosition: 0).
-	self assert: (aSpaceship4 isAtPosition: 20).
+	self assert: (aSpaceship1 getPosition) equals: 0.
+	self assert: (aSpaceship2 getPosition) equals: 8.
+	self assert: (aSpaceship3 getPosition) equals: 5.
+	self assert: (aSpaceship4 getPosition) equals: 4.
+	
+	self assert: aSpaceship1 getShields equals: 2.
+	self assert: aSpaceship2 getShields equals: 2.
+	self assert: aSpaceship3 getShields equals: 2.
+	self assert: aSpaceship4 getShields equals: 2.
 
 	aGame playRound.
 
-	self assert: (aSpaceship1 isAtPosition: 20).
-	self assert: (aSpaceship2 isAtPosition: finishLine).
-	self assert: (aSpaceship3 isAtPosition: 24).
-	self assert: (aSpaceship4 isAtPosition: 19).
+	self assert: (aSpaceship1 getPosition) equals: 19.
+	self assert: (aSpaceship2 getPosition) equals: finishLine.
+	self assert: (aSpaceship3 getPosition) equals: 4.
+	self assert: (aSpaceship4 getPosition) equals: 3.
 
 	self assert: aGame hasFinished
 ]

@@ -9,6 +9,7 @@ Class {
 AtomicBomb >> applyTo: aSpaceship in: aGame [ 
 
 	aGame getSpaceships do: [ :ship |
-		ship moveToPosition: 1 .
-		ship lowerAShield ]
+		ship moveToPosition: 0 .
+		ship lowerAShield ].
+	aGame setToNotBattle: true.
 ]
