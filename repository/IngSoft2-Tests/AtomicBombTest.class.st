@@ -8,14 +8,17 @@ Class {
 { #category : 'tests' }
 AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1PositionAndLoseAShield [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
 	aSpaceship3 := Spaceship new.
 	finishLine := 20.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15.
-	aBoard add: (AtomicBomb new) at: 4.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: (AtomicBomb new) at: 4.
+	aTileCollection := aTileBuilder build.
+	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
+
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;

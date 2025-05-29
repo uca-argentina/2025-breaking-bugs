@@ -8,14 +8,22 @@ Class {
 { #category : 'tests' }
 HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAnAmountInParsecs [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
 	aSpaceship3 := Spaceship new.
 	finishLine := 20.
-	aBoard := Board withSize: finishLine andWormholeFrom: 5 to: 15.
-	aBoard add: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 4.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10)
+		at: 4.
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 5
+		          to: 15
+		          and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;

@@ -8,12 +8,18 @@ Class {
 { #category : 'tests' }
 HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward4PositionsAndLoosesAShield [
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard |
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	finishLine := 19.
-	aBoard := Board withSize: finishLine andWormholeFrom: 5 to: 15.
-	aBoard add: HyperSpaceJump new at: 4.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder with: HyperSpaceJump new at: 4.
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 5
+		          to: 15
+		          and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: aBoard;
