@@ -62,27 +62,32 @@ Board class >> validateWith: wormholeEntry and: wormholeExit within: aSize [
 ]
 
 { #category : 'creation' }
-Board class >> withRandomEffectsAndSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
-	self validate: aSize.
-
-	self validateAreNotNegative: wormholeEntry and: wormholeExit.
-
-	self validate: wormholeEntry and: wormholeExit within: aSize.
-
-	self validate: wormholeEntry notEqualTo: wormholeExit.
-
-	self validate: wormholeEntry isLowerThan: wormholeExit.
-
-
-	^self new initializeWithRandomEffects: true andSize:aSize andWormholeFrom: wormholeEntry to: wormholeExit .
-
-]
-
-{ #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: aSize.
 
+self validateAreNotNegative: wormholeEntry and: wormholeExit.
+
+self validate: wormholeEntry and: wormholeExit within: aSize.
+
+self validate: wormholeEntry notEqualTo: wormholeExit.
+
+self validate: wormholeEntry isLowerThan: wormholeExit.
+
+
+^ self new
+	  initializeWith:
+	  ((1 to: aSize) collect: [ :i | Tile with: NoEffect new ])
+	  andSize: aSize
+	  andWormholeFrom: wormholeEntry
+	  to: wormholeExit
+]
+
+{ #category : 'creation' }
+Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+
+	self validate: aSize.
+
 	self validateAreNotNegative: wormholeEntry and: wormholeExit.
 
 	self validate: wormholeEntry and: wormholeExit within: aSize.
@@ -91,11 +96,7 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 
 	self validate: wormholeEntry isLowerThan: wormholeExit.
 
-	^ self new
-		  initializeWithRandomEffects: false
-		  andSize: aSize
-		  andWormholeFrom: wormholeEntry
-		  to: wormholeExit
+	^ self new initializeWith: tiles andSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit. 
 ]
 
 { #category : 'initialization' }
@@ -217,12 +218,10 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 ]
 
 { #category : 'initialization' }
-Board >> initializeWithRandomEffects: useRandomEffects andSize:size andWormholeFrom: aWormholeEntry to: aWormholeExit [ 
+Board >> initializeWith: aTileCollection andSize:size andWormholeFrom: aWormholeEntry to: aWormholeExit [ 
 
 	aSize := size.
-	    tiles := useRandomEffects 
-        ifTrue: [ self generatesRandomEffects ]
-        ifFalse: [ (1 to: size) collect: [ :i | Tile with: NoEffect new ] ].
+	tiles := aTileCollection.
 	wormholeEntry := aWormholeEntry.
-	wormholeExit := aWormholeExit
+	wormholeExit := aWormholeExit.
 ]
