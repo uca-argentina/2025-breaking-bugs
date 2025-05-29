@@ -43,6 +43,7 @@ Spaceship >> getShields [
 
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
+
 	^ laps >= lapsToWin
 ]
 
@@ -58,7 +59,7 @@ Spaceship >> initialize [
 	position := 0.
 	laps := 0.
 	shields := 3.
-	turnsPenalize := -1.
+	turnsPenalize := -1
 ]
 
 { #category : 'testing' }
@@ -69,7 +70,8 @@ Spaceship >> isAtPosition: aPosition [
 
 { #category : 'behavior' }
 Spaceship >> lowerAShield [
-	shields > 0 ifTrue: [ shields := shields - 1].
+
+	shields > 0 ifTrue: [ shields := shields - 1 ]
 ]
 
 { #category : 'move' }
@@ -92,5 +94,6 @@ Spaceship >> penalize [
 
 { #category : 'behavior' }
 Spaceship >> rechargeShields [
-	shields := 3.
+
+	shields := 3
 ]

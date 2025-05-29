@@ -17,49 +17,49 @@ TilesBuilder class >> with: finishLine [
 
 { #category : 'behavior' }
 TilesBuilder >> build [
- ^ aTileCollection 
+
+	^ aTileCollection
 ]
 
 { #category : 'behavior' }
 TilesBuilder >> buildRandom [
-	| rng weightedEffects effectsCollection |
-	rng := Random new.
 
-	"Definir los efectos y su peso"
+	| weightedEffects effectsCollection |
 	weightedEffects := {
-		[NoEffect new]                                   -> 40.
-		[BlackHole new]                                  -> 20.
-		[HyperSpaceJump new]                             -> 20.
-		[MoonWalk for: numberOfPositionsToGoBack]       -> 10.
-		[HyperJump new]                                -> 8.
-		[AtomicBomb new]                                 -> 2.
-	}.
+		                   ([ NoEffect new ] -> 40).
+		                   ([ BlackHole new ] -> 20).
+		                   ([ HyperSpaceJump new ] -> 20).
+		                   ([ MoonWalk for: numberOfPositionsToGoBack ]
+		                    -> 10).
+		                   ([ HyperJump new ] -> 8).
+		                   ([ AtomicBomb new ] -> 2) }.
 
-	"Aleatoriamente crear una colección de tiles según la distribución"
 	effectsCollection := (1 to: size) collect: [ :i |
-		Tile with: (
-			(weightedEffects keys) atRandom: rng weighting: [ :block | 
-				weightedEffects at: block
-			]) value
-	].
+		                     Tile with: (weightedEffects keys
+				                      atRandom: Random new
+				                      weighting: [ :block |
+				                      weightedEffects at: block ]) value ].
 
 	^ effectsCollection
-
 ]
 
 { #category : 'initialize' }
 TilesBuilder >> initializeWith: aSize [
+
 	size := aSize.
 	numberOfPositionsToGoBack := 4.
-	aTileCollection := (1 to: size) collect: [ :i | Tile with: NoEffect new ].
+	aTileCollection := (1 to: size) collect: [ :i |
+		                   Tile with: NoEffect new ]
 ]
 
 { #category : 'behavior' }
 TilesBuilder >> setForMoonwalk: aNumberOfPositionsToGoBack [
-	numberOfPositionsToGoBack := aNumberOfPositionsToGoBack. 
+
+	numberOfPositionsToGoBack := aNumberOfPositionsToGoBack
 ]
 
 { #category : 'behavior' }
 TilesBuilder >> with: anEffect at: aPosition [
-	aTileCollection at: (aPosition + 1) put: (Tile with: anEffect).
+
+	aTileCollection at: aPosition + 1 put: (Tile with: anEffect)
 ]

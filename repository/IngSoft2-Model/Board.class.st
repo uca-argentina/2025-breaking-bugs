@@ -100,12 +100,6 @@ Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit a
 ]
 
 { #category : 'initialization' }
-Board >> add: anEffect at: aPosition [
-
-	tiles at: (aPosition+1) put: (Tile with: anEffect)
-]
-
-{ #category : 'initialization' }
 Board >> applyTileEffectTo: aSpaceship in: aGame [
 
 	| position tile |
@@ -157,50 +151,9 @@ Board >> createPositionTable: spaceships [
 ]
 
 { #category : 'initialization' }
-Board >> generatesRandomEffects [
-
-	| effects total tilesPerEffect extraEffects randomizedEffects |
-	
-	total := aSize.  "aSize debe estar definido en el objeto"
-	
-	tilesPerEffect := Dictionary new.
-	tilesPerEffect at: NoEffect put: (total * 40 // 100).
-	tilesPerEffect at: BlackHole put: (total * 20 // 100).
-	tilesPerEffect at: HyperSpaceJump put: (total * 20 // 100).
-	tilesPerEffect at: MoonWalk put: (total * 10 // 100).
-	tilesPerEffect at: HyperJump put: (total * 8 // 100).
-	tilesPerEffect at: AtomicBomb put: (total * 2 // 100).
-
-	"Completar con efectos si la suma no da exactamente total"
-	extraEffects := total - (tilesPerEffect values sum).
-	1 to: extraEffects do: [ :i | 
-		tilesPerEffect at: NoEffect put: (tilesPerEffect at: NoEffect) + 1. 
-	].
-
-	"Construir la lista de efectos"
-	effects := OrderedCollection new.
-	tilesPerEffect keysAndValuesDo: [ :effectClass :qty |
-		qty timesRepeat: [ effects add: effectClass new ].
-	].
-
-	"Mezclar aleatoriamente"
-	randomizedEffects := effects shuffled.
-
-	"Generar los tiles con esos efectos"
-	^ randomizedEffects collect: [ :effect | Tile with: effect ].
-
-]
-
-{ #category : 'initialization' }
 Board >> getSize [
 
 	^ aSize
-]
-
-{ #category : 'accessing' }
-Board >> getTiles [
-
-	^ tiles
 ]
 
 { #category : 'accessing' }

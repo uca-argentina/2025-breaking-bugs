@@ -22,7 +22,8 @@ Tile >> applyEffectTo: aSpaceship in: aGame [
 
 { #category : 'behavior' }
 Tile >> getEffect [
-^ effect 
+
+	^ effect
 ]
 
 { #category : 'initialization' }
