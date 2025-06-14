@@ -83,6 +83,11 @@ Spaceship >> moveToPosition: aPosition [
 ]
 
 { #category : 'behavior' }
+Spaceship >> obtainNewPosition: positionsToAdvance [ 
+	^ position + positionsToAdvance.
+]
+
+{ #category : 'behavior' }
 Spaceship >> penalize [
 
 	turnsPenalize := turnsPenalize + 1.

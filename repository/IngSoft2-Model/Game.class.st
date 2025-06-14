@@ -29,7 +29,7 @@ Game >> checkIfGameHasAlreadyFinished [
 { #category : 'roll' }
 Game >> correctPositionOf: aSpaceship to: numberOfPositionsToGoBack [
 	| currentPosition newPosition boardSize currentLap |
-	boardSize := self getBoardSize.
+	boardSize := board getSize.
 	currentPosition := aSpaceship getPosition.
 	currentLap := aSpaceship getLapsCompleted.
 	
@@ -47,6 +47,12 @@ Game >> correctPositionOf: aSpaceship to: numberOfPositionsToGoBack [
 
 ]
 
+{ #category : 'initialization' }
+Game >> disableBattleForThisTurn [
+
+	^ activatedAtomicBomb := true.
+]
+
 { #category : 'behavior' }
 Game >> getAllDiceValuesFrom: diceCollection [
 
@@ -56,21 +62,10 @@ Game >> getAllDiceValuesFrom: diceCollection [
 ]
 
 { #category : 'behavior' }
-Game >> getBoardSize [
-	^ board getSize 
-]
-
-{ #category : 'behavior' }
 Game >> getPositionTable [
     hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
-]
-
-{ #category : 'behavior' }
-Game >> getSpaceships [
-
-	^ spaceships
 ]
 
 { #category : 'initialization' }
@@ -122,25 +117,36 @@ Game >> playSpaceshipTurn: aSpaceship [
 	| positionsToAdvance newPosition |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	
-	newPosition := positionsToAdvance + aSpaceship getPosition.
+	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
 	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
 	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
 	
 	board applyTileEffectTo: aSpaceship in: self.
-	newPosition := board
-		               correctPositionIf: aSpaceship
-		               passTheLine: aSpaceship getPosition
-		               withLapLimit: lapsToWin.
-	aSpaceship moveToPosition: newPosition.
 	
 	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
 	hasFinished := aSpaceship hasReached: lapsToWin.
 	
 ]
 
-{ #category : 'initialization' }
-Game >> setToNotBattle: aBattleOption [
+{ #category : 'behavior' }
+Game >> produceAtomicBombEffectTo: aSpaceship [
 
-	^ activatedAtomicBomb := aBattleOption.
+	spaceships do: [ :ship |
+		ship moveToPosition: 0 .
+		ship lowerAShield ].
+	self disableBattleForThisTurn.
+]
+
+{ #category : 'behavior' }
+Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
+
+	| otherSpaceships newPosition |
+	otherSpaceships := spaceships reject: [ :each |
+		                   each == aSpaceship ].
+
+	otherSpaceships do: [ :ship |
+		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
+		ship moveToPosition: newPosition]
+
 ]

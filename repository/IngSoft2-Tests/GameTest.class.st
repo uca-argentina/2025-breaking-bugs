@@ -68,7 +68,7 @@ GameTest >> testAllTheEffectsOnGame [
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection |
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -96,7 +96,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		         addSpaceship: aSpaceship3;
 		         addSpaceship: aSpaceship4;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 50 ));
+		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 100 ));
 		         addDice: (FixedDice onFace: 1);
 		         setLapsToWinTo: 2;
 		         build.
@@ -114,10 +114,14 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self assert: aSpaceship2 getShields equals: 2.
 	self assert: aSpaceship3 getShields equals: 2.
 	self assert: aSpaceship4 getShields equals: 2.
+	self deny: aGame hasFinished.
 
 	aGame playRound.
 
 	self assert: (aSpaceship1 getPosition) equals: 19.
+	self assert: aGame hasFinished.
+	aPositionTable := (aGame getPositionTable).
+	self assert: (aPositionTable isWinner: aSpaceship2).
 	self assert: (aSpaceship2 getPosition) equals: finishLine.
 	self assert: (aSpaceship3 getPosition) equals: 4.
 	self assert: (aSpaceship4 getPosition) equals: 3.
@@ -237,7 +241,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 	aGame playRound.
 
 	self assert: aGame hasFinished.
-	self assert: (aSpaceship1 isAtPosition: finishLine).
+	self assert: (aSpaceship1 getPosition) equals: finishLine.
 	self assert: (aSpaceship2 isAtPosition: 0)
 ]
 

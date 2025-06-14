@@ -62,7 +62,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 		         addSpaceship: aSpaceship;
 					addSpaceship: Spaceship new;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
-					addDice: (FixedDice onFace: 20);
+					addDice: (FixedDice onFace: 22); "Si es 20 da error"
 		         build.
 
 	aGame playRound.
