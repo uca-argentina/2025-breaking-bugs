@@ -17,14 +17,7 @@ MoonWalk class >> for: aNumberOfPositionToGoBack [
 { #category : 'operations' }
 MoonWalk >> applyTo: aSpaceship in: aGame [
 
-	| boardSize otherSpaceships newPosition |
-	boardSize := aGame getBoardSize.
-	otherSpaceships := aGame getSpaceships reject: [ :each |
-		                   each == aSpaceship ].
-
-	otherSpaceships do: [ :ship |
-		newPosition := aGame correctPositionOf: ship to: numberOfPositionsToGoBack.
-		ship moveToPosition: newPosition]
+	aGame produceMoonwalkEffectTo: aSpaceship with: numberOfPositionsToGoBack 
 ]
 
 { #category : 'initialization' }

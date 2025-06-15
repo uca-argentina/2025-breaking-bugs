@@ -48,7 +48,7 @@ TilesBuilder >> initializeWith: aSize [
 
 	size := aSize.
 	numberOfPositionsToGoBack := 4.
-	aTileCollection := (1 to: size) collect: [ :i |
+	aTileCollection := (1 to: size+1) collect: [ :i |
 		                   Tile with: NoEffect new ]
 ]
 

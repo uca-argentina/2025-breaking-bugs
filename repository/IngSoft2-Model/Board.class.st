@@ -77,7 +77,7 @@ self validate: wormholeEntry isLowerThan: wormholeExit.
 
 ^ self new
 	  initializeWith:
-	  ((1 to: aSize) collect: [ :i | Tile with: NoEffect new ])
+	  ((1 to: aSize+1) collect: [ :i | Tile with: NoEffect new ])
 	  andSize: aSize
 	  andWormholeFrom: wormholeEntry
 	  to: wormholeExit
@@ -127,20 +127,21 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 
 { #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-	| lapsCompleted newPosition |
+	| lapsCompleted newPosition totalLaps |
+
 	lapsCompleted := aSpaceshipPosition // aSize.
 	newPosition := aSpaceshipPosition \\ aSize.
 
-	(aSpaceship hasReached: lapLimit) ifTrue: [ 
-		^ aSize 
-	].
-
-	(aSpaceship getLapsCompleted = 0 and: [ newPosition < 0 ]) ifTrue: [
-		^ 0
-	].
-
 	aSpaceship incrementLapsBy: lapsCompleted.
+	totalLaps := aSpaceship getLapsCompleted.
+
+	"Si justo alcanza la meta, devolver finishLine"
+	(totalLaps >= lapLimit ) ifTrue: [
+		^ aSize
+	].
+
 	^ newPosition
+
 
 ]
 
@@ -154,14 +155,6 @@ Board >> createPositionTable: spaceships [
 Board >> getSize [
 
 	^ aSize
-]
-
-{ #category : 'accessing' }
-Board >> hasAtomicBombAt: aPosition [
-
-	| tile |
-	tile := tiles at: aPosition + 1.
-	^ tile getEffect class = AtomicBomb
 ]
 
 { #category : 'testing' }

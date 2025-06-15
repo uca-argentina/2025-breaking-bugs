@@ -8,7 +8,5 @@ Class {
 { #category : 'operations' }
 AtomicBomb >> applyTo: aSpaceship in: aGame [ 
 
-	aGame getSpaceships do: [ :ship |
-		ship moveToPosition: 1 .
-		ship lowerAShield ]
+	aGame produceAtomicBombEffectTo: aSpaceship. 
 ]
