@@ -88,15 +88,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 { #category : 'behavior' }
 Game >> playRound [
 
-	| activeSpaceships penalizeSpaceships |
-	activatedAtomicBomb := false.
-	self checkIfGameHasAlreadyFinished.
-	activeSpaceships := spaceships select: [ :aSpaceship | aSpaceship canPlay ].
-	activeSpaceships do: [ :aSpaceship |
-		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
-
-	penalizeSpaceships := spaceships select: [ :aSpaceship | aSpaceship getShields = 0 ].
-	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
+	self playRoundUsingCardOf: nil.
 ]
 
 { #category : 'behavior' }
@@ -109,6 +101,25 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 	
 	aSpaceshipCollection do: [ :aSpaceship | aSpaceship rechargeShields ].
 
+]
+
+{ #category : 'behavior' }
+Game >> playRoundUsingCardOf: theSpaceship [
+
+	| activeSpaceships penalizeSpaceships |
+	activatedAtomicBomb := false.
+	self checkIfGameHasAlreadyFinished.
+	activeSpaceships := spaceships select: [ :aSpaceship |
+		                    aSpaceship canPlay ].
+	activeSpaceships do: [ :aSpaceship |
+		self hasFinished ifFalse: [
+			self playSpaceshipTurn: aSpaceship.
+			theSpaceship ifNotNil: [
+				(aSpaceship = theSpaceship) ifTrue: [ aSpaceship useCard ] ] ] ].
+
+	penalizeSpaceships := spaceships select: [ :aSpaceship |
+		                      aSpaceship getShields = 0 ].
+	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
 ]
 
 { #category : 'roll' }
