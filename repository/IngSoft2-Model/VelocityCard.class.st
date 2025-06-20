@@ -6,11 +6,6 @@ Class {
 }
 
 { #category : 'behavior' }
-VelocityCard >> implementEfectOn: aSpaceship [
-	aSpaceship makeSpaceshipMoveAtHigherVelocity.
-]
-
-{ #category : 'behavior' }
-VelocityCard >> implementEfectby: aSpaceship on: aTargetSpaceship [
+VelocityCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
 	aSpaceship makeSpaceshipMoveAtHigherVelocity.
 ]

@@ -48,19 +48,6 @@ Board class >> validateAreNotNegative: wormholeEntry and: wormholeExit [
 		Error signal: 'The wormhole cannot have negative entry or exit' ]
 ]
 
-{ #category : 'validation' }
-Board class >> validateWith: wormholeEntry and: wormholeExit within: aSize [
-	self validate: aSize.
-
-	self validateAreNotNegative: wormholeEntry and: wormholeExit.
-
-	self validate: wormholeEntry and: wormholeExit within: aSize.
-
-	self validate: wormholeEntry notEqualTo: wormholeExit.
-
-	self validate: wormholeEntry isLowerThan: wormholeExit.
-]
-
 { #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
 

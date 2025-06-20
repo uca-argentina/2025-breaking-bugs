@@ -36,6 +36,7 @@ Spaceship >> = anotherSpaceship [
 	boolean := boolean and: (shields = anotherSpaceship getShields).
 	boolean := boolean and: (cards = anotherSpaceship getCards).
 	boolean := boolean and: (laps = anotherSpaceship getLapsCompleted).
+	boolean := boolean and: (id = anotherSpaceship getId).
 	^ boolean.
 	
 ]
@@ -55,6 +56,11 @@ Spaceship >> decrementLapsBy: lapsIncremented [
 { #category : 'behavior' }
 Spaceship >> getCards [
 	^ cards.
+]
+
+{ #category : 'behavior' }
+Spaceship >> getId [
+	^ id.
 ]
 
 { #category : 'behavior' }
@@ -96,6 +102,7 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	turnsPenalize := -1.
 	cards := aCollectionOfCards.
 	velocity := 0.
+	mercenaries := OrderedCollection new.
 	id := 'Nave-', (1000 to: 9999) atRandom asString.
 ]
 
@@ -112,8 +119,19 @@ Spaceship >> lowerAShield [
 ]
 
 { #category : 'behavior' }
+Spaceship >> makeHimOwnerOf: aSpaceship [ 
+	mercenaries add: aSpaceship.
+]
+
+{ #category : 'behavior' }
 Spaceship >> makeSpaceshipMoveAtHigherVelocity [
 	velocity := velocity + 1.
+]
+
+{ #category : 'behavior' }
+Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
+	"Parte de mercenary tests"
+	mercenaries add: aSpaceship.
 ]
 
 { #category : 'move' }
@@ -122,6 +140,11 @@ Spaceship >> moveToPosition: aPosition [
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
 	position := aPosition + velocity.
+]
+
+{ #category : 'behavior' }
+Spaceship >> numberOfMercenaries [
+	^ mercenaries size.
 ]
 
 { #category : 'behavior' }
@@ -146,9 +169,9 @@ Spaceship >> rechargeShields [
 ]
 
 { #category : 'behavior' }
-Spaceship >> useCard [
+Spaceship >> useCardOn: targetSpaceship [
 	| card |
 	card := cards at: 1.
 	cards removeFirst.
-	card implementEfectOn: self.
+	card implementEfectBy: self on: targetSpaceship.
 ]

@@ -22,7 +22,7 @@ VelocityCardsTest >> testIsValidIfASpaceshipCreatedWithVelocityCardsMakesTheEffe
 	
 	positions := 6.
 	aGameBuilder := GameBuilder new.
-	aSpaceship := Spaceship new.
+	aSpaceship := Spaceship with: (OrderedCollection with: (VelocityCard new) with: (VelocityCard new)).
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);

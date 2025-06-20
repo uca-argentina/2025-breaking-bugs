@@ -115,7 +115,7 @@ Game >> playRoundUsingCardOf: theSpaceship [
 		self hasFinished ifFalse: [
 			self playSpaceshipTurn: aSpaceship.
 			theSpaceship ifNotNil: [
-				(aSpaceship = theSpaceship) ifTrue: [ aSpaceship useCard ] ] ] ].
+				(aSpaceship = theSpaceship) ifTrue: [ self useCardOf: aSpaceship ] ] ] ].
 
 	penalizeSpaceships := spaceships select: [ :aSpaceship |
 		                      aSpaceship getShields = 0 ].
@@ -159,5 +159,13 @@ Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
 	otherSpaceships do: [ :ship |
 		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
 		ship moveToPosition: newPosition]
+
+]
+
+{ #category : 'behavior' }
+Game >> useCardOf: aSpaceship [ 
+	| aTargetSpaceship |
+	aTargetSpaceship := spaceships detect: [ :other | other ~= aSpaceship] ifNone: [ aTargetSpaceship := nil ].
+	aSpaceship useCardOn: aTargetSpaceship.
 
 ]
