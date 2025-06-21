@@ -41,5 +41,5 @@ PositionTable >> instanceWith: aCollectionOfSpaceships and: aFinishLine [
 { #category : 'behavior' }
 PositionTable >> isWinner: aSpaceship [
 
-	^ aSpaceship tieneMismoID: winner
+	^ aSpaceship = winner
 ]

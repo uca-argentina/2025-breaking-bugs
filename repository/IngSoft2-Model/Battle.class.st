@@ -17,9 +17,18 @@ Battle class >> with: spaceships and: dice [
 { #category : 'behavior' }
 Battle >> checkForBattleIfNeededWith: aSpaceship [
 	| opponent |
-	opponent := spaceships detect: [ :other | other ~= aSpaceship and: [ other getPosition = aSpaceship getPosition ] ] ifNone: [ nil ].
+	opponent := spaceships
+		detect: [ :other | 
+			other ~= aSpaceship and: [ 
+				other getPosition = aSpaceship getPosition and: [ 
+					(other hasHimAsMercenary: aSpaceship) not 
+				]
+			]
+		]
+		ifNone: [ nil ].
 
-	opponent ifNotNil: [ 	self resolveBattleBetween: aSpaceship and: opponent  ].
+	opponent ifNotNil: [ self resolveBattleBetween: aSpaceship and: opponent ].
+
 ]
 
 { #category : 'behavior' }
@@ -55,9 +64,10 @@ Battle >> resolveBattleBetween: aSpaceship and: opponent [
 	loser := aSpaceship.
 	
 	spaceshipDiceValue := self getAllValuesIncludingMercenariesOf: aSpaceship.
-	oponentDiceValue := spaceshipDiceValue := self getAllValuesIncludingMercenariesOf: opponent. 
+	oponentDiceValue := self getAllValuesIncludingMercenariesOf: opponent. 
 	
 	spaceshipDiceValue > oponentDiceValue ifTrue: [ loser :=  opponent].
 	loser lowerAShield. 
 	loser moveToPosition: 0.
+	loser getMercenaries do: [:mercenary | mercenary lowerAShield ].
 ]

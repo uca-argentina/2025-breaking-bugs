@@ -9,7 +9,8 @@ Class {
 		'cards',
 		'velocity',
 		'mercenaries',
-		'id'
+		'id',
+		'owner'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -97,6 +98,17 @@ Spaceship >> getShields [
 	^ shields
 ]
 
+{ #category : 'testing' }
+Spaceship >> hasHimAsMercenary: aSpaceship [ 
+	^ mercenaries includes: aSpaceship.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasOwner [
+	owner ifNotNil: [ ^ true ].
+	^ false.
+]
+
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
@@ -147,7 +159,7 @@ Spaceship >> makeSpaceshipMoveAtHigherVelocity [
 { #category : 'behavior' }
 Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
 	"Parte de mercenary tests"
-	mercenaries add: aSpaceship.
+	owner := aSpaceship.
 ]
 
 { #category : 'move' }
@@ -182,11 +194,6 @@ Spaceship >> penalize [
 Spaceship >> rechargeShields [
 
 	shields := 3
-]
-
-{ #category : 'behavior' }
-Spaceship >> tieneMismoID: aSpaceship [ 
-	^id = aSpaceship getId.
 ]
 
 { #category : 'behavior' }

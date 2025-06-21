@@ -28,9 +28,11 @@ Game >> checkIfGameHasAlreadyFinished [
 
 { #category : 'behavior' }
 Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
+
 	|spaceshipSearch|
     spaceshipSearch := (spaceships select: [ :s | s ~= spaceship ]).
     spaceshipSearch := spaceshipSearch detect: [ :s | s = aTargetSpaceship ]  ifNone: [ ^ nil].
+	 spaceshipSearch hasOwner  ifTrue: [ ^ nil ].
 	 ^ spaceshipSearch.
     
 
@@ -75,7 +77,7 @@ Game >> getAllDiceValuesFrom: diceCollection [
 Game >> getCardsOf: aSpaceship [ 
 	| spaceshipResult |
 	spaceshipResult := spaceships detect: [ :each |
-		                   each tieneMismoID: aSpaceship ].
+		                   each = aSpaceship ].
 	^ spaceshipResult getCards.
 ]
 
@@ -84,7 +86,7 @@ Game >> getLapsCompletedOf: aSpaceship [
 
 	| spaceshipResult |
 	spaceshipResult := spaceships detect: [ :each |
-		                   each tieneMismoID: aSpaceship ].
+		                   each = aSpaceship ].
 	^ spaceshipResult getLapsCompleted.
 ]
 
@@ -92,14 +94,14 @@ Game >> getLapsCompletedOf: aSpaceship [
 Game >> getMercenariesOf: aSpaceship [ 
 	| spaceshipResult |
 	spaceshipResult := spaceships detect: [ :each |
-		                   each tieneMismoID: aSpaceship ].
+		                   each = aSpaceship ].
 	^ spaceshipResult getMercenaries.
 ]
 
 { #category : 'getter' }
 Game >> getPositionOf: aSpaceship [
     | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each tieneMismoID: aSpaceship]).
+spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
 	 ^ (spaceshipResult getPosition).
 ]
 
@@ -113,7 +115,7 @@ Game >> getPositionTable [
 { #category : 'getter' }
 Game >> getShieldsOf: aSpaceship [ 
     | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each tieneMismoID: aSpaceship]).
+spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
 	 ^ (spaceshipResult getShields).
 ]
 
@@ -203,7 +205,7 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
 	card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
 	
 	card := aSpaceship extractCardIfAvailable: card.
-	card implementEfectBy: aSpaceship on: aTargetSpaceship.
+	card implementEfectBy: aSpaceship on: targetSpaceship.
 	
 ]
 
