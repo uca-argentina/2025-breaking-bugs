@@ -6,12 +6,13 @@ Class {
 }
 
 { #category : 'behavior' }
-MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
+MercenaryCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
+	aTargetSpaceship ifNil: [ ^ NoEffectCard new ].
+	^ self.
+]
 
-	"aTargetSpaceship ifNil: [
-			Error signal:
-				'No other spaceship is available to be assigned as a mercenary.' ]."
-	aTargetSpaceship ifNil: [ ^ nil ].
+{ #category : 'behavior' }
+MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
 	aTargetSpaceship makeSpaceshipOwnedBy: aSpaceship.
 	aSpaceship makeHimOwnerOf: aTargetSpaceship
 ]

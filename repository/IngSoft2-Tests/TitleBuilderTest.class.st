@@ -6,7 +6,7 @@ Class {
 }
 
 { #category : 'tests' }
-TitleBuilderTest >> testRandom [
+TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilities [
 
 	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
 	finishLine := 10000. 
@@ -36,7 +36,7 @@ TitleBuilderTest >> testRandom [
 ]
 
 { #category : 'tests' }
-TitleBuilderTest >> testRandom2 [
+TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCardTitle [
 
 	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
 	finishLine := 10000. 

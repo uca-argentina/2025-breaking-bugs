@@ -6,6 +6,11 @@ Class {
 }
 
 { #category : 'behavior' }
+VelocityCard >> checkIfEffectCanBeApplyToTarget: anUndefinedObject [ 
+	^ self.
+]
+
+{ #category : 'behavior' }
 VelocityCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
 	aSpaceship makeSpaceshipMoveAtHigherVelocity.
 ]

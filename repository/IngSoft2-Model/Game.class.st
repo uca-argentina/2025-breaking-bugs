@@ -26,6 +26,16 @@ Game >> checkIfGameHasAlreadyFinished [
 		Error signal: 'Cannot play a turn after the game has finished.' ]
 ]
 
+{ #category : 'behavior' }
+Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
+	|spaceshipSearch|
+    spaceshipSearch := (spaceships select: [ :s | s ~= spaceship ]).
+    spaceshipSearch := spaceshipSearch detect: [ :s | s = aTargetSpaceship ]  ifNone: [ ^ nil].
+	 ^ spaceshipSearch.
+    
+
+]
+
 { #category : 'roll' }
 Game >> correctPositionOf: aSpaceship to: numberOfPositionsToGoBack [
 	| currentPosition newPosition boardSize currentLap |
@@ -88,7 +98,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 { #category : 'behavior' }
 Game >> playRound [
 
-	self playRoundUsingCardOf: nil.
+	self playRoundUsing: (NoEffectCard new) of: nil.
 ]
 
 { #category : 'behavior' }
@@ -97,35 +107,41 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 	self checkIfGameHasAlreadyFinished.
 	(spaceships reject: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
 	do: [ :aSpaceship |
-		self hasFinished ifFalse: [ self playSpaceshipTurn: aSpaceship ] ].
+		self hasFinished ifFalse: [ 
+			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) against: nil ] ].
 	
 	aSpaceshipCollection do: [ :aSpaceship | aSpaceship rechargeShields ].
 
 ]
 
 { #category : 'behavior' }
-Game >> playRoundUsingCardOf: theSpaceship [
+Game >> playRoundUsing: aCard of: theSpaceship [
 
-	| activeSpaceships penalizeSpaceships |
+	self playRoundUsing: aCard of: theSpaceship  to: nil. 
+]
+
+{ #category : 'behavior' }
+Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
+
+	| activeSpaceships penalizeSpaceships card |
 	activatedAtomicBomb := false.
+	card := aCard.
 	self checkIfGameHasAlreadyFinished.
 	activeSpaceships := spaceships select: [ :aSpaceship |
 		                    aSpaceship canPlay ].
 	activeSpaceships do: [ :aSpaceship |
 		self hasFinished ifFalse: [
-			self playSpaceshipTurn: aSpaceship.
-			theSpaceship ifNotNil: [
-				(aSpaceship = theSpaceship) ifTrue: [ self useCardOf: aSpaceship ] ] ] ].
-
+			self playSpaceshipTurn: aSpaceship usingCard: aCard against: targetSpaceship]].
+	
 	penalizeSpaceships := spaceships select: [ :aSpaceship |
 		                      aSpaceship getShields = 0 ].
 	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
 ]
 
 { #category : 'roll' }
-Game >> playSpaceshipTurn: aSpaceship [
+Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
 
-	| positionsToAdvance newPosition |
+	| positionsToAdvance newPosition card targetSpaceship|
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	
 	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
@@ -137,6 +153,13 @@ Game >> playSpaceshipTurn: aSpaceship [
 	
 	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
 	hasFinished := aSpaceship hasReached: lapsToWin.
+	
+	"Si el destino no es valido entonces la carta pierde su efecto"
+	targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.
+	card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
+	
+	card := aSpaceship extractCardIfAvailable: card.
+	card implementEfectBy: aSpaceship on: aTargetSpaceship.
 	
 ]
 
@@ -159,13 +182,5 @@ Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
 	otherSpaceships do: [ :ship |
 		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
 		ship moveToPosition: newPosition]
-
-]
-
-{ #category : 'behavior' }
-Game >> useCardOf: aSpaceship [ 
-	| aTargetSpaceship |
-	aTargetSpaceship := spaceships detect: [ :other | other ~= aSpaceship] ifNone: [ aTargetSpaceship := nil ].
-	aSpaceship useCardOn: aTargetSpaceship.
 
 ]

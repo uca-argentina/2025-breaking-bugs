@@ -32,6 +32,7 @@ Spaceship class >> with: cardsCollection [
 { #category : 'comparing' }
 Spaceship >> = anotherSpaceship [
 	| boolean |
+	anotherSpaceship ifNil: [ ^ false ].
 	boolean := (position = anotherSpaceship getPosition).
 	boolean := boolean and: (shields = anotherSpaceship getShields).
 	boolean := boolean and: (cards = anotherSpaceship getCards).
@@ -54,6 +55,14 @@ Spaceship >> decrementLapsBy: lapsIncremented [
 ]
 
 { #category : 'behavior' }
+Spaceship >> extractCardIfAvailable: aCard [ 
+	| foundCard |
+    foundCard := cards detect: [ :each | each = aCard ] ifNone: [ NoEffectCard new ].
+    cards remove: foundCard ifAbsent: [].
+    ^ foundCard
+]
+
+{ #category : 'behavior' }
 Spaceship >> getCards [
 	^ cards.
 ]
@@ -67,6 +76,11 @@ Spaceship >> getId [
 Spaceship >> getLapsCompleted [
 
 	^ laps
+]
+
+{ #category : 'behavior' }
+Spaceship >> getMercenaries [
+	^ mercenaries.
 ]
 
 { #category : 'testing' }
