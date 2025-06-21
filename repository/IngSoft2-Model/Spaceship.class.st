@@ -119,7 +119,7 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	cards := aCollectionOfCards.
 	velocity := 0.
 	mercenaries := OrderedCollection new.
-	id := 'Nave-', (1000 to: 9999) atRandom asString.
+	id := 'Nave-', (0 to: 9999) atRandom asString.
 ]
 
 { #category : 'testing' }
