@@ -33,10 +33,11 @@ Spaceship class >> with: cardsCollection [
 Spaceship >> = anotherSpaceship [
 	| boolean |
 	anotherSpaceship ifNil: [ ^ false ].
-	boolean := (position = anotherSpaceship getPosition).
+	"boolean := (position = anotherSpaceship getPosition).
 	boolean := boolean and: (shields = anotherSpaceship getShields).
 	boolean := boolean and: (cards = anotherSpaceship getCards).
-	boolean := boolean and: (laps = anotherSpaceship getLapsCompleted).
+	boolean := boolean and: (laps = anotherSpaceship getLapsCompleted)."
+	boolean := true.
 	boolean := boolean and: (id = anotherSpaceship getId).
 	^ boolean.
 	
@@ -57,7 +58,8 @@ Spaceship >> decrementLapsBy: lapsIncremented [
 { #category : 'behavior' }
 Spaceship >> extractCardIfAvailable: aCard [ 
 	| foundCard |
-    foundCard := cards detect: [ :each | each = aCard ] ifNone: [ NoEffectCard new ].
+	"REVISAR"
+    foundCard := cards detect: [ :each | each class = aCard class  ] ifNone: [ NoEffectCard new ].
     cards remove: foundCard ifAbsent: [].
     ^ foundCard
 ]
@@ -180,6 +182,11 @@ Spaceship >> penalize [
 Spaceship >> rechargeShields [
 
 	shields := 3
+]
+
+{ #category : 'behavior' }
+Spaceship >> tieneMismoID: aSpaceship [ 
+	^id = aSpaceship getId.
 ]
 
 { #category : 'behavior' }

@@ -72,10 +72,49 @@ Game >> getAllDiceValuesFrom: diceCollection [
 ]
 
 { #category : 'behavior' }
+Game >> getCardsOf: aSpaceship [ 
+	| spaceshipResult |
+	spaceshipResult := spaceships detect: [ :each |
+		                   each tieneMismoID: aSpaceship ].
+	^ spaceshipResult getCards.
+]
+
+{ #category : 'getter' }
+Game >> getLapsCompletedOf: aSpaceship [
+
+	| spaceshipResult |
+	spaceshipResult := spaceships detect: [ :each |
+		                   each tieneMismoID: aSpaceship ].
+	^ spaceshipResult getLapsCompleted.
+]
+
+{ #category : 'getter' }
+Game >> getMercenariesOf: aSpaceship [ 
+	| spaceshipResult |
+	spaceshipResult := spaceships detect: [ :each |
+		                   each tieneMismoID: aSpaceship ].
+	^ spaceshipResult getMercenaries.
+]
+
+{ #category : 'getter' }
+Game >> getPositionOf: aSpaceship [
+    | spaceshipResult |
+spaceshipResult := (spaceships detect: [:each | each tieneMismoID: aSpaceship]).
+	 ^ (spaceshipResult getPosition).
+]
+
+{ #category : 'behavior' }
 Game >> getPositionTable [
     hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
+]
+
+{ #category : 'getter' }
+Game >> getShieldsOf: aSpaceship [ 
+    | spaceshipResult |
+spaceshipResult := (spaceships detect: [:each | each tieneMismoID: aSpaceship]).
+	 ^ (spaceshipResult getShields).
 ]
 
 { #category : 'initialization' }
@@ -88,7 +127,7 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
 
 	hasFinished := false.
-	spaceships := aCollectionOfSpacehips.
+	spaceships := aCollectionOfSpacehips deepCopy.
 	board := aBoard.
 	dice := aCollectionOfDice.
 	lapsToWin := aNumberOfLaps.
@@ -109,8 +148,10 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 	do: [ :aSpaceship |
 		self hasFinished ifFalse: [ 
 			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) against: nil ] ].
-	
-	aSpaceshipCollection do: [ :aSpaceship | aSpaceship rechargeShields ].
+
+	(spaceships select: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
+	do: [ :aSpaceship | aSpaceship rechargeShields ].
+
 
 ]
 
@@ -123,7 +164,7 @@ Game >> playRoundUsing: aCard of: theSpaceship [
 { #category : 'behavior' }
 Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 
-	| activeSpaceships penalizeSpaceships card |
+	| activeSpaceships penalizeSpaceships card cardToPlay |
 	activatedAtomicBomb := false.
 	card := aCard.
 	self checkIfGameHasAlreadyFinished.
@@ -131,7 +172,10 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 		                    aSpaceship canPlay ].
 	activeSpaceships do: [ :aSpaceship |
 		self hasFinished ifFalse: [
-			self playSpaceshipTurn: aSpaceship usingCard: aCard against: targetSpaceship]].
+			cardToPlay := (aSpaceship = theSpaceship) 
+                ifTrue: [ aCard ] 
+                ifFalse: [ NoEffectCard new ].
+			self playSpaceshipTurn: aSpaceship usingCard: cardToPlay against: targetSpaceship]].
 	
 	penalizeSpaceships := spaceships select: [ :aSpaceship |
 		                      aSpaceship getShields = 0 ].
