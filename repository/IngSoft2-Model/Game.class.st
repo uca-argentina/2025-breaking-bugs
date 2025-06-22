@@ -136,6 +136,13 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	battle := Battle with: spaceships and: dice.
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> makeAllSpaceShipsMoveAtHigherVelocity [
+
+	spaceships do: [ :spaceship |
+		spaceship moveAtHigherVelocity ]
+]
+
 { #category : 'behavior' }
 Game >> playRound [
 
@@ -149,7 +156,7 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 	(spaceships reject: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
 	do: [ :aSpaceship |
 		self hasFinished ifFalse: [ 
-			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) against: nil ] ].
+			self playSpaceshipTurn: aSpaceship usingCard: (NoEffectCard new) ] ].
 
 	(spaceships select: [ :aSpaceship | aSpaceshipCollection includes: aSpaceship ])
 	do: [ :aSpaceship | aSpaceship rechargeShields ].
@@ -160,13 +167,7 @@ Game >> playRoundSkipping: aSpaceshipCollection [
 { #category : 'behavior' }
 Game >> playRoundUsing: aCard of: theSpaceship [
 
-	self playRoundUsing: aCard of: theSpaceship  to: nil. 
-]
-
-{ #category : 'behavior' }
-Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
-
-	| activeSpaceships penalizeSpaceships card cardToPlay |
+		| activeSpaceships penalizeSpaceships card cardToPlay |
 	activatedAtomicBomb := false.
 	card := aCard.
 	self checkIfGameHasAlreadyFinished.
@@ -177,7 +178,7 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 			cardToPlay := (aSpaceship = theSpaceship) 
                 ifTrue: [ aCard ] 
                 ifFalse: [ NoEffectCard new ].
-			self playSpaceshipTurn: aSpaceship usingCard: cardToPlay against: targetSpaceship]].
+			self playSpaceshipTurn: aSpaceship usingCard: cardToPlay ]].
 	
 	penalizeSpaceships := spaceships select: [ :aSpaceship |
 		                      aSpaceship getShields = 0 ].
@@ -185,9 +186,9 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 ]
 
 { #category : 'roll' }
-Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
+Game >> playSpaceshipTurn: aSpaceship usingCard: aCard [ 
 
-	| positionsToAdvance newPosition card targetSpaceship|
+	| positionsToAdvance newPosition card |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	
 	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
@@ -200,12 +201,11 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
 	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
 	hasFinished := aSpaceship hasReached: lapsToWin.
 	
-	"Si el destino no es valido entonces la carta pierde su efecto"
-	targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.
-	card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
-	
+
+	card:= aCard.
 	card := aSpaceship extractCardIfAvailable: card.
-	card implementEfectBy: aSpaceship on: targetSpaceship.
+	card implementEffectTo: aSpaceship in: self.
+
 	
 ]
 

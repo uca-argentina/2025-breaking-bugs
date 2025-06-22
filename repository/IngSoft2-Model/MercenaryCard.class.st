@@ -6,13 +6,9 @@ Class {
 }
 
 { #category : 'behavior' }
-MercenaryCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
-	aTargetSpaceship ifNil: [ ^ NoEffectCard new ].
-	^ self.
-]
+MercenaryCard >> implementEffectTo: aSpaceship in: aGame [
 
-{ #category : 'behavior' }
-MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
-	aTargetSpaceship makeSpaceshipOwnedBy: aSpaceship.
-	aSpaceship makeHimOwnerOf: aTargetSpaceship
+	| mercenary |
+	mercenary := Spaceship new.
+	aSpaceship hire: mercenary
 ]

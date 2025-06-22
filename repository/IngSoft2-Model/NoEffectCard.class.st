@@ -6,10 +6,5 @@ Class {
 }
 
 { #category : 'behavior' }
-NoEffectCard >> checkIfEffectCanBeApplyToTarget: anUndefinedObject [ 
-	^ self.
-]
-
-{ #category : 'behavior' }
-NoEffectCard >> implementEfectBy: aSpaceship on: aTargetSpaceship [
+NoEffectCard >> implementEffectTo: aSpaceship in: aGame [
 ]

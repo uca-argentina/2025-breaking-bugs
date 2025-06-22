@@ -18,8 +18,16 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
-	"Hay que poner basicNew porque el new solo te hace entrar en loop"
-	^ self basicNew initializeWith: (OrderedCollection with: (VelocityCard new) with: (VelocityCard new)).
+    | cardClasses randomCards |
+
+    cardClasses := { SpeedCard. MercenaryCard. AccelerationCard }.
+    
+    randomCards := OrderedCollection new.
+    
+    2 timesRepeat: [
+        randomCards add: ( cardClasses atRandom new ) ].
+   
+    ^ self basicNew initializeWith: randomCards
 
 ]
 
@@ -116,6 +124,11 @@ Spaceship >> hasReached: lapsToWin [
 ]
 
 { #category : 'behavior' }
+Spaceship >> hire: aMercenary [
+	mercenaries add: aMercenary.
+]
+
+{ #category : 'behavior' }
 Spaceship >> incrementLapsBy: lapsIncremented [
 
 	laps := laps + lapsIncremented
@@ -147,19 +160,8 @@ Spaceship >> lowerAShield [
 ]
 
 { #category : 'behavior' }
-Spaceship >> makeHimOwnerOf: aSpaceship [ 
-	mercenaries add: aSpaceship.
-]
-
-{ #category : 'behavior' }
-Spaceship >> makeSpaceshipMoveAtHigherVelocity [
+Spaceship >> moveAtHigherVelocity [
 	velocity := velocity + 1.
-]
-
-{ #category : 'behavior' }
-Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
-	"Parte de mercenary tests"
-	owner := aSpaceship.
 ]
 
 { #category : 'move' }
@@ -201,5 +203,5 @@ Spaceship >> useCardOn: targetSpaceship [
 	| card |
 	card := cards at: 1.
 	cards removeFirst.
-	card implementEfectBy: self on: targetSpaceship.
+	card implementEffectBy: self on: targetSpaceship.
 ]
