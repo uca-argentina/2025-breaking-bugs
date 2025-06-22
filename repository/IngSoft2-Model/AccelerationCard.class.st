@@ -10,3 +10,10 @@ AccelerationCard >> implementEffectTo: aSpaceship in: aGame [
 
 	aGame makeAllSpaceShipsMoveAtHigherVelocity
 ]
+
+{ #category : 'as yet unclassified' }
+AccelerationCard >> undoEffect: aGame [
+
+
+	aGame makeAllSpaceShipsMoveAtLowerVelocity
+]

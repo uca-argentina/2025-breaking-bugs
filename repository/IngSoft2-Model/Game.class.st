@@ -8,7 +8,8 @@ Class {
 		'hasFinished',
 		'battle',
 		'lapsToWin',
-		'activatedAtomicBomb'
+		'activatedAtomicBomb',
+		'activePermanentCards'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -134,6 +135,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	dice := aCollectionOfDice.
 	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
+	activePermanentCards := OrderedCollection new.
 ]
 
 { #category : 'as yet unclassified' }
@@ -141,6 +143,22 @@ Game >> makeAllSpaceShipsMoveAtHigherVelocity [
 
 	spaceships do: [ :spaceship |
 		spaceship moveAtHigherVelocity ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> makeAllSpaceShipsMoveAtLowerVelocity [
+
+	spaceships do: [ :spaceship |
+		spaceship moveAtLowerVelocity ]
+]
+
+{ #category : 'as yet unclassified' }
+Game >> play: anInstantCard of: aSpaceship on: aPermanentCard [ 
+	
+	anInstantCard implementEffectTo: aPermanentCard in: self. 
+	activePermanentCards  := activePermanentCards reject: [:card | card == aPermanentCard ].
+
+	
 ]
 
 { #category : 'behavior' }
@@ -205,6 +223,7 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard [
 	card:= aCard.
 	card := aSpaceship extractCardIfAvailable: card.
 	card implementEffectTo: aSpaceship in: self.
+	activePermanentCards add: card .
 
 	
 ]

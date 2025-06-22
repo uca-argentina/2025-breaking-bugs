@@ -164,6 +164,11 @@ Spaceship >> moveAtHigherVelocity [
 	velocity := velocity + 1.
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> moveAtLowerVelocity [
+	velocity := velocity - 1.
+]
+
 { #category : 'move' }
 Spaceship >> moveToPosition: aPosition [
 
