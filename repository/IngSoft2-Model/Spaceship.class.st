@@ -73,6 +73,11 @@ Spaceship >> extractCardIfAvailable: aCard [
     ^ foundCard
 ]
 
+{ #category : 'as yet unclassified' }
+Spaceship >> fireAllMercenaries [
+	mercenaries removeAll 
+]
+
 { #category : 'behavior' }
 Spaceship >> getCards [
 	^ cards.

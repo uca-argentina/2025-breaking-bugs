@@ -155,7 +155,12 @@ Game >> makeAllSpaceShipsMoveAtLowerVelocity [
 { #category : 'as yet unclassified' }
 Game >> play: anInstantCard of: aSpaceship on: aPermanentCard [ 
 	
-	anInstantCard implementEffectTo: aPermanentCard in: self. 
+	| realCard |
+  "  realCard := activePermanentCards 
+                   detect: [ :each | each == aPermanentCard ]
+                   ifNone: [ Error signal: 'no encuentra tarjeta']. "  "si no la encuentro, salgo sin hacer nada"
+	realCard := activePermanentCards at:1.
+	anInstantCard implementEffectTo: realCard in: self. 
 	activePermanentCards  := activePermanentCards reject: [:card | card == aPermanentCard ].
 
 	
