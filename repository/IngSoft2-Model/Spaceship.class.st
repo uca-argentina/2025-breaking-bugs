@@ -9,7 +9,8 @@ Class {
 		'cards',
 		'velocity',
 		'mercenaries',
-		'id'
+		'id',
+		'owner'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -72,10 +73,9 @@ Spaceship >> extractCardIfAvailable: aCard [
     ^ foundCard
 ]
 
-{ #category : 'as yet unclassified' }
-Spaceship >> fireAllMercenaries [
-
-	mercenaries removeAll
+{ #category : 'behavior' }
+Spaceship >> fire: aSpaceship [ 
+	mercenaries remove: aSpaceship ifAbsent: [].
 ]
 
 { #category : 'behavior' }
@@ -113,16 +113,20 @@ Spaceship >> getShields [
 	^ shields
 ]
 
+{ #category : 'testing' }
+Spaceship >> hasHimAsMercenary: aSpaceship [ 
+	^ mercenaries includes: aSpaceship.
+]
+
+{ #category : 'testing' }
+Spaceship >> hasOwner [
+	^ owner.
+]
+
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
 	^ laps >= lapsToWin
-]
-
-{ #category : 'behavior' }
-Spaceship >> hire: aMercenary [
-
-	mercenaries add: aMercenary
 ]
 
 { #category : 'behavior' }
@@ -141,6 +145,7 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	cards := aCollectionOfCards.
 	velocity := 0.
 	mercenaries := OrderedCollection new.
+	owner := false.
 	id := 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
@@ -157,12 +162,24 @@ Spaceship >> lowerAShield [
 ]
 
 { #category : 'behavior' }
+Spaceship >> makeHimOwnerOf: aSpaceship [ 
+	mercenaries add: aSpaceship.
+
+]
+
+{ #category : 'behavior' }
+Spaceship >> makeSpaceshipOwnedBy: aSpaceship [ 
+	owner := true.
+
+]
+
+{ #category : 'behavior' }
 Spaceship >> moveAtHigherVelocity [
 
 	velocity := velocity + 1
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 Spaceship >> moveAtLowerVelocity [
 
 	velocity := velocity - 1

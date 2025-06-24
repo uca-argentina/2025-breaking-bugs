@@ -5,21 +5,36 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
+AccelerationCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [ 
+]
+
+{ #category : 'behavior' }
+AccelerationCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
+	aGame makeAllSpaceShipsMoveAtHigherVelocity.
+	aGame registerThrownCard: self.
+]
+
+{ #category : 'behavior' }
 AccelerationCard >> implementEffectTo: aSpaceship in: aGame [
 
 	aGame makeAllSpaceShipsMoveAtHigherVelocity.
 	aGame registerThrownCard: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 AccelerationCard >> isPermanent [
 
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 AccelerationCard >> undoEffect: aGame [
+	aGame makeAllSpaceShipsMoveAtLowerVelocity
+]
+
+{ #category : 'behavior' }
+AccelerationCard >> undoEffect: aGame to: aTargetSpaceship [
 
 	aGame makeAllSpaceShipsMoveAtLowerVelocity
 ]

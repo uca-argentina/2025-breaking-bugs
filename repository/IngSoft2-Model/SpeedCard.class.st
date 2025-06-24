@@ -10,21 +10,25 @@ Class {
 }
 
 { #category : 'behavior' }
-SpeedCard >> implementEffectTo: aSpaceship in: aGame [
+SpeedCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
+]
+
+{ #category : 'behavior' }
+SpeedCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [ 
 	
 	spaceshipAffected := aSpaceship.
 	aSpaceship moveAtHigherVelocity.
 	aGame registerThrownCard: self.
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
 SpeedCard >> isPermanent [
 
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
-SpeedCard >> undoEffect: aGame [
+{ #category : 'behavior' }
+SpeedCard >> undoEffect: aGame to: aTargetSpaceship [ 
 
 	spaceshipAffected moveAtLowerVelocity
 ]

@@ -6,18 +6,23 @@ Class {
 }
 
 { #category : 'behavior' }
-RedoCard >> implementEffectTo: aSpaceship in: aGame [
+RedoCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
+]
+
+{ #category : 'behavior' }
+RedoCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 
 	| lastCardThrown copyOfLastCardThrown |
 	lastCardThrown := aGame lastCardThrown.
 	copyOfLastCardThrown := lastCardThrown deepCopy.
 	copyOfLastCardThrown class = CancelationCard
 		ifTrue: [
-			copyOfLastCardThrown
-				implementEffectTo: aGame lastActivePermanentCard
-				in: aGame ]
+			copyOfLastCardThrown implementEffect: (aGame lastActivePermanentCard) to: aTargetSpaceship in: aGame ]
 		ifFalse: [
-		copyOfLastCardThrown implementEffectTo: aSpaceship in: aGame ]
+			copyOfLastCardThrown
+				implementEfectBy: aSpaceship
+				on: aTargetSpaceship
+				in: aGame ]
 ]
 
 { #category : 'behavior' }

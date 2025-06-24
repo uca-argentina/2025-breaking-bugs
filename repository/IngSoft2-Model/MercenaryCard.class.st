@@ -9,23 +9,28 @@ Class {
 }
 
 { #category : 'behavior' }
-MercenaryCard >> implementEffectTo: aSpaceship in: aGame [
+MercenaryCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
+	aTargetSpaceship ifNil: [ ^ NoEffectCard new ].
+	^ self.
 
-	| mercenary |
-	affectedSpaceship := aSpaceship.
-	mercenary := Spaceship new.
-	aSpaceship hire: mercenary.
-	aGame registerThrownCard: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'behavior' }
+MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
+	affectedSpaceship := aSpaceship.
+	aTargetSpaceship makeSpaceshipOwnedBy: aSpaceship.
+	aSpaceship makeHimOwnerOf: aTargetSpaceship.
+	aGame registerThrownCard: self.
+]
+
+{ #category : 'behavior' }
 MercenaryCard >> isPermanent [
 
 	^ true
 ]
 
-{ #category : 'as yet unclassified' }
-MercenaryCard >> undoEffect: aGame [
+{ #category : 'behavior' }
+MercenaryCard >> undoEffect: aGame to: aTargetSpaceship [ 
 
-	affectedSpaceship fireAllMercenaries
+	affectedSpaceship fire: aTargetSpaceship.
 ]

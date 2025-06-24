@@ -19,13 +19,16 @@ Battle >> checkForBattleIfNeededWith: aSpaceship [
 
 	| opponent |
 	opponent := spaceships
-		            detect: [ :other |
-			            other ~= aSpaceship and: [
-				            other getPosition = aSpaceship getPosition ] ]
-		            ifNone: [ nil ].
+		detect: [ :other | 
+			other ~= aSpaceship and: [ 
+				other getPosition = aSpaceship getPosition and: [ 
+					(other hasHimAsMercenary: aSpaceship) not 
+				]
+			]
+		]
+		ifNone: [ nil ].
 
-	opponent ifNotNil: [
-		self resolveBattleBetween: aSpaceship and: opponent ]
+	opponent ifNotNil: [ self resolveBattleBetween: aSpaceship and: opponent ].
 ]
 
 { #category : 'behavior' }
@@ -55,7 +58,7 @@ Battle >> initializeWith: aCollectionOfSpacehips and: aCollectionOfDice [
 ]
 
 { #category : 'behavior' }
-Battle >> resolveBattleBetween: aSpaceship and: opponent [
+Battle >> resolveBattleBetween: aSpaceship and: opponent [ 
 	
 	| loser spaceshipDiceValue oponentDiceValue |
 	loser := aSpaceship.

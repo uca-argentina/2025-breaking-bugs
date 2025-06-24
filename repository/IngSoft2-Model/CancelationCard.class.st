@@ -6,10 +6,15 @@ Class {
 }
 
 { #category : 'behavior' }
-CancelationCard >> implementEffectTo: aPermanentCard in: aGame [
+CancelationCard >> implementEffect: aPermanentCard to: aTargetSpaceship in: aGame [
 
-	aPermanentCard undoEffect: aGame.
+	aPermanentCard undoEffect: aGame to: aTargetSpaceship.
 	aGame registerThrownCard: self
+]
+
+{ #category : 'testing' }
+CancelationCard >> isInstant [
+	^ true.
 ]
 
 { #category : 'behavior' }

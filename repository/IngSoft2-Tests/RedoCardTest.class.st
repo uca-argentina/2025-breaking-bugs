@@ -37,25 +37,29 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHas2Mercenaries [
 
-	| aGame aSpaceship aGameBuilder position1 aMercenaryCard aRedoCard |
+	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 aMercenaryCard aRedoCard |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aMercenaryCard := MercenaryCard new.
 	aRedoCard := RedoCard new.
+	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
 	aSpaceship := Spaceship with:
 		              (OrderedCollection
 			               with: aMercenaryCard
 			               with: aRedoCard).
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
+					addSpaceship: aSpaceship2;
+					addSpaceship: aSpaceship3;
 		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
 		         addDice: (FixedDice onFace: position1);
 		         build.
 
-	aGame playRoundUsing: aMercenaryCard of: aSpaceship.
-	aGame playRoundUsing: aRedoCard of: aSpaceship.
+	aGame playRoundUsing: aMercenaryCard of: aSpaceship to: aSpaceship2.
+	aGame playRoundUsing: aRedoCard of: aSpaceship to: aSpaceship3.
 
-	self assert: aSpaceship numberOfMercenaries equals: 2
+	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
 ]
 
 { #category : 'tests' }

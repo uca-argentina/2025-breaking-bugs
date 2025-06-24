@@ -6,6 +6,14 @@ Class {
 }
 
 { #category : 'behavior' }
+NoEffectCard >> checkIfEffectCanBeApplyToTarget: aTarget [ 
+]
+
+{ #category : 'behavior' }
+NoEffectCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
+]
+
+{ #category : 'behavior' }
 NoEffectCard >> implementEffectTo: aSpaceship in: aGame [
 ]
 

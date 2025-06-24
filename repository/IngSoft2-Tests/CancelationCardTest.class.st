@@ -54,7 +54,7 @@ CancelationCardTest >> testIsValidIfACancelationCardAppliesEffectCorrectlyToAnAf
 { #category : 'tests' }
 CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverted [
 
-	| aGame aSpaceship aGameBuilder position1 position2 anInstantCard aSpaceship2 aPermanentCard |
+	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 position2 anInstantCard aPermanentCard |
 	position1 := 6.
 	position2 := 4.
 	aGameBuilder := GameBuilder new.
@@ -65,23 +65,25 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 			               with: aPermanentCard
 			               with: anInstantCard).
 	aSpaceship2 := Spaceship new.
+	aSpaceship3 := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
+					addSpaceship: aSpaceship3;
 		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
 		         addDice: (SequentialFixedDice onFaces: {
 						          position1.
 						          position2 });
 		         build.
 
-	aGame playRoundUsing: aPermanentCard of: aSpaceship.
+	aGame playRoundUsing: aPermanentCard of: aSpaceship to: aSpaceship2.
 
 	self assert: (aGame getCardsOf: aSpaceship) size equals: 1.
 	self assert: (aGame getCardsOf: aSpaceship2) size equals: 2.
 
 	self assert: (aGame getMercenariesOf: aSpaceship) size equals: 1.
 
-	aGame play: anInstantCard of: aSpaceship on: aPermanentCard.
+	aGame play: anInstantCard of: aSpaceship with: aPermanentCard to: aSpaceship2.
 
 	aGame playRound.
 
@@ -108,7 +110,7 @@ CancelationCardTest >> testWhenTryingToCancelACardThatIsNotActiveThenItIsNotPoss
 		should: [
 		aGame play: aCancellationCard of: aSpaceship on: anAccelerationCard ]
 		raise: Error
-		withMessageError: 'AccelerationCard is not active'
+		withMessageError: 'The card wanted is not active'
 ]
 
 { #category : 'tests' }
