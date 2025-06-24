@@ -16,19 +16,16 @@ Battle class >> with: spaceships and: dice [
 
 { #category : 'behavior' }
 Battle >> checkForBattleIfNeededWith: aSpaceship [
+
 	| opponent |
 	opponent := spaceships
-		detect: [ :other | 
-			other ~= aSpaceship and: [ 
-				other getPosition = aSpaceship getPosition and: [ 
-					(other hasHimAsMercenary: aSpaceship) not 
-				]
-			]
-		]
-		ifNone: [ nil ].
+		            detect: [ :other |
+			            other ~= aSpaceship and: [
+				            other getPosition = aSpaceship getPosition ] ]
+		            ifNone: [ nil ].
 
-	opponent ifNotNil: [ self resolveBattleBetween: aSpaceship and: opponent ].
-
+	opponent ifNotNil: [
+		self resolveBattleBetween: aSpaceship and: opponent ]
 ]
 
 { #category : 'behavior' }

@@ -9,8 +9,7 @@ Class {
 		'cards',
 		'velocity',
 		'mercenaries',
-		'id',
-		'owner'
+		'id'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -75,17 +74,20 @@ Spaceship >> extractCardIfAvailable: aCard [
 
 { #category : 'as yet unclassified' }
 Spaceship >> fireAllMercenaries [
-	mercenaries removeAll 
+
+	mercenaries removeAll
 ]
 
 { #category : 'behavior' }
 Spaceship >> getCards [
-	^ cards.
+
+	^ cards
 ]
 
 { #category : 'behavior' }
 Spaceship >> getId [
-	^ id.
+
+	^ id
 ]
 
 { #category : 'behavior' }
@@ -111,17 +113,6 @@ Spaceship >> getShields [
 	^ shields
 ]
 
-{ #category : 'testing' }
-Spaceship >> hasHimAsMercenary: aSpaceship [ 
-	^ mercenaries includes: aSpaceship.
-]
-
-{ #category : 'testing' }
-Spaceship >> hasOwner [
-	owner ifNotNil: [ ^ true ].
-	^ false.
-]
-
 { #category : 'behavior' }
 Spaceship >> hasReached: lapsToWin [
 
@@ -130,7 +121,8 @@ Spaceship >> hasReached: lapsToWin [
 
 { #category : 'behavior' }
 Spaceship >> hire: aMercenary [
-	mercenaries add: aMercenary.
+
+	mercenaries add: aMercenary
 ]
 
 { #category : 'behavior' }
@@ -149,7 +141,7 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	cards := aCollectionOfCards.
 	velocity := 0.
 	mercenaries := OrderedCollection new.
-	id := 'Nave-', (0 to: 9999) atRandom asString.
+	id := 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
 { #category : 'testing' }
@@ -166,12 +158,14 @@ Spaceship >> lowerAShield [
 
 { #category : 'behavior' }
 Spaceship >> moveAtHigherVelocity [
-	velocity := velocity + 1.
+
+	velocity := velocity + 1
 ]
 
 { #category : 'as yet unclassified' }
 Spaceship >> moveAtLowerVelocity [
-	velocity := velocity - 1.
+
+	velocity := velocity - 1
 ]
 
 { #category : 'move' }
@@ -179,12 +173,13 @@ Spaceship >> moveToPosition: aPosition [
 
 	aPosition negative ifTrue: [
 		Error signal: 'The spaceship cannot move to a negative position' ].
-	position := aPosition + velocity.
+	position := aPosition + velocity
 ]
 
 { #category : 'behavior' }
 Spaceship >> numberOfMercenaries [
-	^ mercenaries size.
+
+	^ mercenaries size
 ]
 
 { #category : 'behavior' }

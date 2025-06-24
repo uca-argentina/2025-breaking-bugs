@@ -11,13 +11,20 @@ Class {
 
 { #category : 'behavior' }
 SpeedCard >> implementEffectTo: aSpaceship in: aGame [
-
-	spaceshipAffected := aSpaceship .
-	aSpaceship moveAtHigherVelocity.
 	
+	spaceshipAffected := aSpaceship.
+	aSpaceship moveAtHigherVelocity.
+	aGame registerThrownCard: self.
 ]
 
 { #category : 'as yet unclassified' }
-SpeedCard >> undoEffect: aGame [ 
-	spaceshipAffected moveAtLowerVelocity .
+SpeedCard >> isPermanent [
+
+	^ true
+]
+
+{ #category : 'as yet unclassified' }
+SpeedCard >> undoEffect: aGame [
+
+	spaceshipAffected moveAtLowerVelocity
 ]

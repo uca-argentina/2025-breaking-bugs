@@ -8,3 +8,9 @@ Class {
 { #category : 'behavior' }
 NoEffectCard >> implementEffectTo: aSpaceship in: aGame [
 ]
+
+{ #category : 'behavior' }
+NoEffectCard >> isPermanent [
+
+	^ false
+]

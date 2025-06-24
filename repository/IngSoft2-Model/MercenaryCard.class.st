@@ -12,12 +12,20 @@ Class {
 MercenaryCard >> implementEffectTo: aSpaceship in: aGame [
 
 	| mercenary |
-	affectedSpaceship:= aSpaceship .
+	affectedSpaceship := aSpaceship.
 	mercenary := Spaceship new.
-	aSpaceship hire: mercenary
+	aSpaceship hire: mercenary.
+	aGame registerThrownCard: self
 ]
 
 { #category : 'as yet unclassified' }
-MercenaryCard >> undoEffect: aGame [ 
-	affectedSpaceship fireAllMercenaries 
+MercenaryCard >> isPermanent [
+
+	^ true
+]
+
+{ #category : 'as yet unclassified' }
+MercenaryCard >> undoEffect: aGame [
+
+	affectedSpaceship fireAllMercenaries
 ]

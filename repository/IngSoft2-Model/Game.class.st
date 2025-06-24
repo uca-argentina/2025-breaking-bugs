@@ -9,7 +9,8 @@ Class {
 		'battle',
 		'lapsToWin',
 		'activatedAtomicBomb',
-		'activePermanentCards'
+		'activePermanentCards',
+		'cardsThrown'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -30,13 +31,12 @@ Game >> checkIfGameHasAlreadyFinished [
 { #category : 'behavior' }
 Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
 
-	|spaceshipSearch|
-    spaceshipSearch := (spaceships select: [ :s | s ~= spaceship ]).
-    spaceshipSearch := spaceshipSearch detect: [ :s | s = aTargetSpaceship ]  ifNone: [ ^ nil].
-	 spaceshipSearch hasOwner  ifTrue: [ ^ nil ].
-	 ^ spaceshipSearch.
-    
-
+	| spaceshipSearch |
+	spaceshipSearch := spaceships select: [ :s | s ~= spaceship ].
+	spaceshipSearch := spaceshipSearch
+		                   detect: [ :s | s = aTargetSpaceship ]
+		                   ifNone: [ ^ nil ].
+	^ spaceshipSearch
 ]
 
 { #category : 'roll' }
@@ -130,12 +130,26 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
 
 	hasFinished := false.
-	spaceships := aCollectionOfSpacehips deepCopy.
+	spaceships := aCollectionOfSpacehips.
 	board := aBoard.
 	dice := aCollectionOfDice.
 	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
 	activePermanentCards := OrderedCollection new.
+	cardsThrown := OrderedCollection new
+]
+
+{ #category : 'accessing' }
+Game >> lastActivePermanentCard [
+
+	^ activePermanentCards removeLast
+]
+
+{ #category : 'behavior' }
+Game >> lastCardThrown [
+
+	cardsThrown isEmpty ifTrue: [ ^ NoEffectCard new ].
+	^ cardsThrown last
 ]
 
 { #category : 'as yet unclassified' }
@@ -152,18 +166,24 @@ Game >> makeAllSpaceShipsMoveAtLowerVelocity [
 		spaceship moveAtLowerVelocity ]
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> play: anInstantCard of: aSpaceship on: aPermanentCard [ 
-	
-	| realCard |
-  "  realCard := activePermanentCards 
-                   detect: [ :each | each == aPermanentCard ]
-                   ifNone: [ Error signal: 'no encuentra tarjeta']. "  "si no la encuentro, salgo sin hacer nada"
-	realCard := activePermanentCards at:1.
-	anInstantCard implementEffectTo: realCard in: self. 
-	activePermanentCards  := activePermanentCards reject: [:card | card == aPermanentCard ].
+{ #category : 'behavior' }
+Game >> numberOfActivePermanentCards [
 
-	
+	^ activePermanentCards size
+]
+
+{ #category : 'as yet unclassified' }
+Game >> play: anInstantCard of: aSpaceship on: aPermanentCard [
+
+	| realCard |
+	realCard := activePermanentCards
+		            detect: [ :each | each = aPermanentCard ]
+		            ifNone: [
+		            Error signal:
+			            aPermanentCard className , ' is not active' ].
+	anInstantCard implementEffectTo: realCard in: self.
+	activePermanentCards := activePermanentCards reject: [ :card |
+		                        card == aPermanentCard ]
 ]
 
 { #category : 'behavior' }
@@ -209,28 +229,35 @@ Game >> playRoundUsing: aCard of: theSpaceship [
 ]
 
 { #category : 'roll' }
-Game >> playSpaceshipTurn: aSpaceship usingCard: aCard [ 
+Game >> playSpaceshipTurn: aSpaceship usingCard: aCard [
 
 	| positionsToAdvance newPosition card |
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
-	
-	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
-	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
+
+	newPosition := aSpaceship obtainNewPosition: positionsToAdvance.
+	newPosition := board correctPositionAfterWormholeIfNeeded:
+		               newPosition.
+	newPosition := board
+		               correctPositionIf: aSpaceship
+		               passTheLine: newPosition
+		               withLapLimit: lapsToWin.
 	aSpaceship moveToPosition: newPosition.
-	
+
 	board applyTileEffectTo: aSpaceship in: self.
-	
-	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
+
+	activatedAtomicBomb ifFalse: [
+		battle checkForBattleIfNeededWith: aSpaceship ].
 	hasFinished := aSpaceship hasReached: lapsToWin.
-	
 
-	card:= aCard.
+
+	card := aCard.
 	card := aSpaceship extractCardIfAvailable: card.
-	card implementEffectTo: aSpaceship in: self.
-	activePermanentCards add: card .
+	card class = CancelationCard
+		ifTrue: [
+		card implementEffectTo: activePermanentCards last in: self ]
+		ifFalse: [ card implementEffectTo: aSpaceship in: self ].
 
-	
+	card isPermanent ifTrue: [ activePermanentCards add: card ]
 ]
 
 { #category : 'behavior' }
@@ -253,4 +280,10 @@ Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
 		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
 		ship moveToPosition: newPosition]
 
+]
+
+{ #category : 'behavior' }
+Game >> registerThrownCard: aCard [
+
+	cardsThrown add: aCard
 ]

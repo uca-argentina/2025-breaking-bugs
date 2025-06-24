@@ -6,6 +6,14 @@ Class {
 }
 
 { #category : 'behavior' }
-CancelationCard >> implementEffectTo: aPermanentCard in: aGame [ 
-	aPermanentCard undoEffect: aGame. 
+CancelationCard >> implementEffectTo: aPermanentCard in: aGame [
+
+	aPermanentCard undoEffect: aGame.
+	aGame registerThrownCard: self
+]
+
+{ #category : 'behavior' }
+CancelationCard >> isPermanent [
+
+	^ false
 ]
