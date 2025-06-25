@@ -29,9 +29,10 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	aGame playRoundUsing: anotherSpeedCard of: aSpaceship.
 	aGame play: aCancellationCard of: aSpaceship on: aSpeedCard.
+	"self assert: aGame numberOfActivePermanentCards equals: 1."
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 
-	self assert: aGame numberOfActivePermanentCards equals: 0
+	self assert: aGame numberOfActivePermanentCards equals: 0.
 ]
 
 { #category : 'tests' }

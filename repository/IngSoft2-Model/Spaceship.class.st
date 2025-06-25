@@ -87,7 +87,7 @@ Spaceship >> getCards [
 { #category : 'behavior' }
 Spaceship >> getId [
 
-	^ id
+	^ id.
 ]
 
 { #category : 'behavior' }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'NoEffectCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -15,6 +15,11 @@ NoEffectCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 
 { #category : 'behavior' }
 NoEffectCard >> implementEffectTo: aSpaceship in: aGame [
+]
+
+{ #category : 'behavior' }
+NoEffectCard >> isInstant [
+	^ false.
 ]
 
 { #category : 'behavior' }

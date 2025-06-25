@@ -130,7 +130,7 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDice and: aNumberOfLaps [
 
 	hasFinished := false.
-	spaceships := aCollectionOfSpacehips.
+	spaceships := aCollectionOfSpacehips deepCopy.
 	board := aBoard.
 	dice := aCollectionOfDice.
 	lapsToWin := aNumberOfLaps.
@@ -180,15 +180,16 @@ Game >> play: aCancelationCard of: aSpaceship on: aSpeedCard [
 { #category : 'behavior' }
 Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [ 
 
-	| realCard |
-	anInstantCard isInstant ifFalse:[^nil].
+	| realCard instantCard |
+	instantCard := aSpaceship extractCardIfAvailable: anInstantCard.
+	instantCard isInstant ifFalse:[^nil].
 	realCard := activePermanentCards
 		            detect: [ :each | each = aPermanentCard ]
 		            ifNone: [
 		            Error signal: 'The card wanted is not active' ].
-	anInstantCard implementEffect: aPermanentCard to: aTargetSpaceship in: self.
+	instantCard implementEffect: realCard to: aTargetSpaceship in: self.
 	activePermanentCards := activePermanentCards reject: [ :card |
-		                        card == aPermanentCard ]
+		                        card == realCard ]
 ]
 
 { #category : 'behavior' }

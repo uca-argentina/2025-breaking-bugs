@@ -16,16 +16,16 @@ CancelationCardTest >> should: test raise: aErrorClass withMessageError: aMessag
 { #category : 'tests' }
 CancelationCardTest >> testIsValidIfACancelationCardAppliesEffectCorrectlyToAnAffectedSpaceshipAndConsumesCard [
 
-	| aGame aSpaceship aGameBuilder position1 position2 anInstantCard aSpaceship2 aPermanentCard |
+	| aGame aSpaceship aGameBuilder position1 position2 aCancelationCard aSpaceship2 aPermanentCard |
 	position1 := 6.
 	position2 := 4.
 	aGameBuilder := GameBuilder new.
-	anInstantCard := CancelationCard new.
+	aCancelationCard := CancelationCard new.
 	aPermanentCard := SpeedCard new.
 	aSpaceship := Spaceship with:
 		              (OrderedCollection
 			               with: aPermanentCard
-			               with: anInstantCard).
+			               with: aCancelationCard).
 	aSpaceship2 := Spaceship new.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
@@ -43,27 +43,28 @@ CancelationCardTest >> testIsValidIfACancelationCardAppliesEffectCorrectlyToAnAf
 	self assert: (aGame getPositionOf: aSpaceship) equals: position1.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: position2.
 
-	aGame play: anInstantCard of: aSpaceship on: aPermanentCard.
+	aGame play: aCancelationCard of: aSpaceship on: aPermanentCard.
 
 	aGame playRound.
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: position1 * 2.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2 * 2
+	self assert: (aGame getPositionOf: aSpaceship2) equals: position2 * 2.
+	self assert: aGame numberOfActivePermanentCards equals: 0.
 ]
 
 { #category : 'tests' }
 CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverted [
 
-	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 position2 anInstantCard aPermanentCard |
+	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 position2 aCancelationCard aPermanentCard |
 	position1 := 6.
 	position2 := 4.
 	aGameBuilder := GameBuilder new.
-	anInstantCard := CancelationCard new.
+	aCancelationCard := CancelationCard new.
 	aPermanentCard := MercenaryCard new.
 	aSpaceship := Spaceship with:
 		              (OrderedCollection
 			               with: aPermanentCard
-			               with: anInstantCard).
+			               with: aCancelationCard).
 	aSpaceship2 := Spaceship new.
 	aSpaceship3 := Spaceship new.
 	aGame := aGameBuilder
@@ -83,7 +84,7 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 
 	self assert: (aGame getMercenariesOf: aSpaceship) size equals: 1.
 
-	aGame play: anInstantCard of: aSpaceship with: aPermanentCard to: aSpaceship2.
+	aGame play: aCancelationCard of: aSpaceship with: aPermanentCard to: aSpaceship2.
 
 	aGame playRound.
 

@@ -149,8 +149,8 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aSpaceship getMercenaries size) equals: 1.
-	self assert: (aSpaceship getCards size) equals: 1.
+	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
 	
 	aGame playRound.
 	self assert: (aGame getPositionOf: aSpaceship) equals: 6.

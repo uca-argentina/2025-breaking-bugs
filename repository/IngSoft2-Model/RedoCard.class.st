@@ -1,6 +1,6 @@
 Class {
 	#name : 'RedoCard',
-	#superclass : 'Object',
+	#superclass : 'Card',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -23,6 +23,11 @@ RedoCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 				implementEfectBy: aSpaceship
 				on: aTargetSpaceship
 				in: aGame ]
+]
+
+{ #category : 'behavior' }
+RedoCard >> isInstant [
+	^ false.
 ]
 
 { #category : 'behavior' }
