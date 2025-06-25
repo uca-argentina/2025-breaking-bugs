@@ -18,14 +18,8 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
-    | cardClasses randomCards |
-
-    cardClasses := { SpeedCard. MercenaryCard. AccelerationCard }.
-    
-    randomCards := OrderedCollection new.
-    
-    2 timesRepeat: [
-        randomCards add: ( cardClasses atRandom new ) ].
+    | randomCards |
+    randomCards := OrderedCollection with: (RandomCard obtainCard) with: (RandomCard obtainCard).
    
     ^ self basicNew initializeWith: randomCards
 
@@ -50,6 +44,12 @@ Spaceship >> = anotherSpaceship [
 	boolean := boolean and: (id = anotherSpaceship getId).
 	^ boolean.
 	
+]
+
+{ #category : 'adding' }
+Spaceship >> addNewCard: aMercenaryCard [ 
+	"CAMBIAR ESTE METODO PORQUE ROMPE MUTABILIDAD"
+	cards add: aMercenaryCard.
 ]
 
 { #category : 'behavior' }

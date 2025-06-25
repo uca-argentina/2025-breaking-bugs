@@ -156,7 +156,6 @@ MercenaryCardTest >> testIsValidIfASpashipThatUseMercenaryCardHasAShaceshipThatH
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 12.
 	self assert: (aGame getPositionOf: aSpaceship3) equals: 0.
 	
-	
 ]
 
 { #category : 'tests' }

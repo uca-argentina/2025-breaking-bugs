@@ -173,15 +173,16 @@ Game >> numberOfActivePermanentCards [
 ]
 
 { #category : 'behavior' }
-Game >> play: aCancelationCard of: aSpaceship on: aSpeedCard [ 
-	self play: aCancelationCard of: aSpaceship with: aSpeedCard to: nil.
+Game >> play: anInstantCard of: aSpaceship on: aSpeedCard [ 
+	self play: anInstantCard of: aSpaceship with: aSpeedCard to: nil.
 ]
 
 { #category : 'behavior' }
 Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [ 
 
-	| realCard instantCard |
-	instantCard := aSpaceship extractCardIfAvailable: anInstantCard.
+	| realCard instantCard aSpaceshipInGame|
+	aSpaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
+	instantCard := aSpaceshipInGame extractCardIfAvailable: anInstantCard.
 	instantCard isInstant ifFalse:[^nil].
 	realCard := activePermanentCards
 		            detect: [ :each | each = aPermanentCard ]
