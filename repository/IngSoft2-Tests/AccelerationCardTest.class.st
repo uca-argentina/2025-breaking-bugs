@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 AccelerationCardTest >> testIsValidIfAcelerationCardAppliesEffectCorrectlyToAllSpaceshipsAndConsumesCard [ 
 
-	| aGame aSpaceship aGameBuilder position1 position2 aCard aSpaceship2 |
+	| aGame aSpaceship aGameBuilder position1 position2 aCard aSpaceship2 getter |
 	
 	position1 := 6.
 	position2 := 4.
@@ -24,13 +24,14 @@ AccelerationCardTest >> testIsValidIfAcelerationCardAppliesEffectCorrectlyToAllS
 		         build.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getCardsOf: aSpaceship)size equals: 1.
+	self assert: (getter getCardsOf: aSpaceship2)size equals: 2.
 	
 	aGame playRound.
-	
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2*2 + 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: position1*2 + 1.
+	self assert: (getter getPositionOf: aSpaceship2) equals: position2*2 + 2.
 	
 	
 	

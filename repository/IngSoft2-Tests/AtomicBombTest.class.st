@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1PositionAndLoseAShield [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -28,12 +28,13 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 		         build.
 		
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 5.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 6.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 0.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 5.
+	self assert: (getter getPositionOf: aSpaceship3) equals: 6.
 	
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship3) equals: 2.
 	
 ]

@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTriggeringBattle [
 
-	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	finishLine := 19.
@@ -24,8 +24,8 @@ BlackHoleTest >> testWhenSpaceshipLandsOnBlackHoleItMovesBack4PositionsWithoutTr
 		         addDice: (SequentialFixedDice onFaces: #( 13 9 ));
 		         build.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 5.
 ]
 
 { #category : 'tests' }

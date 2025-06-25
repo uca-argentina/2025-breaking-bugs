@@ -16,7 +16,7 @@ self assert: aSpaceship getShields equals: 3.
 { #category : 'tests' }
 BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -29,21 +29,22 @@ BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
 	aGame playRound.
 	"self assert: (aGame getPositionOf: aSpaceship2) equals: 4."
 	aGame playRoundSkipping: {aSpaceship2}.
-	"self assert: aSpaceship2 getPosition equals: 9."
-	"self assert: (aGame getPositionOf: aSpaceship2) equals: 9."
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 9.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 3.
 	
 ]
 
 { #category : 'tests' }
 BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithShields [
 
-	| aGameBuilder aSpaceship aSpaceship2 aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -59,11 +60,13 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 	aGame playRound.
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 3.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 9.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 3.
 	
 	
 ]
@@ -71,7 +74,7 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 { #category : 'tests' }
 BattleTest >> testSpaceshipRecoversShieldsAfterSkippingTurn [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -84,18 +87,20 @@ BattleTest >> testSpaceshipRecoversShieldsAfterSkippingTurn [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
 	aGame playRoundSkipping: {aSpaceship2}.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 3.
 	
 ]
 
 { #category : 'tests' }
 BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 
-	| aGameBuilder aSpaceship aSpaceship2 aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aGame getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -109,18 +114,20 @@ BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 	aGame playRound.
 	aGame playRound.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 0.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 0.
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 0.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 0.
 	
 ]
 
 { #category : 'tests' }
 BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 
-	| aGameBuilder aSpaceship aSpaceship2 aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aGame getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -132,16 +139,17 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 9.
+	self assert: (getter getShieldsOf: aSpaceship) equals: 3.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
 ]
 
 { #category : 'tests' }
 BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -154,16 +162,17 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 9.
+	self assert: (getter getShieldsOf: aSpaceship) equals: 3.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
 ]
 
 { #category : 'tests' }
 BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndLosesShield [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame |
+	| aGameBuilder aSpaceship aSpaceship2 aSecondOponent aGame getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -176,8 +185,9 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 9.
+	self assert: (getter getShieldsOf: aSpaceship) equals: 3.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 0.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
 ]

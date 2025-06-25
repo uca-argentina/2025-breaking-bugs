@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 
-	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -26,15 +26,15 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 		         addDice: (SequentialFixedDice onFaces: #( 2 4 ));
 		         build.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 4.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 0.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 4.
 ]
 
 { #category : 'tests' }
 MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPreviousLap [
 
-	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aSpaceship3 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -52,18 +52,18 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 		         addDice: (SequentialFixedDice onFaces: #( 25 24 ));
 		         build.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 4.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 0.
-	self assert: (aGame getLapsCompletedOf: aSpaceship2) equals: 1.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 19.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 4.
+	self assert: (getter getLapsCompletedOf: aSpaceship) equals: 0.
+	self assert: (getter getLapsCompletedOf: aSpaceship2) equals: 1.
 	
 ]
 
 { #category : 'tests' }
 MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -85,7 +85,7 @@ MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 		         build.
 	aGame playRound.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: 6.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 11.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 6.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 11.
 ]

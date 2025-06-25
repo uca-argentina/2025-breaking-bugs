@@ -75,35 +75,8 @@ Game >> getAllDiceValuesFrom: diceCollection [
 ]
 
 { #category : 'behavior' }
-Game >> getCardsOf: aSpaceship [ 
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getCards.
-]
-
-{ #category : 'getter' }
-Game >> getLapsCompletedOf: aSpaceship [
-
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getLapsCompleted.
-]
-
-{ #category : 'getter' }
-Game >> getMercenariesOf: aSpaceship [ 
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getMercenaries.
-]
-
-{ #category : 'getter' }
-Game >> getPositionOf: aSpaceship [
-    | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
-	 ^ (spaceshipResult getPosition).
+Game >> getObjectGetter [
+	^ Getters with: (spaceships deepCopy) and: (activePermanentCards deepCopy).
 ]
 
 { #category : 'behavior' }
@@ -111,13 +84,6 @@ Game >> getPositionTable [
     hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
-]
-
-{ #category : 'getter' }
-Game >> getShieldsOf: aSpaceship [ 
-    | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
-	 ^ (spaceshipResult getShields).
 ]
 
 { #category : 'initialization' }
@@ -147,9 +113,10 @@ Game >> lastActivePermanentCard [
 
 { #category : 'behavior' }
 Game >> lastCardThrown [
-
+	|lastCardThrown|
 	cardsThrown isEmpty ifTrue: [ ^ NoEffectCard new ].
-	^ cardsThrown last
+	lastCardThrown := cardsThrown last.
+	^ lastCardThrown deepCopy.
 ]
 
 { #category : 'behavior' }
@@ -164,12 +131,6 @@ Game >> makeAllSpaceShipsMoveAtLowerVelocity [
 
 	spaceships do: [ :spaceship |
 		spaceship moveAtLowerVelocity ]
-]
-
-{ #category : 'behavior' }
-Game >> numberOfActivePermanentCards [
-
-	^ activePermanentCards size
 ]
 
 { #category : 'behavior' }

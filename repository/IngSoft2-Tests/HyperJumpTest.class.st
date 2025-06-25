@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAnAmountInParsecs [
 
-	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection |
+	| aSpaceship aSpaceship2 aGameBuilder finishLine aGame aBoard aSpaceship3 aTileBuilder aTileCollection getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -32,8 +32,8 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 		         addDice: (FixedDice onFace: 4);
 		         build.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 14.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 19.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 14.
+	self assert: (getter getPositionOf: aSpaceship3) equals: 9.
 ]

@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
 
-	| aGame aSpaceship aGameBuilder position1 aSpeedCard anotherSpeedCard aCancellationCard aRedoCard |
+	| aGame aSpaceship aGameBuilder position1 aSpeedCard anotherSpeedCard aCancellationCard aRedoCard getter |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
@@ -31,14 +31,14 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 	aGame play: aCancellationCard of: aSpaceship on: aSpeedCard.
 	"self assert: aGame numberOfActivePermanentCards equals: 1."
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
-
-	self assert: aGame numberOfActivePermanentCards equals: 0.
+	getter := aGame getObjectGetter.
+	self assert: getter numberOfActivePermanentCards equals: 0.
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHas2Mercenaries [
 
-	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 aMercenaryCard aRedoCard |
+	| aGame aSpaceship aSpaceship2 aSpaceship3 aGameBuilder position1 aMercenaryCard aRedoCard getter |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aMercenaryCard := MercenaryCard new.
@@ -59,14 +59,15 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
 
 	aGame playRoundUsing: aMercenaryCard of: aSpaceship to: aSpaceship2.
 	aGame playRoundUsing: aRedoCard of: aSpaceship to: aSpaceship3.
-
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
+	
+	getter := aGame getObjectGetter.
+	self assert: (getter getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsReapplied [
 
-	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherRedoCard |
+	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherRedoCard getter |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
@@ -87,16 +88,16 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 	aGame playRoundUsing: anotherRedoCard of: aSpaceship.
 	aGame playRound.
-
+	getter := aGame getObjectGetter.
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (getter getPositionOf: aSpaceship)
 		equals: position1 * 4 + 6
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDoublesItsSpeed [
 
-	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard |
+	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard getter |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
@@ -112,16 +113,16 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 	aGame playRound.
-
+	getter := aGame getObjectGetter.
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (getter getPositionOf: aSpaceship)
 		equals: position1 * 3 + 3
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpaceshipsDoubleItsSpeed [
 
-	| aGame aSpaceship aSpaceship2 aGameBuilder position1 position2 anAccelerationCard aRedoCard |
+	| aGame aSpaceship aSpaceship2 aGameBuilder position1 position2 anAccelerationCard aRedoCard getter |
 	position1 := 6.
 	position2 := 4.
 	aGameBuilder := GameBuilder new.
@@ -144,20 +145,21 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
 	aGame playRoundUsing: anAccelerationCard of: aSpaceship.
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 	aGame playRound.
+	getter := aGame getObjectGetter.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (getter getPositionOf: aSpaceship)
 		equals: position1 * 3 + 3.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship2)
+		assert: (getter getPositionOf: aSpaceship2)
 		equals: position2 * 3 + 5
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens [
 
-	| aGame aSpaceship aGameBuilder position1 aRedoCard |
+	| aGame aSpaceship aGameBuilder position1 aRedoCard getter |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aRedoCard := RedoCard new.
@@ -170,6 +172,7 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
 
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1 * 2
+	
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: position1 * 2
 ]

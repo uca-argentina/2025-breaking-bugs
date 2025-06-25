@@ -38,7 +38,7 @@ BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -49,14 +49,15 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
+	getter := aGame getObjectGetter.
+	self assert: (getter getLapsCompletedOf: aSpaceship) equals: 1.
 	
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 	
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -67,13 +68,14 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
+	getter := aGame getObjectGetter.
+	self assert: (getter getLapsCompletedOf: aSpaceship) equals: 1.
 ]
 
 { #category : 'tests' }
 BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 	
-	| aGameBuilder aSpaceship aGame |
+	| aGameBuilder aSpaceship aGame getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -84,13 +86,14 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 2.
+	getter := aGame getObjectGetter.
+	self assert: (getter getLapsCompletedOf: aSpaceship) equals: 2.
 ]
 
 { #category : 'tests' }
 BoardTest >> testPositionResetsAfterPassingBoardLimit [
 	
-	| aGameBuilder aSpaceship aGame  |
+	| aGameBuilder aSpaceship aGame  getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -101,7 +104,8 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 5.
 ]
 
 { #category : 'tests' }

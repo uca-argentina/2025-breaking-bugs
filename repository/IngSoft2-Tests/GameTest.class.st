@@ -17,7 +17,7 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 
 { #category : 'tests' }
 GameTest >> testAllTheEffectsOnGame [
-	| game aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board gameBuilder finishLine tileBuilder tileCollection |
+	| game aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board gameBuilder finishLine tileBuilder tileCollection getter |
 
 	gameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new. aSpaceship2 := Spaceship new. aSpaceship3 := Spaceship new. aSpaceship4 := Spaceship new.
@@ -44,24 +44,24 @@ GameTest >> testAllTheEffectsOnGame [
 
 	"Ronda 1"
 	game playRound.
-
-	self assert: (game getPositionOf: aSpaceship1) equals: 0.
-	self assert: (game getPositionOf: aSpaceship2) equals: 5.
-	self assert: (game getPositionOf: aSpaceship3) equals: 5.
-	self assert: (game getPositionOf: aSpaceship4) equals: 15.
+	getter := game getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship1) equals: 0.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 5.
+	self assert: (getter getPositionOf: aSpaceship3) equals: 5.
+	self assert: (getter getPositionOf: aSpaceship4) equals: 15.
 
 	"Ronda 2"
 	game playRound.
+	getter := game getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship1) equals: 23. "Pisa HyperJump → avanza 10 parsecs"
+	self assert: (getter getPositionOf: aSpaceship2) equals: 18. "Pisa HyperSpaceJump → avanza 4"
+	self assert: (getter getPositionOf: aSpaceship3) equals: 19. "MoonWalk, pero no retrocede"
+	self assert: (getter getPositionOf: aSpaceship4) equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
 	
-	self assert: (game getPositionOf: aSpaceship1) equals: 23. "Pisa HyperJump → avanza 10 parsecs"
-	self assert: (game getPositionOf: aSpaceship2) equals: 18. "Pisa HyperSpaceJump → avanza 4"
-	self assert: (game getPositionOf: aSpaceship3) equals: 19. "MoonWalk, pero no retrocede"
-	self assert: (game getPositionOf: aSpaceship4) equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
-	
-	self assert: (game getShieldsOf: aSpaceship1) equals: 2.
-	self assert: (game getShieldsOf: aSpaceship2) equals: 1.
-	self assert: (game getShieldsOf: aSpaceship3) equals: 2.
-	self assert: (game getShieldsOf: aSpaceship4) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 1.
+	self assert: (getter getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship4) equals: 2.
 	
 	
 
@@ -70,7 +70,7 @@ GameTest >> testAllTheEffectsOnGame [
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -106,19 +106,20 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	aGame playRound.
 
 
-
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship1) equals: 0.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 8.
+	self assert: (getter getPositionOf: aSpaceship3) equals: 5.
+	self assert: (getter getPositionOf: aSpaceship4) equals: 4.
 	
-	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (getter getShieldsOf: aSpaceship4) equals: 2.
 	self deny: aGame hasFinished.
 
 	aGame playRound.
+	getter := aGame getObjectGetter.
 	self assert: aGame hasFinished.
 	aPositionTable := (aGame getPositionTable).
 	self assert: (aPositionTable isWinner: aSpaceship2).
@@ -126,10 +127,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self deny: (aPositionTable isWinner: aSpaceship3).
 	self deny: (aPositionTable isWinner: aSpaceship4).
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 4.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 3.
+	self assert: (getter getPositionOf: aSpaceship1) equals: 19.
+	self assert: (getter getPositionOf: aSpaceship2) equals: finishLine.
+	self assert: (getter getPositionOf: aSpaceship3) equals: 4.
+	self assert: (getter getPositionOf: aSpaceship4) equals: 3.
 
 	self assert: aGame hasFinished
 ]
@@ -137,7 +138,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 { #category : 'tests' }
 GameTest >> testFullGameSimulationWithWinner [
 
-	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine |
+	| aGame aSpaceship1 aSpaceship2  aGameBuilder finishLine getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -153,16 +154,16 @@ GameTest >> testFullGameSimulationWithWinner [
 	aGame playRound.
 	aGame playRound.
 
-	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship1) equals: finishLine.
+	self assert: (getter getPositionOf: aSpaceship2) equals: 8.
 	self assert: aGame hasFinished.
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 
-	| aGame aSpaceship aGameBuilder |
+	| aGame aSpaceship aGameBuilder getter |
 	
 
 	aGameBuilder := GameBuilder new.
@@ -174,13 +175,15 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
+	
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 5.
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitValue [
 
-	| aGame aSpaceship aGameBuilder |
+	| aGame aSpaceship aGameBuilder getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -190,13 +193,14 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 9.
 ]
 
 { #category : 'tests' }
 GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryValue [
 
-	| aGame aSpaceship aGameBuilder |
+	| aGame aSpaceship aGameBuilder getter |
 	aGameBuilder := GameBuilder new.
 	aSpaceship := Spaceship new.
 	aGame := aGameBuilder
@@ -206,7 +210,8 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship) equals: 4.
 ]
 
 { #category : 'tests' }
@@ -231,7 +236,7 @@ GameTest >> testRaiseErrorIfATurnWantsToBePlayedWhenTheGameHasAlreadyFinished [
 { #category : 'tests' }
 GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds [
 
-	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine |
+	| aGame aSpaceship1 aSpaceship2 aGameBuilder finishLine getter|
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -246,8 +251,8 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 	aGame playRound.
 
 	self assert: aGame hasFinished.
-	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
+	getter := aGame getObjectGetter.
+	self assert: (getter getPositionOf: aSpaceship1) equals: finishLine.
 	self assert: (aSpaceship2 isAtPosition: 0)
 ]
 
