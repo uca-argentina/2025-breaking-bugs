@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperJump',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'currentIndex',
 		'amountOfParcecsToAdvance'

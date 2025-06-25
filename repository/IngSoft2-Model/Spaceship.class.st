@@ -72,19 +72,13 @@ Spaceship class >> withValuesOf: aSpaceship andCard: aCard [
 Spaceship >> = anotherSpaceship [
 	| boolean |
 	anotherSpaceship ifNil: [ ^ false ].
-	"boolean := (position = anotherSpaceship getPosition).
-	boolean := boolean and: (shields = anotherSpaceship getShields).
-	boolean := boolean and: (cards = anotherSpaceship getCards).
-	boolean := boolean and: (laps = anotherSpaceship getLapsCompleted)."
-	boolean := true.
-	boolean := boolean and: (id = anotherSpaceship getId).
+	boolean := (id = anotherSpaceship getId).
 	^ boolean.
 	
 ]
 
 { #category : 'adding' }
 Spaceship >> addNewCard: aCard [ 
-	"CAMBIAR ESTE METODO PORQUE ROMPE MUTABILIDAD"
 	^ self class withValuesOf: self andCard: aCard.
 	
 ]
