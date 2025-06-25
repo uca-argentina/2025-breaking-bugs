@@ -18,18 +18,36 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
-    | randomCards |
-    randomCards := OrderedCollection with: (RandomCard obtainCard) with: (RandomCard obtainCard).
-   
-    ^ self basicNew initializeWith: randomCards
 
+	| randomCards |
+	randomCards := OrderedCollection
+		               with: RandomCard obtainCard
+		               with: RandomCard obtainCard.
+	^ self basicNew
+		  initializeWithPosition: 0
+		  laps: 0
+		  shields: 3
+		  turnsPenalize: -1
+		  cards: randomCards
+		  velocity: 0
+		  mercenaries: OrderedCollection new
+		  owner: false
+		  id: 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
 { #category : 'instance creation' }
 Spaceship class >> with: cardsCollection [
-	"Hay que poner basicNew porque el new solo te hace entrar en loop"
-	^ self basicNew initializeWith: cardsCollection.
 
+	^ self basicNew
+		  initializeWithPosition: 0
+		  laps: 0
+		  shields: 3
+		  turnsPenalize: -1
+		  cards: cardsCollection
+		  velocity: 0
+		  mercenaries: OrderedCollection new
+		  owner: false
+		  id: 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
 { #category : 'instance creation' }
