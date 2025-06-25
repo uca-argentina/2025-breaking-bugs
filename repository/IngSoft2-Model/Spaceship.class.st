@@ -18,23 +18,53 @@ Class {
 
 { #category : 'instance creation' }
 Spaceship class >> new [
-    | cardClasses randomCards |
 
-    cardClasses := { SpeedCard. MercenaryCard. AccelerationCard }.
-    
-    randomCards := OrderedCollection new.
-    
-    2 timesRepeat: [
-        randomCards add: ( cardClasses atRandom new ) ].
-   
-    ^ self basicNew initializeWith: randomCards
-
+	| randomCards |
+	randomCards := OrderedCollection
+		               with: RandomCard obtainCard
+		               with: RandomCard obtainCard.
+	^ self basicNew
+		  initializeWithPosition: 0
+		  laps: 0
+		  shields: 3
+		  turnsPenalize: -1
+		  cards: randomCards
+		  velocity: 0
+		  mercenaries: OrderedCollection new
+		  owner: false
+		  id: 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
 { #category : 'instance creation' }
 Spaceship class >> with: cardsCollection [
-	"Hay que poner basicNew porque el new solo te hace entrar en loop"
-	^ self basicNew initializeWith: cardsCollection.
+
+	^ self basicNew
+		  initializeWithPosition: 0
+		  laps: 0
+		  shields: 3
+		  turnsPenalize: -1
+		  cards: cardsCollection
+		  velocity: 0
+		  mercenaries: OrderedCollection new
+		  owner: false
+		  id: 'Nave-' , (0 to: 9999) atRandom asString
+]
+
+{ #category : 'instance creation' }
+Spaceship class >> withValuesOf: aSpaceship andCard: aCard [
+	|cards|
+	cards := (aSpaceship getCards) deepCopy.
+	cards add: aCard.
+	^ self basicNew
+		initializeWithPosition: aSpaceship getPosition
+		laps: aSpaceship getLapsCompleted 
+		shields: aSpaceship getShields 
+		turnsPenalize: aSpaceship getTurnsPenalize
+		cards: cards
+		velocity: aSpaceship getVelocity
+		mercenaries: aSpaceship getMercenaries 
+		owner: aSpaceship hasOwner
+		id: aSpaceship getId.
 
 ]
 
@@ -49,6 +79,13 @@ Spaceship >> = anotherSpaceship [
 	boolean := true.
 	boolean := boolean and: (id = anotherSpaceship getId).
 	^ boolean.
+	
+]
+
+{ #category : 'adding' }
+Spaceship >> addNewCard: aCard [ 
+	"CAMBIAR ESTE METODO PORQUE ROMPE MUTABILIDAD"
+	^ self class withValuesOf: self andCard: aCard.
 	
 ]
 
@@ -78,25 +115,25 @@ Spaceship >> fire: aSpaceship [
 	mercenaries remove: aSpaceship ifAbsent: [].
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> getCards [
 
 	^ cards
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> getId [
 
 	^ id.
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> getLapsCompleted [
 
 	^ laps
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> getMercenaries [
 	^ mercenaries.
 ]
@@ -107,10 +144,20 @@ Spaceship >> getPosition [
 	^ position
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> getShields [
 
 	^ shields
+]
+
+{ #category : 'getter' }
+Spaceship >> getTurnsPenalize [
+	^ turnsPenalize.
+]
+
+{ #category : 'getter' }
+Spaceship >> getVelocity [
+	^ velocity.
 ]
 
 { #category : 'testing' }
@@ -147,6 +194,22 @@ Spaceship >> initializeWith: aCollectionOfCards [
 	mercenaries := OrderedCollection new.
 	owner := false.
 	id := 'Nave-' , (0 to: 9999) atRandom asString
+]
+
+{ #category : 'initialization' }
+Spaceship >> initializeWithPosition: aPosition laps: aLaps shields: aShields turnsPenalize: aTurns cards: aCollectionOfCards velocity: aVelocity mercenaries: aMercenaries owner: anOwner id: anId [
+
+	position := aPosition.
+	laps := aLaps.
+	shields := aShields.
+	turnsPenalize := aTurns.
+	cards := aCollectionOfCards.
+	velocity := aVelocity.
+	mercenaries := aMercenaries.
+	owner := anOwner.
+	id := anId.
+
+	^ self
 ]
 
 { #category : 'testing' }
@@ -193,7 +256,7 @@ Spaceship >> moveToPosition: aPosition [
 	position := aPosition + velocity
 ]
 
-{ #category : 'behavior' }
+{ #category : 'getter' }
 Spaceship >> numberOfMercenaries [
 
 	^ mercenaries size
