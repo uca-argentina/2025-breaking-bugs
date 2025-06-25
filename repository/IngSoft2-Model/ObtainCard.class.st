@@ -1,0 +1,32 @@
+Class {
+	#name : 'ObtainCard',
+	#superclass : 'Object',
+	#instVars : [
+		'cardSupplier'
+	],
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
+}
+
+{ #category : 'instance creation' }
+ObtainCard class >> new [
+	^ super new initializeWith: [ RandomCard obtainCard ].
+]
+
+{ #category : 'instance creation' }
+ObtainCard class >> with: aSpecificCard [ 
+	^ self new initializeWith: [ aSpecificCard ].
+]
+
+{ #category : 'operations' }
+ObtainCard >> applyTo: aSpaceship in: aGame [
+	|aNewSpaceship|
+	aNewSpaceship := aSpaceship addNewCard: (cardSupplier value).
+	aGame updateValues: aNewSpaceship.
+	
+]
+
+{ #category : 'initialization' }
+ObtainCard >> initializeWith: aCard [
+	cardSupplier := aCard.
+]

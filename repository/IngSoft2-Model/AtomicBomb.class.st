@@ -6,7 +6,8 @@ Class {
 }
 
 { #category : 'operations' }
-AtomicBomb >> applyTo: aSpaceship in: aGame [ 
+AtomicBomb >> applyTo: aSpaceship in: aGame [
 
-	aGame produceAtomicBombEffectTo: aSpaceship. 
+	aGame produceAtomicBombEffectTo: aSpaceship.
+	aGame registerAppliedEffect: self
 ]

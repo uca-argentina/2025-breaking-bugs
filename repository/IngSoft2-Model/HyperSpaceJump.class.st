@@ -8,9 +8,9 @@ Class {
 { #category : 'operations' }
 HyperSpaceJump >> applyTo: aSpaceship in: aGame [
 
-
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
 	aSpaceship moveToPosition: actualPosition + 4.
-	aSpaceship lowerAShield
+	aSpaceship lowerAShield.
+	aGame registerAppliedEffect: self
 ]

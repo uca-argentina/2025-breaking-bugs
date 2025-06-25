@@ -36,6 +36,49 @@ BoardTest >> testCreatingABoardWithSize20AndWormholeFrom4To9 [
 ]
 
 { #category : 'tests' }
+BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormhole [
+
+	| aBoard aSize |
+	aSize := 60.
+	aBoard := Board withSizeInLightYears: aSize andWormholeFrom: 12 to: 27.
+	self assert: (aBoard checkSize: aSize ).
+	self assert: (aBoard hasWormholeFrom: 12 to: 27)
+]
+
+{ #category : 'tests' }
+BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
+	
+	| game aSpaceship1  board gameBuilder finishLine tileBuilder tileCollection |
+
+	gameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new. 
+	finishLine := 75.
+
+	tileBuilder := TilesBuilder withInLightYears: finishLine.
+	tileBuilder
+		with: AtomicBomb new at: 9;
+		with: BlackHole new at: 27;
+		with: (HyperJump withDescendingParsecsFrom: 90 step: 30) at: 30;
+		with: (MoonWalk for: 6) at: 57;
+		with: HyperSpaceJump new at: 48.
+
+	tileCollection := tileBuilder build.
+
+	board := Board withSizeInLightYears: finishLine andWormholeFrom: 12 to: 45 and: tileCollection.
+
+	game := gameBuilder
+		addSpaceship: aSpaceship1; 
+		addBoard: board;
+		addDice: (SequentialFixedDice onFaces: #(9 27 15 12 30 33 42 12));
+		setLapsToWinTo: 2;
+		build.
+		
+	self assert: (board checkSize: finishLine).
+	self assert: (board hasWormholeFrom: 12 to: 45).
+	self assert: (board getTiles) equals: tileCollection .
+]
+
+{ #category : 'tests' }
 BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 
 	| aGameBuilder aSpaceship aGame |
@@ -49,7 +92,8 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: aSpaceship getLapsCompleted equals: 1
+	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
+	
 ]
 
 { #category : 'tests' }
@@ -66,7 +110,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 		         build.
 
 	aGame playRound.
-	self assert: aSpaceship getLapsCompleted equals: 1
+	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
 ]
 
 { #category : 'tests' }
@@ -83,7 +127,7 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 		         build.
 
 	aGame playRound.
-	self assert: aSpaceship getLapsCompleted equals: 2
+	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 2.
 ]
 
 { #category : 'tests' }
@@ -100,7 +144,7 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: (aSpaceship getPosition )equals: 5.
+	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
 ]
 
 { #category : 'tests' }

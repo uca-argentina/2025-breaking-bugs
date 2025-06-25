@@ -11,4 +11,5 @@ BlackHole >> applyTo: aSpaceship in: aGame [
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
 	aSpaceship moveToPosition: actualPosition - 4.
+	aGame registerAppliedEffect: self
 ]

@@ -28,12 +28,12 @@ AtomicBombTest >> testWhenSpaceshipLandsOnAtomicBombThenAllSpaceshipsGoTo1Positi
 		         build.
 		
 	aGame playRound.
-
-	self assert: aSpaceship getPosition equals: 0.
-	self assert: aSpaceship2 getPosition equals: 5.
-	self assert: aSpaceship3 getPosition equals: 6.
-	self assert: aSpaceship getShields equals:2.
-	self assert: aSpaceship2 getShields equals:2.
-	self assert: aSpaceship3 getShields equals:2
+	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 5.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 6.
+	
+	self assert: (aGame getShieldsOf: aSpaceship) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
 	
 ]
