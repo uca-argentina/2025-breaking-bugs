@@ -23,7 +23,7 @@ RedoCardTest >> testBanana [
 
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	"aGame playRoundUsing: aRedoCard of: aSpaceship."
-	aGame play: aRedoCard of: aSpaceship to: nil.
+	aGame playInstant: aRedoCard of: aSpaceship to: nil.
 	aGame playRound.
 
 	self
@@ -54,7 +54,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	aGame playRoundUsing: anotherSpeedCard of: aSpaceship.
-	aGame play: aCancellationCard of: aSpaceship on: aSpeedCard.
+	aGame playInstant: aCancellationCard of: aSpaceship on: aSpeedCard.
 	"self assert: aGame numberOfActivePermanentCards equals: 1."
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 

@@ -181,27 +181,27 @@ Game >> numberOfActivePermanentCards [
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship on: aSpeedCard [
+Game >> playInstant: anInstantCard of: aSpaceship on: aSpeedCard [
 
 	self
-		play: anInstantCard
+		playInstant: anInstantCard
 		of: aSpaceship
 		with: aSpeedCard
 		to: nil
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> play: aRepeatCard of: aSpaceship to: aTargetSpaceship [
+{ #category : 'behavior' }
+Game >> playInstant: aRepeatCard of: aSpaceship to: aTargetSpaceship [
 
 	self
-		play: aRepeatCard
+		playInstant: aRepeatCard
 		of: aSpaceship
 		with: NoEffectCard new
 		to: aTargetSpaceship
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [
+Game >> playInstant: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [
 
 	| realCard instantCard aSpaceshipInGame aTargetSpaceshipInGame |
 	aSpaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].

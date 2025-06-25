@@ -34,7 +34,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	self assert: (aGame getPositionOf: aSpaceship) equals: position.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: position2.
 
-	aGame play: aCard of: aSpaceship on: aSpeedCard.
+	aGame playInstant: aCard of: aSpaceship on: aSpeedCard.
 
 	aGame playRound.
 	
