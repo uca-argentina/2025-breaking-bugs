@@ -11,7 +11,8 @@ Class {
 		'moonwalkPercentage',
 		'hyperJumpPercentage',
 		'atomicBombPercentage',
-		'cardTitlePercentage'
+		'cardTitlePercentage',
+		'isInParcecs'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -19,7 +20,15 @@ Class {
 
 { #category : 'instance creation' }
 TilesBuilder class >> with: finishLine [
-	^ self new initializeWith: finishLine.
+	^ self new initializeWith: finishLine andValuesInParcecs: true.
+]
+
+{ #category : 'instance creation' }
+TilesBuilder class >> withInLightYears: finishLine [
+	
+	| finishLineInParcecs |
+	finishLineInParcecs := finishLine // 3.
+	^ self new initializeWith: finishLineInParcecs andValuesInParcecs: false.
 ]
 
 { #category : 'behavior' }
@@ -69,6 +78,22 @@ TilesBuilder >> initializeWith: aSize [
 	cardTitlePercentage := 0.
 ]
 
+{ #category : 'initialize' }
+TilesBuilder >> initializeWith: aSize andValuesInParcecs: ifInIsParcecs [
+	size := aSize.
+	isInParcecs := ifInIsParcecs .
+	numberOfPositionsToGoBack := 4.
+	aTileCollection := (1 to: size+1) collect: [ :i |
+		                   Tile with: NoEffect new ].
+	noEffectPercentage := 40.
+	blackholePercentage := 20.
+	hyperSpaceJumpPercentage := 20.
+	moonwalkPercentage := 10.
+	hyperJumpPercentage := 8.
+	atomicBombPercentage := 2.
+	cardTitlePercentage := 0.
+]
+
 { #category : 'behavior' }
 TilesBuilder >> setForMoonwalk: aNumberOfPositionsToGoBack [
 
@@ -91,5 +116,8 @@ TilesBuilder >> setRandomness: aCollectionOfPercentages [
 { #category : 'behavior' }
 TilesBuilder >> with: anEffect at: aPosition [
 
-	aTileCollection at: aPosition + 1 put: (Tile with: anEffect)
+	| positionToSet |
+	(isInParcecs )ifTrue: [positionToSet := aPosition ] ifFalse:[positionToSet :=aPosition //3 ] .
+
+	aTileCollection at: positionToSet + 1 put: (Tile with: anEffect)
 ]
