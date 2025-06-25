@@ -245,7 +245,7 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 { #category : 'behavior' }
 Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
 
-	| positionsToAdvance newPosition card targetSpaceship|
+	| positionsToAdvance newPosition card targetSpaceship aSpaceshipNew|
 	positionsToAdvance := self getAllDiceValuesFrom: dice.
 	
 	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
@@ -254,19 +254,20 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
 	aSpaceship moveToPosition: newPosition.
 	
 	board applyTileEffectTo: aSpaceship in: self.
+	aSpaceshipNew := spaceships detect: [ :each | each = aSpaceship ].
 	
-	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceship].
-	hasFinished := aSpaceship hasReached: lapsToWin.
+	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceshipNew].
+	hasFinished := aSpaceshipNew hasReached: lapsToWin.
 	
 	"Si el destino no es valido entonces la carta pierde su efecto"
-	targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceship inCard: aCard.
+	targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceshipNew inCard: aCard.
 	card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
 	
-	card := aSpaceship extractCardIfAvailable: card.
+	card := aSpaceshipNew extractCardIfAvailable: card.
 	card class = CancelationCard
 		ifTrue: [
 		card implementEffect: activePermanentCards last to: aTargetSpaceship in: self.]
-		ifFalse: [ card implementEfectBy: aSpaceship on: targetSpaceship in: self ].
+		ifFalse: [ card implementEfectBy: aSpaceshipNew on: targetSpaceship in: self ].
 
 	card isPermanent ifTrue: [ activePermanentCards add: card ].
 
@@ -299,4 +300,10 @@ Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
 Game >> registerThrownCard: aCard [
 
 	cardsThrown add: aCard
+]
+
+{ #category : 'behavior' }
+Game >> updateValues: aSpaceship [
+	spaceships := spaceships collect: [ :each |
+		each = aSpaceship ifTrue: [ aSpaceship ] ifFalse: [ each ] ].
 ]

@@ -63,7 +63,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 		         addSpaceship: aSpaceship2;
 		         addBoard: aBoard;
 					setLapsToWinTo: 2;
-		         addDice: (FixedDice onFace: position);
+		         addDice: (SequentialFixedDice onFaces: {position.15});
 		         build.
 		
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
