@@ -108,11 +108,10 @@ CancelationCardTest >> testWhenTryingToCancelACardThatIsNotActiveThenItIsNotPoss
 		         addDice: (FixedDice onFace: 4);
 		         build.
 
-	self
-		should: [
-		aGame play: aCancellationCard of: aSpaceship on: anAccelerationCard ]
-		raise: Error
-		withMessageError: 'The card wanted is not active'
+	aGame play: aCancellationCard of: aSpaceship on: anAccelerationCard.
+	aGame playRound.
+
+	self assert: (aGame getPositionOf: aSpaceship) equals: 4
 ]
 
 { #category : 'tests' }

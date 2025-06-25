@@ -17,7 +17,10 @@ MoonWalk class >> for: aNumberOfPositionToGoBack [
 { #category : 'operations' }
 MoonWalk >> applyTo: aSpaceship in: aGame [
 
-	aGame produceMoonwalkEffectTo: aSpaceship with: numberOfPositionsToGoBack 
+	aGame
+		produceMoonwalkEffectTo: aSpaceship
+		with: numberOfPositionsToGoBack.
+	aGame registerAppliedEffect: self
 ]
 
 { #category : 'initialization' }

@@ -10,7 +10,8 @@ Class {
 		'lapsToWin',
 		'activatedAtomicBomb',
 		'activePermanentCards',
-		'cardsThrown'
+		'cardsThrown',
+		'lastTileEffectApplied'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -136,7 +137,8 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
 	activePermanentCards := OrderedCollection new.
-	cardsThrown := OrderedCollection new
+	cardsThrown := OrderedCollection new.
+	lastTileEffectApplied := NoEffect new
 ]
 
 { #category : 'accessing' }
@@ -150,6 +152,12 @@ Game >> lastCardThrown [
 
 	cardsThrown isEmpty ifTrue: [ ^ NoEffectCard new ].
 	^ cardsThrown last
+]
+
+{ #category : 'accessing' }
+Game >> lastTileEffectApplied [
+
+	^ lastTileEffectApplied
 ]
 
 { #category : 'behavior' }
@@ -173,22 +181,44 @@ Game >> numberOfActivePermanentCards [
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship on: aSpeedCard [ 
-	self play: anInstantCard of: aSpaceship with: aSpeedCard to: nil.
+Game >> play: anInstantCard of: aSpaceship on: aSpeedCard [
+
+	self
+		play: anInstantCard
+		of: aSpaceship
+		with: aSpeedCard
+		to: nil
+]
+
+{ #category : 'as yet unclassified' }
+Game >> play: aRepeatCard of: aSpaceship to: aTargetSpaceship [
+
+	self
+		play: aRepeatCard
+		of: aSpaceship
+		with: NoEffectCard new
+		to: aTargetSpaceship
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [ 
+Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [
 
-	| realCard instantCard aSpaceshipInGame|
+	| realCard instantCard aSpaceshipInGame aTargetSpaceshipInGame |
 	aSpaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
+	aTargetSpaceshipInGame := spaceships
+		                          detect: [ :each | each = aTargetSpaceship ]
+		                          ifNone: [ nil ].
 	instantCard := aSpaceshipInGame extractCardIfAvailable: anInstantCard.
-	instantCard isInstant ifFalse:[^nil].
+	instantCard isInstant ifFalse: [ ^ nil ].
 	realCard := activePermanentCards
 		            detect: [ :each | each = aPermanentCard ]
 		            ifNone: [
-		            Error signal: 'The card wanted is not active' ].
-	instantCard implementEffect: realCard to: aTargetSpaceship in: self.
+			            NoEffectCard new
+			            "Error signal: 'The card wanted is not active'" ].
+	instantCard
+		implementEffect: realCard
+		to: aTargetSpaceshipInGame
+		in: self.
 	activePermanentCards := activePermanentCards reject: [ :card |
 		                        card == realCard ]
 ]
@@ -294,6 +324,12 @@ Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
 		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
 		ship moveToPosition: newPosition]
 
+]
+
+{ #category : 'behavior' }
+Game >> registerAppliedEffect: anEffect [
+
+	lastTileEffectApplied := anEffect
 ]
 
 { #category : 'behavior' }

@@ -27,3 +27,9 @@ NoEffectCard >> isPermanent [
 
 	^ false
 ]
+
+{ #category : 'behavior' }
+NoEffectCard >> undoEffect: aGame to: anUndefinedObject [
+
+	
+]

@@ -54,7 +54,9 @@ HyperJump >> applyTo: aSpaceship in: aGame [
 
 	newPosition := aSpaceship getPosition
 	               + (parsecsToAdvance // sizeOfTileInParsecs).
-	aSpaceship moveToPosition: newPosition
+	aSpaceship moveToPosition: newPosition.
+
+	aGame registerAppliedEffect: self
 ]
 
 { #category : 'initialization' }

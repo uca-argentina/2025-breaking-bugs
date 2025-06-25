@@ -17,8 +17,11 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalk for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
-	"aBoard add: (MoonWalk for: 6) at: 4."
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 8
+		          to: 15
+		          and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
@@ -28,7 +31,7 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 	aGame playRound.
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 4.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 4
 ]
 
 { #category : 'tests' }
