@@ -6,46 +6,113 @@ Class {
 }
 
 { #category : 'tests' }
-RedoCardTest >> testBanana [
-
-	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard |
-	position1 := 6.
-	aGameBuilder := GameBuilder new.
-	aSpeedCard := SpeedCard new.
-	aRedoCard := RedoCard new.
-	aSpaceship := Spaceship with:
-		              (OrderedCollection with: aSpeedCard with: aRedoCard).
-	aGame := aGameBuilder
-		         addSpaceship: aSpaceship;
-		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
-		         addDice: (FixedDice onFace: position1);
-		         build.
-
-	aGame playRoundUsing: aSpeedCard of: aSpaceship.
-	"aGame playRoundUsing: aRedoCard of: aSpaceship."
-	aGame playInstant: aRedoCard of: aSpaceship to: nil.
-	aGame playRound.
+RedoCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessage [
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
-		equals: position1 * 2 + 2.
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: errorMessage ]
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testRedoCardAfterRepeatOfBlackHoleReappliesOriginalEffect [
+
+	| gameBuilder boardBuilder board dice spaceship repeatCard redoCard game |
+	repeatCard := RepeatCard new.
+	redoCard := RedoCard new.
+	spaceship := Spaceship with:
+		             (OrderedCollection with: repeatCard with: redoCard).
+	boardBuilder := TilesBuilder with: 90.
+	boardBuilder with: BlackHole new at: 4.
+	board := Board
+		         withSize: 90
+		         andWormholeFrom: 80
+		         to: 89
+		         and: boardBuilder build.
+	dice := SequentialFixedDice onFaces: { 4. 5. 5 }.
+	gameBuilder := GameBuilder new.
+	game := gameBuilder
+		        addSpaceship: spaceship;
+		        addBoard: board;
+		        addDice: dice;
+		        build.
+
+	game playRound.
+	self assert: (game getPositionOf: spaceship) equals: 0.
+	game playRound.
+	game playInstant: repeatCard of: spaceship to: spaceship.
+	self assert: (game getPositionOf: spaceship) equals: 1.
+	game playRound.
+	self assert: (game getPositionOf: spaceship) equals: 6.
+	game playInstant: redoCard of: spaceship to: spaceship.
+
+	self assert: (game getPositionOf: spaceship) equals: 2.
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testRedoCardAfterRepeatOfHyperJumpReappliesOriginalEffect [
+
+	| gameBuilder boardBuilder board dice spaceship1 spaceship2 spaceship3 repeatCard redoCard game |
+	repeatCard := RepeatCard new.
+	redoCard := RedoCard new.
+
+	spaceship1 := Spaceship with:
+		              (OrderedCollection with: repeatCard with: redoCard).
+	spaceship2 := Spaceship new.
+	spaceship3 := Spaceship new.
+
+	"Tablero con HyperJump (30,20,10 pársecs) en casillero 4"
+	boardBuilder := (TilesBuilder with: 90)
+		                with:
+		                (HyperJump withDescendingParsecsFrom: 30 step: 10)
+		                at: 4.
+	board := Board
+		         withSize: 90
+		         andWormholeFrom: 80
+		         to: 89
+		         and: boardBuilder build.
+
+	dice := FixedDice onFace: 4.
+	gameBuilder := GameBuilder new.
+	game := gameBuilder
+		        addSpaceship: spaceship1;
+		        addSpaceship: spaceship2;
+		        addSpaceship: spaceship3;
+		        addBoard: board;
+		        addDice: dice;
+		        build.
+
+	game playRound.
+
+	self assert: (game getPositionOf: spaceship1) equals: 19. 
+	self assert: (game getPositionOf: spaceship2) equals: 14. 
+	self assert: (game getPositionOf: spaceship3) equals: 9. 
+
+	
+	game playInstant: repeatCard of: spaceship1 to: spaceship2.
+	self assert: (game getPositionOf: spaceship1) equals: 19.
+	self assert: (game getPositionOf: spaceship2) equals: 29.
+	self assert: (game getPositionOf: spaceship3) equals: 9.
+
+	game playInstant: redoCard of: spaceship1 to: spaceship2.
+	self assert: (game getPositionOf: spaceship1) equals: 19.
+	self assert: (game getPositionOf: spaceship2) equals: 39.
+	self assert: (game getPositionOf: spaceship3) equals: 9.
 ]
 
 { #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
 
-	| aGame aSpaceship aGameBuilder position1 aSpeedCard anotherSpeedCard aCancellationCard aRedoCard |
+	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard anotherSpeedCard aCancellationCard lastCard |
 	position1 := 6.
 	aGameBuilder := GameBuilder new.
 	aSpeedCard := SpeedCard new.
 	anotherSpeedCard := SpeedCard new.
 	aCancellationCard := CancelationCard new.
 	aRedoCard := RedoCard new.
-	aSpaceship := Spaceship with: (OrderedCollection
-			               with: aSpeedCard
-			               with: anotherSpeedCard
-			               with: aCancellationCard
-			               with: aRedoCard).
+	aSpaceship := Spaceship with:
+		              (OrderedCollection with: aSpeedCard with: aRedoCard with: aCancellationCard with: anotherSpeedCard ).
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
@@ -55,10 +122,13 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	aGame playRoundUsing: anotherSpeedCard of: aSpaceship.
 	aGame playInstant: aCancellationCard of: aSpaceship on: aSpeedCard.
-	"self assert: aGame numberOfActivePermanentCards equals: 1."
-	aGame playRoundUsing: aRedoCard of: aSpaceship.
+	lastCard := aGame lastCardThrown.
+	aGame playInstant: aRedoCard of: aSpaceship to: nil.
+	aGame playRound.
 
-	self assert: aGame numberOfActivePermanentCards equals: 0.
+	self
+		assert: (aGame getPositionOf: aSpaceship)
+		equals: position1 * 3 + 1.
 ]
 
 { #category : 'tests' }
@@ -181,7 +251,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
 ]
 
 { #category : 'tests' }
-RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens [
+RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenError [
 
 	| aGame aSpaceship aGameBuilder position1 aRedoCard |
 	position1 := 6.
@@ -193,9 +263,9 @@ RedoCardTest >> testWhenUsingARedoCardHavingNotUsedOtherBeforeThenNothingHappens
 		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
 		         addDice: (FixedDice onFace: position1);
 		         build.
-
-	aGame playRoundUsing: aRedoCard of: aSpaceship.
-	aGame playRound.
-
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1 * 2
+	
+	self
+		should: [ aGame playRoundUsing: aRedoCard of: aSpaceship. ]
+		raise: Error
+		withMessageText: 'The way the redo card was implemented is not correct'
 ]

@@ -1,9 +1,6 @@
 Class {
 	#name : 'CancelationCard',
-	#superclass : 'Card',
-	#instVars : [
-		'id'
-	],
+	#superclass : 'InstantCard',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -12,10 +9,6 @@ Class {
 CancelationCard >> = anotherCard [
 
 ^ (anotherCard compareID: id).
-]
-
-{ #category : 'behavior' }
-CancelationCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
 ]
 
 { #category : 'comparing' }
@@ -27,21 +20,10 @@ CancelationCard >> compareID: anId [
 CancelationCard >> implementEffect: aPermanentCard by: aSpaceship to: aTargetSpaceship in: aGame [
 
 	aPermanentCard undoEffect: aGame to: aTargetSpaceship.
-	aGame registerThrownCard: self
+	aGame registerThrownCard: self.
 ]
 
 { #category : 'initialization' }
 CancelationCard >> initialize [
 id := 'CancelationCard-' , (0 to: 9999) atRandom asString.
-]
-
-{ #category : 'testing' }
-CancelationCard >> isInstant [
-	^ true.
-]
-
-{ #category : 'behavior' }
-CancelationCard >> isPermanent [
-
-	^ false
 ]

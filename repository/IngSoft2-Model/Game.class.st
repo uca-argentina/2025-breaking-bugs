@@ -137,7 +137,7 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	lapsToWin := aNumberOfLaps.
 	battle := Battle with: spaceships and: dice.
 	activePermanentCards := OrderedCollection new.
-	cardsThrown := OrderedCollection new.
+	cardsThrown := NoEffectCard new.
 	lastTileEffectApplied := NoEffect new
 ]
 
@@ -150,8 +150,7 @@ Game >> lastActivePermanentCard [
 { #category : 'behavior' }
 Game >> lastCardThrown [
 
-	cardsThrown isEmpty ifTrue: [ ^ NoEffectCard new ].
-	^ cardsThrown last
+	^ cardsThrown
 ]
 
 { #category : 'accessing' }
@@ -336,7 +335,7 @@ Game >> registerAppliedEffect: anEffect [
 { #category : 'behavior' }
 Game >> registerThrownCard: aCard [
 
-	cardsThrown add: aCard
+	cardsThrown := aCard
 ]
 
 { #category : 'behavior' }

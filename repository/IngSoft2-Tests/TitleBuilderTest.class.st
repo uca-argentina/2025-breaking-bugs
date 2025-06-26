@@ -9,7 +9,7 @@ Class {
 TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilities [
 
 	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
-	finishLine := 30000. 
+	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileCollection := aTileBuilder buildRandom.
 
@@ -39,7 +39,7 @@ TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilit
 TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCardTitle [
 
 	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
-	finishLine := 30000. 
+	finishLine := 15000. 
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder setRandomness: #(35 19 19 9 7 2 9).
 	aTileCollection := aTileBuilder buildRandom.

@@ -1,9 +1,8 @@
 Class {
 	#name : 'MercenaryCard',
-	#superclass : 'Card',
+	#superclass : 'PermanentCard',
 	#instVars : [
-		'affectedSpaceship',
-		'id'
+		'affectedSpaceship'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -38,17 +37,6 @@ MercenaryCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 { #category : 'initialization' }
 MercenaryCard >> initialize [
 id := 'MercenaryCard-' , (0 to: 9999) atRandom asString.
-]
-
-{ #category : 'behavior' }
-MercenaryCard >> isInstant [
-	^ false.
-]
-
-{ #category : 'behavior' }
-MercenaryCard >> isPermanent [
-
-	^ true
 ]
 
 { #category : 'behavior' }
