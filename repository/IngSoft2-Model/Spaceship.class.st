@@ -276,11 +276,3 @@ Spaceship >> rechargeShields [
 
 	shields := 3
 ]
-
-{ #category : 'behavior' }
-Spaceship >> useCardOn: targetSpaceship [
-	| card |
-	card := cards at: 1.
-	cards removeFirst.
-	card implementEffectBy: self on: targetSpaceship.
-]

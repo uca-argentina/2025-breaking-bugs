@@ -1,9 +1,8 @@
 Class {
 	#name : 'SpeedCard',
-	#superclass : 'Card',
+	#superclass : 'PermanentCard',
 	#instVars : [
-		'spaceshipAffected',
-		'id'
+		'spaceshipAffected'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -36,17 +35,6 @@ SpeedCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 SpeedCard >> initialize [
 id := 'Card-' , (0 to: 9999) atRandom asString.
 
-]
-
-{ #category : 'behavior' }
-SpeedCard >> isInstant [
-	^ false.
-]
-
-{ #category : 'behavior' }
-SpeedCard >> isPermanent [
-
-	^ true
 ]
 
 { #category : 'behavior' }

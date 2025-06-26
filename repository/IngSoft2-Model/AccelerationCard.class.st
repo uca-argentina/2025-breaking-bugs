@@ -1,9 +1,6 @@
 Class {
 	#name : 'AccelerationCard',
-	#superclass : 'Card',
-	#instVars : [
-		'id'
-	],
+	#superclass : 'PermanentCard',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -32,17 +29,6 @@ AccelerationCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame 
 { #category : 'initialization' }
 AccelerationCard >> initialize [
 id := 'AccelerationCard-' , (0 to: 9999) atRandom asString.
-]
-
-{ #category : 'behavior' }
-AccelerationCard >> isInstant [
-	^ false.
-]
-
-{ #category : 'behavior' }
-AccelerationCard >> isPermanent [
-
-	^ true
 ]
 
 { #category : 'behavior' }

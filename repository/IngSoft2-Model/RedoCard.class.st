@@ -1,9 +1,6 @@
 Class {
 	#name : 'RedoCard',
 	#superclass : 'Card',
-	#instVars : [
-		'id'
-	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -29,20 +26,25 @@ RedoCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 	| lastCardThrown copyOfLastCardThrown |
 	lastCardThrown := aGame lastCardThrown.
 	copyOfLastCardThrown := lastCardThrown deepCopy.
-	copyOfLastCardThrown class = CancelationCard
-		ifTrue: [
-			copyOfLastCardThrown implementEffect: (aGame lastActivePermanentCard) by: aSpaceship to: aTargetSpaceship in: aGame ]
-		ifFalse: [
-			copyOfLastCardThrown
+	(copyOfLastCardThrown isPermanent) ifFalse: [ Error signal: 'The way the redo card was implemented is not correct' ].
+	copyOfLastCardThrown
 				implementEfectBy: aSpaceship
 				on: aTargetSpaceship
-				in: aGame ]
+				in: aGame
 ]
 
 { #category : 'behavior' }
 RedoCard >> implementEffect: aPermanentCard by: aSpaceship to: aTargetSpaceship in: aGame [
-
-	self implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame.
+	| lastCardThrown copyOfLastCardThrown target |
+	target := nil.
+	lastCardThrown := aGame lastCardThrown.
+	copyOfLastCardThrown := lastCardThrown deepCopy.
+	(copyOfLastCardThrown isInstant) ifFalse: [ Error signal: 'The way the redo card was implemented is not correct' ].
+	copyOfLastCardThrown class = CancelationCard 
+	ifTrue: [ target := (aGame lastActivePermanentCard)].
+	
+	copyOfLastCardThrown implementEffect: target by: aSpaceship to: aTargetSpaceship in: aGame
+	
 ]
 
 { #category : 'initialization' }
