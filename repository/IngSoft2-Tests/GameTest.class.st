@@ -68,6 +68,106 @@ GameTest >> testAllTheEffectsOnGame [
 ]
 
 { #category : 'tests' }
+GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
+
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable aSpeedCard aCancellationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 |
+	
+	aGameBuilder := GameBuilder new.
+	aSpeedCard := SpeedCard new.
+	aCancellationCard := CancelationCard new.
+	aAccelerationCard := AccelerationCard new.
+	aMercenaryCard := MercenaryCard new.
+	aSpeedCard2 := SpeedCard new.
+	aCancellationCard2 := CancelationCard new.
+	aAccelerationCard2 := AccelerationCard new.
+	aMercenaryCard2 := MercenaryCard new.
+	
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with:aMercenaryCard2).
+	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancellationCard with: aSpeedCard2 ).
+	aSpaceship3 := Spaceship with: (OrderedCollection with: aAccelerationCard with: aCancellationCard2 ).
+	aSpaceship4 := Spaceship with: (OrderedCollection with: aMercenaryCard with: aAccelerationCard2).
+	finishLine := 43.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder
+		with: BlackHole new at: 9;
+		with: AtomicBomb new at: 3;
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalk for: 1) at: 19;
+		with: HyperSpaceJump new at: 16.
+
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 4
+		          to: 15
+		          and: aTileCollection.
+		
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship4;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 12 ));
+		         addDice: (FixedDice onFace: 1);
+		         setLapsToWinTo: 1;
+		         build.
+
+	 
+
+	aGame playRound.
+
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	
+	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self deny: aGame hasFinished.
+
+	
+	aGame playRoundUsing:  aAccelerationCard of: aSpaceship3  .
+	
+
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 20.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 7.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 12.
+	
+	aGame playInstant: aCancellationCard of: aSpaceship2 on: aAccelerationCard .
+	
+	self assert: (aGame getCardsOf: aSpaceship3) size equals: 1.
+	self assert: (aGame getCardsOf: aSpaceship2) size equals: 1.
+
+	
+	aGame playRoundUsing:  aSpeedCard of: aSpaceship1 .
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 28.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 35.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
+	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	
+	aGame playRound.
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 32.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine .
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
+	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	
+	
+	self assert: aGame hasFinished.
+	aPositionTable := (aGame getPositionTable).
+	self assert: (aPositionTable isWinner: aSpaceship2).
+	self deny: (aPositionTable isWinner: aSpaceship1).
+	self deny: (aPositionTable isWinner: aSpaceship3).
+	self deny: (aPositionTable isWinner: aSpaceship4).
+]
+
+{ #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |

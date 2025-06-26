@@ -5,8 +5,20 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'comparing' }
+NoEffectCard >> = anotherCard [
+
+^ false.
+]
+
 { #category : 'behavior' }
 NoEffectCard >> checkIfEffectCanBeApplyToTarget: aTarget [ 
+]
+
+{ #category : 'comparing' }
+NoEffectCard >> compareID: anId [ 
+
+^ false.
 ]
 
 { #category : 'behavior' }

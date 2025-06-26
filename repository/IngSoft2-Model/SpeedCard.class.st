@@ -12,21 +12,16 @@ Class {
 { #category : 'comparing' }
 SpeedCard >> = anotherCard [
 
-^ id = anotherCard getId.
+^ (anotherCard compareID: id).
 ]
 
 { #category : 'behavior' }
 SpeedCard >> checkIfEffectCanBeApplyToTarget: aTargetSpaceship [
 ]
 
-{ #category : 'behavior' }
-SpeedCard >> getId [
-^ id.
-]
-
 { #category : 'comparing' }
-SpeedCard >> hash [
-   ^ self getId hash.
+SpeedCard >> compareID: anId [ 
+	^ id = anId.
 ]
 
 { #category : 'behavior' }
@@ -40,7 +35,6 @@ SpeedCard >> implementEfectBy: aSpaceship on: aTargetSpaceship in: aGame [
 { #category : 'initialization' }
 SpeedCard >> initialize [
 id := 'Card-' , (0 to: 9999) atRandom asString.
-"type := 'SpeedCard'."
 
 ]
 

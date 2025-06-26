@@ -34,7 +34,7 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 	self assert: (aGame getPositionOf: aSpaceship) equals: position.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: position2.
 
-	aGame play: aCard of: aSpaceship on: aSpeedCard.
+	aGame playInstant: aCard of: aSpaceship on: aSpeedCard.
 
 	aGame playRound.
 	
@@ -71,9 +71,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: position.
 	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
-
-self assert: true.
-
 ]
 
 { #category : 'tests' }
@@ -135,8 +132,6 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTitle [
 	self assert: (aGame getPositionOf: aSpaceship) equals: position*2+1.
 	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
 
-self assert: true.
-
 ]
 
 { #category : 'tests' }
@@ -194,7 +189,5 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
 	self assert: (aGame getCardsOf: aSpaceship)size equals: 3.
-
-self assert: true.
 
 ]

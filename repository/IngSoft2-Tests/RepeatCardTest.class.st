@@ -30,7 +30,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
 
 	aGame playRound.
 	aGame playRound.
-	aGame play: aRepeatCard of: aSpaceship to: aSpaceship.
+	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: 1
 ]
@@ -69,7 +69,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 14.
 	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
 
-	aGame play: aRepeatCard of: aSpaceship1 to: aSpaceship2.
+	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship2.
 
 	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 29.
@@ -101,7 +101,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 		         build.
 
 	aGame playRound.
-	aGame play: aRepeatCard of: aSpaceship to: aSpaceship.
+	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: 12.
 	self assert: (aGame getShieldsOf: aSpaceship) equals: 1
@@ -140,7 +140,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 5.
 	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
 
-	aGame play: aRepeatCard of: aSpaceship1 to: aSpaceship3.
+	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship3.
 
 	self assert: (aGame getPositionOf: aSpaceship1) equals: 1.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 2.
@@ -181,7 +181,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 	self assert: (aGame getPositionOf: aSpaceship1) equals: 7.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
 	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
-	aGame play: aRepeatCard of: aSpaceship1 to: aSpaceship2.
+	aGame playInstant: aRepeatCard of: aSpaceship1 to: aSpaceship2.
 
 	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
 	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
@@ -214,7 +214,7 @@ RepeatCardTest >> testWhenUsingARepeatCardHavingNotHavingAppliedAnEffectThenNoth
 		         build.
 
 	aGame playRound.
-	aGame play: aRepeatCard of: aSpaceship to: aSpaceship.
+	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
 
 	self assert: (aGame getPositionOf: aSpaceship) equals: 4
 ]

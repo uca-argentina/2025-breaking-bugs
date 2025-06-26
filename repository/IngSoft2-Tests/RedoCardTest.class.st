@@ -6,6 +6,32 @@ Class {
 }
 
 { #category : 'tests' }
+RedoCardTest >> testBanana [
+
+	| aGame aSpaceship aGameBuilder position1 aSpeedCard aRedoCard |
+	position1 := 6.
+	aGameBuilder := GameBuilder new.
+	aSpeedCard := SpeedCard new.
+	aRedoCard := RedoCard new.
+	aSpaceship := Spaceship with:
+		              (OrderedCollection with: aSpeedCard with: aRedoCard).
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship;
+		         addBoard: (Board withSize: 90 andWormholeFrom: 80 to: 89);
+		         addDice: (FixedDice onFace: position1);
+		         build.
+
+	aGame playRoundUsing: aSpeedCard of: aSpaceship.
+	"aGame playRoundUsing: aRedoCard of: aSpaceship."
+	aGame playInstant: aRedoCard of: aSpaceship to: nil.
+	aGame playRound.
+
+	self
+		assert: (aGame getPositionOf: aSpaceship)
+		equals: position1 * 2 + 2.
+]
+
+{ #category : 'tests' }
 RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstActivePermanentCardIsCancelled [
 
 	| aGame aSpaceship aGameBuilder position1 aSpeedCard anotherSpeedCard aCancellationCard aRedoCard |
@@ -28,7 +54,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 
 	aGame playRoundUsing: aSpeedCard of: aSpaceship.
 	aGame playRoundUsing: anotherSpeedCard of: aSpaceship.
-	aGame play: aCancellationCard of: aSpaceship on: aSpeedCard.
+	aGame playInstant: aCancellationCard of: aSpaceship on: aSpeedCard.
 	"self assert: aGame numberOfActivePermanentCards equals: 1."
 	aGame playRoundUsing: aRedoCard of: aSpaceship.
 

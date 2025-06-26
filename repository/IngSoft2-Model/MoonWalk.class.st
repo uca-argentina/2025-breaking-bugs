@@ -1,6 +1,6 @@
 Class {
 	#name : 'MoonWalk',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'numberOfPositionsToGoBack'
 	],

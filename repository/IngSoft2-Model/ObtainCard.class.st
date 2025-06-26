@@ -1,6 +1,6 @@
 Class {
 	#name : 'ObtainCard',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#instVars : [
 		'cardSupplier'
 	],

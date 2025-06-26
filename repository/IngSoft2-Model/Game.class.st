@@ -181,27 +181,27 @@ Game >> numberOfActivePermanentCards [
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship on: aSpeedCard [
+Game >> playInstant: anInstantCard of: aSpaceship on: anotherCard [
 
 	self
-		play: anInstantCard
+		playInstant: anInstantCard
 		of: aSpaceship
-		with: aSpeedCard
+		with: anotherCard 
 		to: nil
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> play: aRepeatCard of: aSpaceship to: aTargetSpaceship [
+{ #category : 'behavior' }
+Game >> playInstant: aRepeatCard of: aSpaceship to: aTargetSpaceship [
 
 	self
-		play: aRepeatCard
+		playInstant: aRepeatCard
 		of: aSpaceship
 		with: NoEffectCard new
 		to: aTargetSpaceship
 ]
 
 { #category : 'behavior' }
-Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [
+Game >> playInstant: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpaceship [
 
 	| realCard instantCard aSpaceshipInGame aTargetSpaceshipInGame |
 	aSpaceshipInGame := spaceships detect: [ :each | each = aSpaceship ].
@@ -217,6 +217,7 @@ Game >> play: anInstantCard of: aSpaceship with: aPermanentCard to: aTargetSpace
 			            "Error signal: 'The card wanted is not active'" ].
 	instantCard
 		implementEffect: realCard
+		by: aSpaceshipInGame
 		to: aTargetSpaceshipInGame
 		in: self.
 	activePermanentCards := activePermanentCards reject: [ :card |
@@ -296,7 +297,7 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
 	card := aSpaceshipNew extractCardIfAvailable: card.
 	card class = CancelationCard
 		ifTrue: [
-		card implementEffect: activePermanentCards last to: aTargetSpaceship in: self.]
+		card implementEffect: activePermanentCards last by:aSpaceshipNew to: aTargetSpaceship in: self.]
 		ifFalse: [ card implementEfectBy: aSpaceshipNew on: targetSpaceship in: self ].
 
 	card isPermanent ifTrue: [ activePermanentCards add: card ].
