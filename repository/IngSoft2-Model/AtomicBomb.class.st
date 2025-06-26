@@ -1,14 +1,13 @@
 Class {
 	#name : 'AtomicBomb',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'operations' }
-AtomicBomb >> applyTo: aSpaceship in: aGame [ 
+AtomicBomb >> applyTo: aSpaceship in: aGame [
 
-	aGame getSpaceships do: [ :ship |
-		ship moveToPosition: 1 .
-		ship lowerAShield ]
+	aGame produceAtomicBombEffectTo: aSpaceship.
+	aGame registerAppliedEffect: self
 ]

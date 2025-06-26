@@ -21,9 +21,8 @@ Tile >> applyEffectTo: aSpaceship in: aGame [
 ]
 
 { #category : 'behavior' }
-Tile >> getEffect [
-
-	^ effect
+Tile >> hasThisEffect: anEffect [
+	^ (effect isKindOf: anEffect).
 ]
 
 { #category : 'initialization' }

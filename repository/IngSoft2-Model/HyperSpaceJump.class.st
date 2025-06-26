@@ -1,6 +1,6 @@
 Class {
 	#name : 'HyperSpaceJump',
-	#superclass : 'Object',
+	#superclass : 'Effect',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
@@ -8,9 +8,9 @@ Class {
 { #category : 'operations' }
 HyperSpaceJump >> applyTo: aSpaceship in: aGame [
 
-
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
 	aSpaceship moveToPosition: actualPosition + 4.
-	aSpaceship lowerAShield
+	aSpaceship lowerAShield.
+	aGame registerAppliedEffect: self
 ]

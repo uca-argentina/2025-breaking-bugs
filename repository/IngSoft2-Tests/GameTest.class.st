@@ -16,9 +16,161 @@ GameTest >> should: anErrorBlock raise: anErrorClass withMessageText: errorMessa
 ]
 
 { #category : 'tests' }
+GameTest >> testAllTheEffectsOnGame [
+	| game aSpaceship1 aSpaceship2 aSpaceship3 aSpaceship4 board gameBuilder finishLine tileBuilder tileCollection |
+
+	gameBuilder := GameBuilder new.
+	aSpaceship1 := Spaceship new. aSpaceship2 := Spaceship new. aSpaceship3 := Spaceship new. aSpaceship4 := Spaceship new.
+	finishLine := 25.
+
+	tileBuilder := TilesBuilder with: finishLine.
+	tileBuilder
+		with: AtomicBomb new at: 3;
+		with: BlackHole new at: 9;
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalk for: 2) at: 19;
+		with: HyperSpaceJump new at: 16.
+
+	tileCollection := tileBuilder build.
+
+	board := Board withSize: finishLine andWormholeFrom: 4 to: 15 and: tileCollection.
+
+	game := gameBuilder
+		addSpaceship: aSpaceship1; addSpaceship: aSpaceship2; addSpaceship: aSpaceship3; addSpaceship: aSpaceship4;
+		addBoard: board;
+		addDice: (SequentialFixedDice onFaces: #(3 9 5 4 10 11 14 4));
+		setLapsToWinTo: 2;
+		build.
+
+	"Ronda 1"
+	game playRound.
+
+	self assert: (game getPositionOf: aSpaceship1) equals: 0.
+	self assert: (game getPositionOf: aSpaceship2) equals: 5.
+	self assert: (game getPositionOf: aSpaceship3) equals: 5.
+	self assert: (game getPositionOf: aSpaceship4) equals: 15.
+
+	"Ronda 2"
+	game playRound.
+	
+	self assert: (game getPositionOf: aSpaceship1) equals: 23. "Pisa HyperJump → avanza 10 parsecs"
+	self assert: (game getPositionOf: aSpaceship2) equals: 18. "Pisa HyperSpaceJump → avanza 4"
+	self assert: (game getPositionOf: aSpaceship3) equals: 19. "MoonWalk, pero no retrocede"
+	self assert: (game getPositionOf: aSpaceship4) equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
+	
+	self assert: (game getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (game getShieldsOf: aSpaceship2) equals: 1.
+	self assert: (game getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (game getShieldsOf: aSpaceship4) equals: 2.
+	
+	
+
+]
+
+{ #category : 'tests' }
+GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
+
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable aSpeedCard aCancellationCard aAccelerationCard aMercenaryCard aSpeedCard2 aCancellationCard2 aAccelerationCard2 aMercenaryCard2 |
+	
+	aGameBuilder := GameBuilder new.
+	aSpeedCard := SpeedCard new.
+	aCancellationCard := CancelationCard new.
+	aAccelerationCard := AccelerationCard new.
+	aMercenaryCard := MercenaryCard new.
+	aSpeedCard2 := SpeedCard new.
+	aCancellationCard2 := CancelationCard new.
+	aAccelerationCard2 := AccelerationCard new.
+	aMercenaryCard2 := MercenaryCard new.
+	
+	aSpaceship1 := Spaceship with: (OrderedCollection with: aSpeedCard with:aMercenaryCard2).
+	aSpaceship2 := Spaceship with: (OrderedCollection with: aCancellationCard with: aSpeedCard2 ).
+	aSpaceship3 := Spaceship with: (OrderedCollection with: aAccelerationCard with: aCancellationCard2 ).
+	aSpaceship4 := Spaceship with: (OrderedCollection with: aMercenaryCard with: aAccelerationCard2).
+	finishLine := 43.
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder
+		with: BlackHole new at: 9;
+		with: AtomicBomb new at: 3;
+		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalk for: 1) at: 19;
+		with: HyperSpaceJump new at: 16.
+
+	aTileCollection := aTileBuilder build.
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 4
+		          to: 15
+		          and: aTileCollection.
+		
+	aGame := aGameBuilder
+		         addSpaceship: aSpaceship1;
+		         addSpaceship: aSpaceship2;
+		         addSpaceship: aSpaceship3;
+		         addSpaceship: aSpaceship4;
+		         addBoard: aBoard;
+		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 12 ));
+		         addDice: (FixedDice onFace: 1);
+		         setLapsToWinTo: 1;
+		         build.
+
+	 
+
+	aGame playRound.
+
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	
+	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self deny: aGame hasFinished.
+
+	
+	aGame playRoundUsing:  aAccelerationCard of: aSpaceship3  .
+	
+
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 20.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 7.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 12.
+	
+	aGame playInstant: aCancellationCard of: aSpaceship2 on: aAccelerationCard .
+	
+	self assert: (aGame getCardsOf: aSpaceship3) size equals: 1.
+	self assert: (aGame getCardsOf: aSpaceship2) size equals: 1.
+
+	
+	aGame playRoundUsing:  aSpeedCard of: aSpaceship1 .
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 28.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 35.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
+	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	
+	aGame playRound.
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 32.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine .
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
+	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	
+	
+	self assert: aGame hasFinished.
+	aPositionTable := (aGame getPositionTable).
+	self assert: (aPositionTable isWinner: aSpaceship2).
+	self deny: (aPositionTable isWinner: aSpaceship1).
+	self deny: (aPositionTable isWinner: aSpaceship3).
+	self deny: (aPositionTable isWinner: aSpaceship4).
+]
+
+{ #category : 'tests' }
 GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
-	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection |
+	| aGame aSpaceship1 aSpaceship2 aBoard aGameBuilder finishLine aSpaceship3 aSpaceship4 aTileBuilder aTileCollection aPositionTable |
 	aGameBuilder := GameBuilder new.
 	aSpaceship1 := Spaceship new.
 	aSpaceship2 := Spaceship new.
@@ -30,7 +182,7 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		with: BlackHole new at: 9;
 		with: AtomicBomb new at: 3;
 		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalk for: 1) at: 20;
+		with: (MoonWalk for: 1) at: 19;
 		with: HyperSpaceJump new at: 16.
 
 	aTileCollection := aTileBuilder build.
@@ -39,13 +191,14 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 		          andWormholeFrom: 4
 		          to: 15
 		          and: aTileCollection.
+		
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship1;
 		         addSpaceship: aSpaceship2;
 		         addSpaceship: aSpaceship3;
 		         addSpaceship: aSpaceship4;
 		         addBoard: aBoard;
-		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 50 ));
+		         addDice: (SequentialFixedDice onFaces: #( 2 7 8 14 18 100 ));
 		         addDice: (FixedDice onFace: 1);
 		         setLapsToWinTo: 2;
 		         build.
@@ -54,17 +207,29 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 
 
-	self assert: (aSpaceship1 isAtPosition: 1).
-	self assert: (aSpaceship2 isAtPosition: 5).
-	self assert: (aSpaceship3 isAtPosition: 0).
-	self assert: (aSpaceship4 isAtPosition: 20).
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	
+	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
+	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self deny: aGame hasFinished.
 
 	aGame playRound.
-
-	self assert: (aSpaceship1 isAtPosition: 20).
-	self assert: (aSpaceship2 isAtPosition: finishLine).
-	self assert: (aSpaceship3 isAtPosition: 24).
-	self assert: (aSpaceship4 isAtPosition: 19).
+	self assert: aGame hasFinished.
+	aPositionTable := (aGame getPositionTable).
+	self assert: (aPositionTable isWinner: aSpaceship2).
+	self deny: (aPositionTable isWinner: aSpaceship1).
+	self deny: (aPositionTable isWinner: aSpaceship3).
+	self deny: (aPositionTable isWinner: aSpaceship4).
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine.
+	self assert: (aGame getPositionOf: aSpaceship3) equals: 4.
+	self assert: (aGame getPositionOf: aSpaceship4) equals: 3.
 
 	self assert: aGame hasFinished
 ]
@@ -89,8 +254,8 @@ GameTest >> testFullGameSimulationWithWinner [
 	aGame playRound.
 
 	
-	self assert: (aSpaceship1 isAtPosition: finishLine).
-	self assert: (aSpaceship2 isAtPosition: 8).
+	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
 	self assert: aGame hasFinished.
 ]
 
@@ -109,7 +274,7 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 		         build.
 
 	aGame playRound.
-	self assert: (aSpaceship isAtPosition: 5)
+	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
 ]
 
 { #category : 'tests' }
@@ -125,7 +290,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 		         build.
 
 	aGame playRound.
-	self assert: (aSpaceship isAtPosition: 9)
+	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
 ]
 
 { #category : 'tests' }
@@ -141,7 +306,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		         build.
 
 	aGame playRound.
-	self assert: (aSpaceship isAtPosition: 4)
+	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
 ]
 
 { #category : 'tests' }
@@ -177,11 +342,12 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 		         addBoard: (Board withSize: finishLine andWormholeFrom: 4 to: 9);
 					addDice: (FixedDice onFace: finishLine);
 		         build.
-
+		
 	aGame playRound.
 
 	self assert: aGame hasFinished.
-	self assert: (aSpaceship1 isAtPosition: finishLine).
+	
+	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
 	self assert: (aSpaceship2 isAtPosition: 0)
 ]
 

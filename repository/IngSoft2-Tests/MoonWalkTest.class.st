@@ -17,8 +17,11 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder with: (MoonWalk for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
-	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
-	"aBoard add: (MoonWalk for: 6) at: 4."
+	aBoard := Board
+		          withSize: finishLine
+		          andWormholeFrom: 8
+		          to: 15
+		          and: aTileCollection.
 	aGame := aGameBuilder
 		         addSpaceship: aSpaceship;
 		         addSpaceship: aSpaceship2;
@@ -27,8 +30,8 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 		         build.
 	aGame playRound.
 
-	self assert: aSpaceship getPosition equals: 0.
-	self assert: aSpaceship2 getPosition equals: 4.
+	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 4
 ]
 
 { #category : 'tests' }
@@ -53,10 +56,10 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 		         build.
 	aGame playRound.
 
-	self assert: aSpaceship getPosition equals: 19.
-	self assert: aSpaceship getLapsCompleted equals: 0.
-	self assert: aSpaceship2 getPosition equals: 4.
-	self assert: aSpaceship2 getLapsCompleted equals: 1.
+	self assert: (aGame getPositionOf: aSpaceship) equals: 19.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 4.
+	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 0.
+	self assert: (aGame getLapsCompletedOf: aSpaceship2) equals: 1.
 	
 ]
 
@@ -86,7 +89,6 @@ MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 	aGame playRound.
 	aGame playRound.
 
-
-	self assert: aSpaceship getPosition equals: 6.
-	self assert: aSpaceship2 getPosition equals: 11
+	self assert: (aGame getPositionOf: aSpaceship) equals: 6.
+	self assert: (aGame getPositionOf: aSpaceship2) equals: 11.
 ]
