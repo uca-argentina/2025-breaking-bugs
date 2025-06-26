@@ -181,12 +181,12 @@ Game >> numberOfActivePermanentCards [
 ]
 
 { #category : 'behavior' }
-Game >> playInstant: anInstantCard of: aSpaceship on: aSpeedCard [
+Game >> playInstant: anInstantCard of: aSpaceship on: anotherCard [
 
 	self
 		playInstant: anInstantCard
 		of: aSpaceship
-		with: aSpeedCard
+		with: anotherCard 
 		to: nil
 ]
 
