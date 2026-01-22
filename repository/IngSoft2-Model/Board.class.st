@@ -206,6 +206,7 @@ Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
 	(isInParcecs) ifTrue: [ ^ wormholeEntry = aWormholeEntry and: wormholeExit = aWormholeExit ].
 
 	^ wormholeEntry = (aWormholeEntry //3) and: wormholeExit = (aWormholeExit //3)
+	
 ]
 
 { #category : 'initialization' }
