@@ -9,6 +9,7 @@ Class {
 CancelationCard >> = anotherCard [
 
 ^ (anotherCard compareID: id).
+
 ]
 
 { #category : 'comparing' }
