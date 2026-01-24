@@ -5,8 +5,7 @@ Class {
 		'aSize',
 		'wormholeEntry',
 		'wormholeExit',
-		'tiles',
-		'isInParcecs'
+		'tiles'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -20,10 +19,10 @@ Board class >> validate: aSize [
 ]
 
 { #category : 'validation' }
-Board class >> validate: wormholeEntry and: wormholeExit within: aBoardSize [
-
-	(wormholeEntry > aBoardSize or: wormholeExit > aBoardSize) ifTrue: [
-		Error signal: 'The wormhole cannot be outside of the board' ]
+Board class >> validate: wormholeEntry and: wormholeExit within: aBoardDistance [
+	
+	((aBoardDistance lessThan: wormholeEntry) or: [ aBoardDistance lessThan: wormholeExit ]) ifTrue: [
+        Error signal: 'The wormhole cannot be outside of the board' ]
 ]
 
 { #category : 'validation' }
@@ -51,90 +50,65 @@ Board class >> validateAreNotNegative: wormholeEntry and: wormholeExit [
 
 { #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
-
-	| tiles |
-	self validate: aSize.
-
-	self validateAreNotNegative: wormholeEntry and: wormholeExit.
-
-	self validate: wormholeEntry and: wormholeExit within: aSize.
-
-	self validate: wormholeEntry notEqualTo: wormholeExit.
-
-	self validate: wormholeEntry isLowerThan: wormholeExit.
-	tiles := (1 to: aSize + 1) collect: [ :i | Tile with: NoEffect new ].
-
-
-	^ self
-		  withSize: aSize
-		  andWormholeFrom: wormholeEntry
-		  to: wormholeExit
-		  and: tiles
-		  valueIsInParcecs: true
+    | tiles |
+    tiles := (1 to: aSize + 1) collect: [ :i | Tile with: NoEffect new ].
+    ^ self 
+        withSizeDistance: (Parsec with: aSize)
+        andWormholeFrom: wormholeEntry
+        to: wormholeExit
+        and: tiles
 ]
 
 { #category : 'creation' }
 Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
-
-	self validate: aSize.
-
-	self validateAreNotNegative: wormholeEntry and: wormholeExit.
-
-	self validate: wormholeEntry and: wormholeExit within: aSize.
-
-	self validate: wormholeEntry notEqualTo: wormholeExit.
-
-	self validate: wormholeEntry isLowerThan: wormholeExit.
-
-	^ self withSize: aSize andWormholeFrom: wormholeEntry  to: wormholeExit  and: tiles  valueIsInParcecs: true 
+    ^ self 
+        withSizeDistance: (Parsec with: aSize)
+        andWormholeFrom: wormholeEntry
+        to: wormholeExit
+        and: tiles   
 ]
 
-{ #category : 'creation' }
-Board class >> withSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles valueIsInParcecs: ifItIsInParcecs [
-
-	self validate: aSize.
-
-	self validateAreNotNegative: wormholeEntry and: wormholeExit.
-
-	self validate: wormholeEntry and: wormholeExit within: aSize.
-
-	self validate: wormholeEntry notEqualTo: wormholeExit.
-
-	self validate: wormholeEntry isLowerThan: wormholeExit.
-
-	^ self new initializeWith: tiles andSize: aSize andWormholeFrom: wormholeEntry to: wormholeExit valueIsInParcecs: ifItIsInParcecs. 
+{ #category : 'as yet unclassified' }
+Board class >> withSizeDistance: aSizeDistance andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+    
+    aSizeDistance validate.
+    self validateAreNotNegative: wormholeEntry and: wormholeExit.
+    self validate: wormholeEntry and: wormholeExit within: aSizeDistance.
+    self validate: wormholeEntry notEqualTo: wormholeExit.
+    self validate: wormholeEntry isLowerThan: wormholeExit.
+    
+    ^ self new
+        initializeWith: tiles
+        andSize: aSizeDistance
+        andWormholeFrom: wormholeEntry
+        to: wormholeExit
 ]
 
 { #category : 'as yet unclassified' }
 Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit [
-
-	| aSizeInParcecs wormholeEntryInParcecs wormholeExitInParcecs tiles |
-	aSizeInParcecs := aSize // 3.
-	wormholeEntryInParcecs := wormholeEntry // 3.
-	wormholeExitInParcecs := wormholeExit // 3.
-	tiles:= ((1 to: aSize + 1) collect: [ :i | Tile with: NoEffect new ]).
-	
-	^ self
-		  withSize: aSizeInParcecs
-		  andWormholeFrom: wormholeEntryInParcecs
-		  to: wormholeExitInParcecs
-		  and: tiles
-		  valueIsInParcecs: false
+    | tiles |
+    tiles := (1 to: (aSize // 3) + 1) collect: [ :i | Tile with: NoEffect new ].
+    
+    ^ self 
+        withSizeDistance: (LightYear with: aSize) 
+        andWormholeFrom: wormholeEntry 
+        to: wormholeExit 
+        and: tiles
 ]
 
 { #category : 'as yet unclassified' }
 Board class >> withSizeInLightYears: aSize andWormholeFrom: wormholeEntry to: wormholeExit and: tiles [
+ 	|  sizeInParsecs  |
 
-	| aSizeInParcecs wormholeEntryInParcecs wormholeExitInParcecs |
-	aSizeInParcecs := aSize // 3.
-	wormholeEntryInParcecs := wormholeEntry // 3.
-	wormholeExitInParcecs := wormholeExit // 3.
-	^ self
-		  withSize: aSizeInParcecs
-		  andWormholeFrom: wormholeEntryInParcecs
-		  to: wormholeExitInParcecs
-		  and: tiles
-		  valueIsInParcecs: false
+    sizeInParsecs := aSize // 3.
+
+	"entryInParsecs := wormholeEntry // 3.
+    exitInParsecs := wormholeExit // 3. "
+    ^ self 
+        withSizeDistance: (LightYear with: aSize)
+        andWormholeFrom: wormholeEntry   
+        to: wormholeExit                   
+        and: tiles
 ]
 
 { #category : 'initialization' }
@@ -146,38 +120,33 @@ Board >> applyTileEffectTo: aSpaceship in: aGame [
 	tile applyEffectTo: aSpaceship in: aGame
 ]
 
-{ #category : 'testing' }
-Board >> checkSize: size [
-	(isInParcecs) ifTrue: [ ^ aSize = size ].
-	^ aSize = (size // 3)
+{ #category : 'as yet unclassified' }
+Board >> checkSize: aDistanceToCompare [
+	^ aSize checkIfEquals: aDistanceToCompare.
 ]
 
 { #category : 'testing' }
 Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
-
+	
 	^ aSpaceshipPosition = wormholeEntry
-		  ifTrue: [ wormholeExit ]
-		  ifFalse: [
-			  aSpaceshipPosition = wormholeExit
-				  ifTrue: [ wormholeEntry ]
-				  ifFalse: [ aSpaceshipPosition ] ]
+		ifTrue: [ wormholeExit ]
+		ifFalse: [
+			aSpaceshipPosition = wormholeExit
+				ifTrue: [ wormholeEntry ]
+				ifFalse: [ aSpaceshipPosition ] ]
 ]
 
 { #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-	| lapsCompleted newPosition totalLaps |
-
-	lapsCompleted := aSpaceshipPosition // aSize.
-	newPosition := aSpaceshipPosition \\ aSize.
-
+	| lapsCompleted newPosition totalLaps boardSize |
+	boardSize := aSize toInternalValue.
+	lapsCompleted := aSize calculateLapsIn: aSpaceshipPosition.
+	newPosition := aSize calculatePositionIn: aSpaceshipPosition.
 	aSpaceship incrementLapsBy: lapsCompleted.
 	totalLaps := aSpaceship getLapsCompleted.
-
-	"Si justo alcanza la meta, devolver finishLine"
-	(totalLaps >= lapLimit ) ifTrue: [
-		^ aSize
+	(totalLaps >= lapLimit) ifTrue: [
+		^ boardSize
 	].
-
 	^ newPosition
 
 
@@ -185,15 +154,13 @@ Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLi
 
 { #category : 'behavior' }
 Board >> createPositionTable: spaceships [
-
-	^ PositionTable with: spaceships and: aSize
+	^ PositionTable with: spaceships and: aSize toInternalValue
 ]
 
 { #category : 'initialization' }
 Board >> getSize [
-	(isInParcecs) ifTrue: [ ^ aSize  ].
 
-	^ aSize *3
+	^ aSize asParsec 
 ]
 
 { #category : 'as yet unclassified' }
@@ -202,19 +169,17 @@ Board >> getTiles [
 ]
 
 { #category : 'testing' }
-Board >> hasWormholeFrom: aWormholeEntry to: aWormholeExit [
-	(isInParcecs) ifTrue: [ ^ wormholeEntry = aWormholeEntry and: wormholeExit = aWormholeExit ].
-
-	^ wormholeEntry = (aWormholeEntry //3) and: wormholeExit = (aWormholeExit //3)
+Board >> hasWormholeFrom: anEntry to: anExit [
+    ^ (wormholeEntry = anEntry) 
+        and: [ wormholeExit = anExit ]
 	
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aTileCollection andSize:size andWormholeFrom: aWormholeEntry to: aWormholeExit valueIsInParcecs: ifItIsInParcecs [
+Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom: aWormholeEntry to: aWormholeExit [
 
-	aSize := size.
+	aSize := aDistanceSize.
 	tiles := aTileCollection.
 	wormholeEntry := aWormholeEntry.
-	wormholeExit := aWormholeExit.
-	isInParcecs := ifItIsInParcecs 
+	wormholeExit := aWormholeExit
 ]
