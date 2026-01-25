@@ -20,9 +20,7 @@ ObtainCard class >> with: aSpecificCard [
 
 { #category : 'operations' }
 ObtainCard >> applyTo: aSpaceship in: aGame [
-	|aNewSpaceship|
-	aNewSpaceship := aSpaceship addNewCard: (cardSupplier value).
-	aGame updateValues: aNewSpaceship.
+    aSpaceship addNewCard: (cardSupplier value).
 	
 ]
 

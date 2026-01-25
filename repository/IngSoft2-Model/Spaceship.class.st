@@ -50,25 +50,7 @@ Spaceship class >> with: cardsCollection [
 		  id: 'Nave-' , (0 to: 9999) atRandom asString
 ]
 
-{ #category : 'instance creation' }
-Spaceship class >> withValuesOf: aSpaceship andCard: aCard [
-	|cards|
-	cards := (aSpaceship getCards) deepCopy.
-	cards add: aCard.
-	^ self basicNew
-		initializeWithPosition: aSpaceship getPosition
-		laps: aSpaceship getLapsCompleted 
-		shields: aSpaceship getShields 
-		turnsPenalize: aSpaceship getTurnsPenalize
-		cards: cards
-		velocity: aSpaceship getVelocity
-		mercenaries: aSpaceship getMercenaries 
-		owner: aSpaceship hasOwner
-		id: aSpaceship getId.
-
-]
-
-{ #category : 'comparing' }
+{ #category : 'adding' }
 Spaceship >> = anotherSpaceship [
 	| boolean |
 	anotherSpaceship ifNil: [ ^ false ].
@@ -79,8 +61,25 @@ Spaceship >> = anotherSpaceship [
 
 { #category : 'adding' }
 Spaceship >> addNewCard: aCard [ 
-	^ self class withValuesOf: self andCard: aCard.
+    cards add: aCard.
 	
+]
+
+{ #category : 'as yet unclassified' }
+Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize withLapLimit: lapLimit [
+    | lapsCompleted positionInBoard |
+    
+    "Delegar cálculos a Distance"
+    lapsCompleted := aBoardSize calculateLapsIn: newPosition.
+    positionInBoard := aBoardSize calculatePositionIn: newPosition.
+    
+    "Usar métodos existentes de Spaceship"
+    self incrementLapsBy: lapsCompleted.
+    
+    "Si alcanzó el límite, devolver la posición final (finish line)"
+    ^ (self hasReached: lapLimit)
+        ifTrue: [ aBoardSize toInternalValue ]
+        ifFalse: [ positionInBoard ]
 ]
 
 { #category : 'behavior' }
@@ -142,16 +141,6 @@ Spaceship >> getPosition [
 Spaceship >> getShields [
 
 	^ shields
-]
-
-{ #category : 'getter' }
-Spaceship >> getTurnsPenalize [
-	^ turnsPenalize.
-]
-
-{ #category : 'getter' }
-Spaceship >> getVelocity [
-	^ velocity.
 ]
 
 { #category : 'testing' }

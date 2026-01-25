@@ -337,9 +337,3 @@ Game >> registerThrownCard: aCard [
 
 	cardsThrown := aCard
 ]
-
-{ #category : 'behavior' }
-Game >> updateValues: aSpaceship [
-	spaceships := spaceships collect: [ :each |
-		each = aSpaceship ifTrue: [ aSpaceship ] ifFalse: [ each ] ].
-]

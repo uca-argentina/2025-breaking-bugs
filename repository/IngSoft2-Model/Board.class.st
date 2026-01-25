@@ -138,16 +138,10 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 
 { #category : 'behavior' }
 Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-	| lapsCompleted newPosition totalLaps boardSize |
-	boardSize := aSize toInternalValue.
-	lapsCompleted := aSize calculateLapsIn: aSpaceshipPosition.
-	newPosition := aSize calculatePositionIn: aSpaceshipPosition.
-	aSpaceship incrementLapsBy: lapsCompleted.
-	totalLaps := aSpaceship getLapsCompleted.
-	(totalLaps >= lapLimit) ifTrue: [
-		^ boardSize
-	].
-	^ newPosition
+    ^ aSpaceship 
+        adjustPositionAfterMoving: aSpaceshipPosition 
+        onBoardOfSize: aSize 
+        withLapLimit: lapLimit
 
 
 ]
