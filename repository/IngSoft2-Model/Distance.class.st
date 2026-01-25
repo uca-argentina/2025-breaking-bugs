@@ -29,12 +29,6 @@ Distance >> lessThan: aValue [
 ]
 
 { #category : 'as yet unclassified' }
-Distance >> toInternalValue [
-	"Hay que cambiarlo"
-	^ value
-]
-
-{ #category : 'as yet unclassified' }
 Distance >> validate [
 		value <= 0 ifTrue: [
 		Error signal: 'The length of the board should be positive' ]

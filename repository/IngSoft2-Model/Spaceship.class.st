@@ -78,7 +78,7 @@ Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize wi
     
     "Si alcanzó el límite, devolver la posición final (finish line)"
     ^ (self hasReached: lapLimit)
-        ifTrue: [ aBoardSize toInternalValue ]
+        ifTrue: [ aBoardSize asParsec ]
         ifFalse: [ positionInBoard ]
 ]
 
