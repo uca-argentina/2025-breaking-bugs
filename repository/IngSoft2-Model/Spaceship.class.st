@@ -68,30 +68,26 @@ Spaceship >> addNewCard: aCard [
 { #category : 'as yet unclassified' }
 Spaceship >> adjustPositionAfterMoving: newPosition onBoardOfSize: aBoardSize withLapLimit: lapLimit [
     | lapsCompleted positionInBoard |
-    
-    "Delegar cálculos a Distance"
     lapsCompleted := aBoardSize calculateLapsIn: newPosition.
     positionInBoard := aBoardSize calculatePositionIn: newPosition.
     
-    "Usar métodos existentes de Spaceship"
     self incrementLapsBy: lapsCompleted.
     
-    "Si alcanzó el límite, devolver la posición final (finish line)"
     ^ (self hasReached: lapLimit)
         ifTrue: [ aBoardSize asParsec ]
         ifFalse: [ positionInBoard ]
 ]
 
-{ #category : 'behavior' }
-Spaceship >> canPlay [
-
-	^ self getShields > 0
+{ #category : 'getter' }
+Spaceship >> applyAtomicBomb [
+    self moveToPosition: 0.
+    self lowerAShield.
 ]
 
 { #category : 'behavior' }
-Spaceship >> decrementLapsBy: lapsIncremented [
-	
-	laps := laps - lapsIncremented
+Spaceship >> canPlay [
+
+	^ shields > 0
 ]
 
 { #category : 'behavior' }
@@ -242,6 +238,35 @@ Spaceship >> moveAtHigherVelocity [
 Spaceship >> moveAtLowerVelocity [
 
 	velocity := velocity - 1
+]
+
+{ #category : 'behavior' }
+Spaceship >> moveBack: positionsToBack on: aBoard [
+    | boardSize |
+    boardSize := aBoard getSize asParsec.
+    position := position - positionsToBack.
+
+    position < 0 ifTrue: [
+        laps > 0 ifTrue: [
+            laps := laps - 1.
+            position := boardSize + position 
+        ] ifFalse: [
+            position := 0 
+        ]
+    ].
+]
+
+{ #category : 'getter' }
+Spaceship >> moveBy: positionsToAdvance on: aBoard withLapLimit: lapLimit [
+    | tentativePosition finalPosition |
+    
+    tentativePosition := position + positionsToAdvance.
+    tentativePosition := aBoard correctPositionAfterWormholeIfNeeded: tentativePosition.
+    finalPosition := self adjustPositionAfterMoving: tentativePosition 
+                             onBoardOfSize: aBoard getSize 
+                             withLapLimit: lapLimit.
+    
+    self moveToPosition: finalPosition.
 ]
 
 { #category : 'move' }

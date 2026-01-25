@@ -40,27 +40,6 @@ Game >> checkValid: aTargetSpaceship for: spaceship inCard: aCard [
     
 ]
 
-{ #category : 'roll' }
-Game >> correctPositionOf: aSpaceship to: numberOfPositionsToGoBack [
-	| currentPosition newPosition boardSize currentLap |
-	boardSize := board getSize.
-	currentPosition := aSpaceship getPosition.
-	currentLap := aSpaceship getLapsCompleted.
-	
-	newPosition := currentPosition - numberOfPositionsToGoBack.
-
-	newPosition < 0 ifTrue: [
-		currentLap = 0 ifTrue: [
-			^ 0
-		]. 
-		aSpaceship decrementLapsBy: 1.
-		^ boardSize + newPosition 
-	].
-
-	^ newPosition
-
-]
-
 { #category : 'initialization' }
 Game >> disableBattleForThisTurn [
 
@@ -274,55 +253,44 @@ Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
 
 { #category : 'behavior' }
 Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship [
+    | positionsToAdvance card targetSpaceship aSpaceshipNew |
+    positionsToAdvance := self getAllDiceValuesFrom: dice.
+    board move: aSpaceship by: positionsToAdvance withLapLimit: lapsToWin.
 
-	| positionsToAdvance newPosition card targetSpaceship aSpaceshipNew|
-	positionsToAdvance := self getAllDiceValuesFrom: dice.
-	
-	newPosition :=  aSpaceship obtainNewPosition: positionsToAdvance.
-	newPosition := board correctPositionAfterWormholeIfNeeded: newPosition.
-	newPosition := board correctPositionIf: aSpaceship passTheLine: newPosition withLapLimit: lapsToWin.
-	aSpaceship moveToPosition: newPosition.
-	
-	board applyTileEffectTo: aSpaceship in: self.
-	aSpaceshipNew := spaceships detect: [ :each | each = aSpaceship ].
-	
-	activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceshipNew].
-	hasFinished := aSpaceshipNew hasReached: lapsToWin.
-	
-	"Si el destino no es valido entonces la carta pierde su efecto"
-	targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceshipNew inCard: aCard.
-	card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
-	
-	card := aSpaceshipNew extractCardIfAvailable: card.
-	card class = CancelationCard
-		ifTrue: [
-		card implementEffect: activePermanentCards last by:aSpaceshipNew to: aTargetSpaceship in: self.]
-		ifFalse: [ card implementEfectBy: aSpaceshipNew on: targetSpaceship in: self ].
+    board applyTileEffectTo: aSpaceship in: self.
+    aSpaceshipNew := spaceships detect: [ :each | each = aSpaceship ].
+    
+    activatedAtomicBomb ifFalse: [battle checkForBattleIfNeededWith: aSpaceshipNew].
+    hasFinished := aSpaceshipNew hasReached: lapsToWin.
+    
+    targetSpaceship := self checkValid: aTargetSpaceship for: aSpaceshipNew inCard: aCard.
+    card := aCard checkIfEffectCanBeApplyToTarget: targetSpaceship.
+    card := aSpaceshipNew extractCardIfAvailable: card.
+    
+    card class = CancelationCard
+        ifTrue: [ card implementEffect: activePermanentCards last by: aSpaceshipNew to: aTargetSpaceship in: self ]
+        ifFalse: [ card implementEfectBy: aSpaceshipNew on: targetSpaceship in: self ].
 
-	card isPermanent ifTrue: [ activePermanentCards add: card ].
+    card isPermanent ifTrue: [ activePermanentCards add: card ].
 
 
 ]
 
 { #category : 'behavior' }
 Game >> produceAtomicBombEffectTo: aSpaceship [
-
-	spaceships do: [ :ship |
-		ship moveToPosition: 0 .
-		ship lowerAShield ].
-	self disableBattleForThisTurn.
+	"Mejor decirle a cada spaceship que se activo la bomba, que el game aplique sobre estas el efecto"
+	"Tell, dont ask"
+    spaceships do: [ :ship | ship applyAtomicBomb ].
+    self disableBattleForThisTurn.
 ]
 
 { #category : 'behavior' }
-Game >> produceMoonwalkEffectTo: aSpaceship with: aNumberOfPositionsToGoBack [
-
-	| otherSpaceships newPosition |
-	otherSpaceships := spaceships reject: [ :each |
-		                   each == aSpaceship ].
-
-	otherSpaceships do: [ :ship |
-		newPosition := self correctPositionOf: ship to: aNumberOfPositionsToGoBack.
-		ship moveToPosition: newPosition]
+Game >> produceMoonwalkEffectTo: exclusionSpaceship with: aNumberOfPositions [
+    | otherSpaceships |
+    otherSpaceships := spaceships reject: [ :each | each == exclusionSpaceship ].
+    
+    otherSpaceships do: [ :ship | 
+        ship moveBack: aNumberOfPositions on: board ]
 
 ]
 

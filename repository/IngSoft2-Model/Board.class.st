@@ -137,16 +137,6 @@ Board >> correctPositionAfterWormholeIfNeeded: aSpaceshipPosition [
 ]
 
 { #category : 'behavior' }
-Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLimit: lapLimit [
-    ^ aSpaceship 
-        adjustPositionAfterMoving: aSpaceshipPosition 
-        onBoardOfSize: aSize 
-        withLapLimit: lapLimit
-
-
-]
-
-{ #category : 'behavior' }
 Board >> createPositionTable: spaceships [
 	^ PositionTable with: spaceships.
 ]
@@ -154,7 +144,7 @@ Board >> createPositionTable: spaceships [
 { #category : 'initialization' }
 Board >> getSize [
 
-	^ aSize asParsec 
+	^ aSize.
 ]
 
 { #category : 'as yet unclassified' }
@@ -176,4 +166,9 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom:
 	tiles := aTileCollection.
 	wormholeEntry := aWormholeEntry.
 	wormholeExit := aWormholeExit
+]
+
+{ #category : 'initialization' }
+Board >> move: aSpaceship by: positionsToAdvance withLapLimit: lapLimit [
+    aSpaceship moveBy: positionsToAdvance on: self withLapLimit: lapLimit.
 ]
