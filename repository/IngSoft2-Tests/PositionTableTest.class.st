@@ -43,21 +43,24 @@ PositionTableTest >> testCannotGetPositionTableBeforeGameIsFinished [
 { #category : 'tests' }
 PositionTableTest >> testWhenGameEndsThenThePositionTableCanBeKnown [
 
-	| aGame aSecondSpaceship aPositionTable expectedPositions aGameBuilder |
+	| aGame aFirstSpaceship aSecondSpaceship aPositionTable aGameBuilder |
 	aGameBuilder := GameBuilder new.
+	aFirstSpaceship := Spaceship new.
 	aSecondSpaceship := Spaceship new.
+
 	aGame := aGameBuilder
-		         addSpaceship: Spaceship new;
-					addSpaceship: aSecondSpaceship; 
+		         addSpaceship: aFirstSpaceship;
+		         addSpaceship: aSecondSpaceship;
 		         addBoard: (Board withSize: 20 andWormholeFrom: 4 to: 9);
 		         addDice: (FixedDice onFace: 20);
 		         build.
 
 	aGame playRound.
-	aPositionTable := (aGame getPositionTable).
+	aPositionTable := aGame getPositionTable.
 
-	expectedPositions := OrderedCollection newFrom: #( 20 0 ).
-	self assert: (self compareValues: (aPositionTable getSpaceshipsPositions) with: expectedPositions)
+	self assert: (aPositionTable isShip: aFirstSpaceship atLap: 1 andSquare: 20).
+	"Chequear esto"
+	self assert: (aPositionTable isShip: aSecondSpaceship atLap: 0 andSquare: 0)
 ]
 
 { #category : 'tests' }

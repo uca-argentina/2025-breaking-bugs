@@ -148,7 +148,7 @@ Board >> correctPositionIf: aSpaceship passTheLine: aSpaceshipPosition withLapLi
 
 { #category : 'behavior' }
 Board >> createPositionTable: spaceships [
-	^ PositionTable with: spaceships and: aSize toInternalValue
+	^ PositionTable with: spaceships.
 ]
 
 { #category : 'initialization' }

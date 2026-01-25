@@ -195,6 +195,19 @@ Spaceship >> initializeWithPosition: aPosition laps: aLaps shields: aShields tur
 	^ self
 ]
 
+{ #category : 'adding' }
+Spaceship >> isAheadOf: anotherSpaceship [
+    (laps = anotherSpaceship getLapsCompleted)
+        ifTrue: [ ^ position > anotherSpaceship getPosition ]
+        ifFalse: [ ^ laps > anotherSpaceship getLapsCompleted ]
+	
+]
+
+{ #category : 'adding' }
+Spaceship >> isAtLap: aLap andAtSquare: aSquare [
+    ^ (laps = aLap) and: [ position = aSquare ]
+]
+
 { #category : 'testing' }
 Spaceship >> isAtPosition: aPosition [
 
