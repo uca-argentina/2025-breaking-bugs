@@ -1,15 +1,16 @@
 Class {
-	#name : 'BlackHole',
+	#name : 'HyperSpaceJumpEffect',
 	#superclass : 'Effect',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
 
 { #category : 'operations' }
-BlackHole >> applyTo: aSpaceship in: aGame [
+HyperSpaceJumpEffect >> applyTo: aSpaceship in: aGame [
 
 	| actualPosition |
 	actualPosition := aSpaceship getPosition.
-	aSpaceship moveToPosition: actualPosition - 4.
+	aSpaceship moveToPosition: actualPosition + 4.
+	aSpaceship lowerAShield.
 	aGame registerAppliedEffect: self
 ]

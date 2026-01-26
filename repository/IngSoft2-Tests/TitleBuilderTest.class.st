@@ -15,12 +15,12 @@ TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilit
 
 	countsOfTitles := OrderedCollection new.
 	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: NoEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHole ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHoleEffect ]).
 	
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJump ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalk ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJump ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBomb ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJumpEffect ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalkEffect ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJumpEffect ]).
+	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBombEffect ]).
 	"HyperSpaceJump 20 MoonWalk 10 HyperJump 8 AtomicBomb 2"
 	percentages := countsOfTitles collect: [ :count | (count asFloat / finishLine) * 100 ].
 
@@ -46,13 +46,13 @@ TitleBuilderTest >> testTileEffectDistributionMatchesExpectedProbabilitiesWithCa
 
 	countsOfTitles := OrderedCollection new.
 	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: NoEffect ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHole ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHoleEffect ]).
 	
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJump ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalk ]).
-	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJump ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBomb ]).
-	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: ObtainCard ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJumpEffect ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalkEffect ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJumpEffect ]).
+	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBombEffect ]).
+	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: ObtainCardEffect ]).
 	
 	percentages := countsOfTitles collect: [ :count | (count asFloat / finishLine) * 100 ].
 

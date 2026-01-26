@@ -43,13 +43,13 @@ TilesBuilder >> buildRandom [
 	| weightedEffects effectsCollection |
 weightedEffects := Dictionary new
 	                   at: [ NoEffect new ] put: noEffectPercentage;
-	                   at: [ BlackHole new ] put: blackholePercentage;
-	                   at: [ HyperSpaceJump new ] put: hyperSpaceJumpPercentage;
-	                   at: [ MoonWalk for: numberOfPositionsToGoBack ]
+	                   at: [ BlackHoleEffect new ] put: blackholePercentage;
+	                   at: [ HyperSpaceJumpEffect new ] put: hyperSpaceJumpPercentage;
+	                   at: [ MoonWalkEffect for: numberOfPositionsToGoBack ]
 	                   put: moonwalkPercentage;
-	                   at: [ HyperJump new ] put: hyperJumpPercentage;
-	                   at: [ AtomicBomb new ] put: atomicBombPercentage;
-							at: [ ObtainCard new ] put: cardTitlePercentage ;
+	                   at: [ HyperJumpEffect new ] put: hyperJumpPercentage;
+	                   at: [ AtomicBombEffect new ] put: atomicBombPercentage;
+							at: [ ObtainCardEffect new ] put: cardTitlePercentage ;
 	                   yourself.
 
 

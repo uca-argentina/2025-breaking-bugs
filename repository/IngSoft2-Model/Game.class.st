@@ -11,7 +11,8 @@ Class {
 		'activatedAtomicBomb',
 		'activePermanentCards',
 		'cardsThrown',
-		'lastTileEffectApplied'
+		'lastTileEffectApplied',
+		'turnIndex'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -117,7 +118,9 @@ Game >> initializeWith: aBoard and: aCollectionOfSpacehips and: aCollectionOfDic
 	battle := Battle with: spaceships and: dice.
 	activePermanentCards := OrderedCollection new.
 	cardsThrown := NoEffectCard new.
-	lastTileEffectApplied := NoEffect new
+	lastTileEffectApplied := NoEffect new.
+	turnIndex := 1.
+
 ]
 
 { #category : 'accessing' }
@@ -231,23 +234,18 @@ Game >> playRoundUsing: aCard of: theSpaceship [
 
 { #category : 'behavior' }
 Game >> playRoundUsing: aCard of: theSpaceship to: targetSpaceship [
-
-	| activeSpaceships penalizeSpaceships card cardToPlay |
-	activatedAtomicBomb := false.
-	card := aCard.
 	self checkIfGameHasAlreadyFinished.
-	activeSpaceships := spaceships select: [ :aSpaceship |
-		                    aSpaceship canPlay ].
-	activeSpaceships do: [ :aSpaceship |
+	activatedAtomicBomb := false.
+
+	1 to: spaceships size do: [ :i |
 		self hasFinished ifFalse: [
-			cardToPlay := (aSpaceship = theSpaceship) 
-                ifTrue: [ aCard ] 
-                ifFalse: [ NoEffectCard new ].
-			self playSpaceshipTurn: aSpaceship usingCard: cardToPlay against: targetSpaceship]].
-	
-	penalizeSpaceships := spaceships select: [ :aSpaceship |
-		                      aSpaceship getShields = 0 ].
-	penalizeSpaceships do: [ :aSpaceship | aSpaceship penalize ]
+			self playTurnUsing: aCard of: theSpaceship to: targetSpaceship
+		]
+	].
+
+	(spaceships select: [ :s | s getShields = 0 ])
+		do: [ :s | s penalize ].
+
 
 ]
 
@@ -273,6 +271,30 @@ Game >> playSpaceshipTurn: aSpaceship usingCard: aCard against: aTargetSpaceship
 
     card isPermanent ifTrue: [ activePermanentCards add: card ].
 
+
+]
+
+{ #category : 'behavior' }
+Game >> playTurnUsing: aCard of: theSpaceship to: targetSpaceship [
+
+	| spaceshipToPlay cardToPlay |
+
+	self checkIfGameHasAlreadyFinished.
+
+	spaceshipToPlay := spaceships at: turnIndex.
+
+	(spaceshipToPlay canPlay) ifTrue: [
+		cardToPlay := (spaceshipToPlay = theSpaceship)
+			ifTrue: [ aCard ]
+			ifFalse: [ NoEffectCard new ].
+
+		self hasFinished ifFalse: [
+			self playSpaceshipTurn: spaceshipToPlay usingCard: cardToPlay against: targetSpaceship
+		].
+	].
+
+	turnIndex := turnIndex + 1.
+	turnIndex > spaceships size ifTrue: [ turnIndex := 1 ].
 
 ]
 

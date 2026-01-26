@@ -24,7 +24,7 @@ RedoCardTest >> testRedoCardAfterRepeatOfBlackHoleReappliesOriginalEffect [
 	spaceship := Spaceship with:
 		             (OrderedCollection with: repeatCard with: redoCard).
 	boardBuilder := TilesBuilder with: 90.
-	boardBuilder with: BlackHole new at: 4.
+	boardBuilder with: BlackHoleEffect new at: 4.
 	board := Board
 		         withSize: 90
 		         andWormholeFrom: 80
@@ -65,7 +65,7 @@ RedoCardTest >> testRedoCardAfterRepeatOfHyperJumpReappliesOriginalEffect [
 	"Tablero con HyperJump (30,20,10 pársecs) en casillero 4"
 	boardBuilder := (TilesBuilder with: 90)
 		                with:
-		                (HyperJump withDescendingParsecsFrom: 30 step: 10)
+		                (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
 		                at: 4.
 	board := Board
 		         withSize: 90

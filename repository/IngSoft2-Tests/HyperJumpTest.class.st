@@ -16,7 +16,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder
-		with: (HyperJump withDescendingLightYearsFrom: 90 step: 30)
+		with: (HyperJumpEffect withDescendingLightYearsFrom: 90 step: 30)
 		at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
@@ -49,7 +49,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder
-		with: (HyperJump withDescendingParsecsFrom: 30 step: 10)
+		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
 		at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board

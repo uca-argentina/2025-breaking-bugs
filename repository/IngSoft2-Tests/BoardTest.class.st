@@ -56,11 +56,11 @@ BoardTest >> testCreatingABoardWithSizeInLightYearsAndWormholeAndTiles [
 
 	tileBuilder := TilesBuilder withInLightYears: finishLine.
 	tileBuilder
-		with: AtomicBomb new at: 9;
-		with: BlackHole new at: 27;
-		with: (HyperJump withDescendingParsecsFrom: 90 step: 30) at: 30;
-		with: (MoonWalk for: 6) at: 57;
-		with: HyperSpaceJump new at: 48.
+		with: AtomicBombEffect new at: 9;
+		with: BlackHoleEffect new at: 27;
+		with: (HyperJumpEffect withDescendingParsecsFrom: 90 step: 30) at: 30;
+		with: (MoonWalkEffect for: 6) at: 57;
+		with: HyperSpaceJumpEffect new at: 48.
 
 	tileCollection := tileBuilder build.
 

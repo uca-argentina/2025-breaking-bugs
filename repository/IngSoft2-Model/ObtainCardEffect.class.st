@@ -1,5 +1,5 @@
 Class {
-	#name : 'ObtainCard',
+	#name : 'ObtainCardEffect',
 	#superclass : 'Effect',
 	#instVars : [
 		'cardSupplier'
@@ -9,22 +9,22 @@ Class {
 }
 
 { #category : 'instance creation' }
-ObtainCard class >> new [
+ObtainCardEffect class >> new [
 	^ super new initializeWith: [ RandomCard obtainCard ].
 ]
 
 { #category : 'instance creation' }
-ObtainCard class >> with: aSpecificCard [ 
+ObtainCardEffect class >> with: aSpecificCard [ 
 	^ self new initializeWith: [ aSpecificCard ].
 ]
 
 { #category : 'operations' }
-ObtainCard >> applyTo: aSpaceship in: aGame [
+ObtainCardEffect >> applyTo: aSpaceship in: aGame [
     aSpaceship addNewCard: (cardSupplier value).
 	
 ]
 
 { #category : 'initialization' }
-ObtainCard >> initializeWith: aCard [
+ObtainCardEffect >> initializeWith: aCard [
 	cardSupplier := aCard.
 ]

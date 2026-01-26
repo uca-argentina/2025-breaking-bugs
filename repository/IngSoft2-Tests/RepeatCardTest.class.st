@@ -15,7 +15,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterABlackHoleEffectBeingAppliedThenI
 
 	finishLine := 90.
 	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder with: BlackHole new at: 4.
+	aTileBuilder with: BlackHoleEffect new at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
 		          withSize: finishLine
@@ -48,7 +48,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperJumpEffectBeingAppliedThenI
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
 		                with:
-		                (HyperJump withDescendingParsecsFrom: 30 step: 10)
+		                (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10)
 		                at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
@@ -86,7 +86,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
-		                with: HyperSpaceJump new
+		                with: HyperSpaceJumpEffect new
 		                at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
@@ -119,7 +119,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAMoonWalkEffectBeingAppliedThenIt
 
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
-		                with: (MoonWalk for: 3)
+		                with: (MoonWalkEffect for: 3)
 		                at: 9.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
@@ -159,7 +159,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 
 	finishLine := 90.
 	aTileBuilder := (TilesBuilder with: finishLine)
-		                with: AtomicBomb new
+		                with: AtomicBombEffect new
 		                at: 6.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board

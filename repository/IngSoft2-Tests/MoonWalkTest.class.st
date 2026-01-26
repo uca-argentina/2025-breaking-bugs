@@ -15,7 +15,7 @@ MoonWalkTest >> testMoonWalkDoesNotMoveSpaceshipBelowStartWhenInFirstLap [
 	aSpaceship3 := Spaceship new.
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder with: (MoonWalk for: 6) at: 4.
+	aTileBuilder with: (MoonWalkEffect for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
 		          withSize: finishLine
@@ -44,7 +44,7 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 	aSpaceship3 := Spaceship new.
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder with: (MoonWalk for: 6) at: 4.
+	aTileBuilder with: (MoonWalkEffect for: 6) at: 4.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board withSize: finishLine andWormholeFrom: 8 to: 15 and: aTileCollection.
 	aGame := aGameBuilder
@@ -72,7 +72,7 @@ MoonWalkTest >> testWhenSpaceshipLandsOnMoonWalkThenOtherSpaceshipMovesBack [
 	aSpaceship2 := Spaceship new.
 	finishLine := 20.
 	aTileBuilder := TilesBuilder with: finishLine.
-	aTileBuilder with: (MoonWalk for: 2) at: 6.
+	aTileBuilder with: (MoonWalkEffect for: 2) at: 6.
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
 		          withSize: finishLine

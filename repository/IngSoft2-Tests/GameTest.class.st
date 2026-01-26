@@ -25,11 +25,11 @@ GameTest >> testAllTheEffectsOnGame [
 
 	tileBuilder := TilesBuilder with: finishLine.
 	tileBuilder
-		with: AtomicBomb new at: 3;
-		with: BlackHole new at: 9;
-		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalk for: 2) at: 19;
-		with: HyperSpaceJump new at: 16.
+		with: AtomicBombEffect new at: 3;
+		with: BlackHoleEffect new at: 9;
+		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalkEffect for: 2) at: 19;
+		with: HyperSpaceJumpEffect new at: 16.
 
 	tileCollection := tileBuilder build.
 
@@ -89,11 +89,11 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	finishLine := 43.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder
-		with: BlackHole new at: 9;
-		with: AtomicBomb new at: 3;
-		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalk for: 1) at: 19;
-		with: HyperSpaceJump new at: 16.
+		with: BlackHoleEffect new at: 9;
+		with: AtomicBombEffect new at: 3;
+		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalkEffect for: 1) at: 19;
+		with: HyperSpaceJumpEffect new at: 16.
 
 	aTileCollection := aTileBuilder build.
 	aBoard := Board
@@ -179,11 +179,11 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	finishLine := 25.
 	aTileBuilder := TilesBuilder with: finishLine.
 	aTileBuilder
-		with: BlackHole new at: 9;
-		with: AtomicBomb new at: 3;
-		with: (HyperJump withDescendingParsecsFrom: 30 step: 10) at: 10;
-		with: (MoonWalk for: 1) at: 19;
-		with: HyperSpaceJump new at: 16.
+		with: BlackHoleEffect new at: 9;
+		with: AtomicBombEffect new at: 3;
+		with: (HyperJumpEffect withDescendingParsecsFrom: 30 step: 10) at: 10;
+		with: (MoonWalkEffect for: 1) at: 19;
+		with: HyperSpaceJumpEffect new at: 16.
 
 	aTileCollection := aTileBuilder build.
 	aBoard := Board

@@ -1,5 +1,5 @@
 Class {
-	#name : 'HyperJump',
+	#name : 'HyperJumpEffect',
 	#superclass : 'Effect',
 	#instVars : [
 		'currentIndex',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
-HyperJump class >> withDescendingLightYearsFrom: maxLightYears step: stepSize [
+HyperJumpEffect class >> withDescendingLightYearsFrom: maxLightYears step: stepSize [
 
 	| parsecList current currentInParcecs stepSizeInParcecs |
 	current := maxLightYears.
@@ -27,7 +27,7 @@ HyperJump class >> withDescendingLightYearsFrom: maxLightYears step: stepSize [
 ]
 
 { #category : 'as yet unclassified' }
-HyperJump class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
+HyperJumpEffect class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
 
 	| parsecList current |
 	current := maxParsecs.
@@ -41,7 +41,7 @@ HyperJump class >> withDescendingParsecsFrom: maxParsecs step: stepSize [
 ]
 
 { #category : 'operations' }
-HyperJump >> applyTo: aSpaceship in: aGame [
+HyperJumpEffect >> applyTo: aSpaceship in: aGame [
 
 	| parsecsToAdvance newPosition sizeOfTileInParsecs |
 	sizeOfTileInParsecs := 2.
@@ -60,7 +60,7 @@ HyperJump >> applyTo: aSpaceship in: aGame [
 ]
 
 { #category : 'initialization' }
-HyperJump >> initializeWithParcecs: aParcecsArray [
+HyperJumpEffect >> initializeWithParcecs: aParcecsArray [
 
 	amountOfParcecsToAdvance := aParcecsArray.
 	currentIndex := 0

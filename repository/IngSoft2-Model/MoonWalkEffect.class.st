@@ -1,5 +1,5 @@
 Class {
-	#name : 'MoonWalk',
+	#name : 'MoonWalkEffect',
 	#superclass : 'Effect',
 	#instVars : [
 		'numberOfPositionsToGoBack'
@@ -9,13 +9,13 @@ Class {
 }
 
 { #category : 'instance creation' }
-MoonWalk class >> for: aNumberOfPositionToGoBack [
+MoonWalkEffect class >> for: aNumberOfPositionToGoBack [
 
 	^ self new initializeFor: aNumberOfPositionToGoBack
 ]
 
 { #category : 'operations' }
-MoonWalk >> applyTo: aSpaceship in: aGame [
+MoonWalkEffect >> applyTo: aSpaceship in: aGame [
 
 	aGame
 		produceMoonwalkEffectTo: aSpaceship
@@ -24,7 +24,7 @@ MoonWalk >> applyTo: aSpaceship in: aGame [
 ]
 
 { #category : 'initialization' }
-MoonWalk >> initializeFor: aNumberOfPositionsToGoBack [
+MoonWalkEffect >> initializeFor: aNumberOfPositionsToGoBack [
 
 	numberOfPositionsToGoBack := aNumberOfPositionsToGoBack
 ]
