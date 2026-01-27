@@ -92,7 +92,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
 	
 ]
 
@@ -110,7 +110,7 @@ BoardTest >> testLapsIncrementByOneAfterPassingBoardLimitwithTwoSpaceships [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 1.
 ]
 
 { #category : 'tests' }
@@ -127,7 +127,7 @@ BoardTest >> testLapsIncrementByTwoWhenPassingBoardTwice [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 2.
 ]
 
 { #category : 'tests' }

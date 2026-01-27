@@ -213,7 +213,7 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 19.
 	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
 	
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
 	mercenary := (aGame spaceshipMatching: aSpaceship) getMercenaries first.
 	self assert: (mercenary getShields) equals: 3.
 	
@@ -274,7 +274,7 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 19.
 	
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
 	self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries first getShields) equals: 2.
 	
 ]

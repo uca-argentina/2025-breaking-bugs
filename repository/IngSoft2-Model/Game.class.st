@@ -55,25 +55,11 @@ Game >> getAllDiceValuesFrom: diceCollection [
 		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
-{ #category : 'getter' }
-Game >> getLapsCompletedOf: aSpaceship [
-
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getLapsCompleted.
-]
-
 { #category : 'behavior' }
 Game >> getPositionTable [
     hasFinished ifFalse: [ self error: 'Cannot get position table before game ends.' ].
     ^ board createPositionTable: spaceships.
 
-]
-
-{ #category : 'getter' }
-Game >> getShieldsOf: aSpaceship [
-	^ (spaceships detect: [ :each | each = aSpaceship ]) getShields
 ]
 
 { #category : 'initialization' }
@@ -286,8 +272,8 @@ Game >> registerThrownCard: aCard [
 
 { #category : 'getter' }
 Game >> spaceshipMatching: aSpaceship [
-    | spaceshipResult |
-^ spaceshipResult := (spaceships detect: [:each | each = aSpaceship]) deepCopy.
+
+	^ (spaceships detect: [ :each | each = aSpaceship ]) deepCopy.
 ]
 
 { #category : 'behavior' }

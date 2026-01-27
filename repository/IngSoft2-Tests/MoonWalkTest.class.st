@@ -58,8 +58,8 @@ MoonWalkTest >> testWhenMoonWalkPushesSpaceshipBackPastZeroThenItWrapsToPrevious
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
 	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 4.
-	self assert: (aGame getLapsCompletedOf: aSpaceship) equals: 0.
-	self assert: (aGame getLapsCompletedOf: aSpaceship2) equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getLapsCompleted equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getLapsCompleted equals: 1.
 	
 ]
 

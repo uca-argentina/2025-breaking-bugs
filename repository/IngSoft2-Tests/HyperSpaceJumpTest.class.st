@@ -27,6 +27,6 @@ HyperSpaceJumpTest >> testWhenSpaceshipLandsOnHyperSpaceJumpThenItIsMovedForward
 		         build.
 	aGame playRound.
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 8.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 2.
 	
 ]

@@ -58,10 +58,10 @@ GameTest >> testAllTheEffectsOnGame [
 	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 19. "MoonWalk, pero no retrocede"
 	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
 	
-	self assert: (game getShieldsOf: aSpaceship1) equals: 2.
-	self assert: (game getShieldsOf: aSpaceship2) equals: 1.
-	self assert: (game getShieldsOf: aSpaceship3) equals: 2.
-	self assert: (game getShieldsOf: aSpaceship4) equals: 2.
+	self assert: (game spaceshipMatching: aSpaceship1) getShields equals: 2.
+	self assert: (game spaceshipMatching: aSpaceship2) getShields equals: 1.
+	self assert: (game spaceshipMatching: aSpaceship3) getShields equals: 2.
+	self assert: (game spaceshipMatching: aSpaceship4) getShields equals: 2.
 	
 	
 
@@ -122,10 +122,10 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 5.
 	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 4.
 	
-	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getShields equals: 2.
 	self deny: aGame hasFinished.
 
 	
@@ -212,10 +212,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 5.
 	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 4.
 	
-	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship3) equals: 2.
-	self assert: (aGame getShieldsOf: aSpaceship4) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getShields equals: 2.
 	self deny: aGame hasFinished.
 
 	aGame playRound.

@@ -104,7 +104,7 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAHyperSpaceJumpBeingAppliedThenIt
 	aGame playInstant: aRepeatCard of: aSpaceship to: aSpaceship.
 
 	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 12.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 1
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 1
 ]
 
 { #category : 'tests' }
@@ -186,9 +186,9 @@ RepeatCardTest >> testWhenUsingARepeatCardAfterAnAtomicBombEffectBeingAppliedThe
 	self assert: (aGame spaceshipMatching: aSpaceship1)getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
 	self assert: (aGame spaceshipMatching: aSpaceship3)getPosition equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship1) equals: 1.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 1.
-	self assert: (aGame getShieldsOf: aSpaceship3) equals: 1
+	self assert: (aGame spaceshipMatching: aSpaceship1) getShields equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getShields equals: 1
 ]
 
 { #category : 'tests' }

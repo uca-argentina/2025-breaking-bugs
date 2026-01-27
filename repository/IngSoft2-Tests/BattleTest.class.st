@@ -155,9 +155,9 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 
 	aGame playRound.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
 ]
 
 { #category : 'tests' }
@@ -177,7 +177,7 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 
 	aGame playRound.
 	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship) getShields equals: 3.
 	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
 ]
