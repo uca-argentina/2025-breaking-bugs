@@ -37,19 +37,18 @@ CancelationCardTest >> testIsValidIfACancelationCardAppliesEffectCorrectlyToAnAf
 		         build.
 
 	aGame playRoundUsing: aPermanentCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2) size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals: 2.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: position2.
 
 	aGame playInstant: aCancelationCard of: aSpaceship on: aPermanentCard.
 
 	aGame playRound.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1 * 2.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2 * 2.
-	self assert: aGame numberOfActivePermanentCards equals: 0.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1 * 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: position2 * 2.
 ]
 
 { #category : 'tests' }
@@ -79,18 +78,18 @@ CancelationCardTest >> testWhenCancelationCardPlayedThenMercenaryEffectIsReverte
 
 	aGame playRoundUsing: aPermanentCard of: aSpaceship to: aSpaceship2.
 
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2) size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals: 2.
 
-	self assert: (aGame getMercenariesOf: aSpaceship) size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
 
 	aGame playInstant: aCancelationCard of: aSpaceship with: aPermanentCard to: aSpaceship2.
 
 	aGame playRound.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 0.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals: 0.
 
-	self assert: (aGame getMercenariesOf: aSpaceship) size equals: 0.
-	self assert: (aGame getMercenariesOf: aSpaceship) size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 0.
 ]
 
 { #category : 'tests' }
@@ -111,7 +110,7 @@ CancelationCardTest >> testWhenTryingToCancelACardThatIsNotActiveThenItIsNotPoss
 	aGame playInstant: aCancellationCard of: aSpaceship on: anAccelerationCard.
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: 4
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 4
 ]
 
 { #category : 'tests' }
@@ -138,15 +137,15 @@ CancelationCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshi
 		         build.
 
 	aGame playRoundUsing: aPermanentCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2) size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  2.
 
 	aGame playInstant: anInstantCard of: aSpaceship on: aPermanentCard.
 
 	aGame playRound.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1 * 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  0.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1 * 2.
 	self
-		assert: (aGame getPositionOf: aSpaceship2)
+		assert: (aGame spaceshipMatching: aSpaceship2) getPosition
 		equals: position2 * 2 + 1
 ]

@@ -39,15 +39,15 @@ RedoCardTest >> testRedoCardAfterRepeatOfBlackHoleReappliesOriginalEffect [
 		        build.
 
 	game playRound.
-	self assert: (game getPositionOf: spaceship) equals: 0.
+	self assert: (game spaceshipMatching: spaceship) getPosition equals: 0.
 	game playRound.
 	game playInstant: repeatCard of: spaceship to: spaceship.
-	self assert: (game getPositionOf: spaceship) equals: 1.
+	self assert: (game spaceshipMatching: spaceship) getPosition equals: 1.
 	game playRound.
-	self assert: (game getPositionOf: spaceship) equals: 6.
+	self assert: (game spaceshipMatching: spaceship)getPosition equals: 6.
 	game playInstant: redoCard of: spaceship to: spaceship.
 
-	self assert: (game getPositionOf: spaceship) equals: 2.
+	self assert: (game spaceshipMatching: spaceship)getPosition equals: 2.
 ]
 
 { #category : 'tests' }
@@ -85,20 +85,20 @@ RedoCardTest >> testRedoCardAfterRepeatOfHyperJumpReappliesOriginalEffect [
 
 	game playRound.
 
-	self assert: (game getPositionOf: spaceship1) equals: 19. 
-	self assert: (game getPositionOf: spaceship2) equals: 14. 
-	self assert: (game getPositionOf: spaceship3) equals: 9. 
+	self assert: (game spaceshipMatching: spaceship1)getPosition equals: 19. 
+	self assert: (game spaceshipMatching: spaceship2)getPosition equals: 14. 
+	self assert: (game spaceshipMatching: spaceship3)getPosition equals: 9. 
 
 	
 	game playInstant: repeatCard of: spaceship1 to: spaceship2.
-	self assert: (game getPositionOf: spaceship1) equals: 19.
-	self assert: (game getPositionOf: spaceship2) equals: 29.
-	self assert: (game getPositionOf: spaceship3) equals: 9.
+	self assert: (game spaceshipMatching: spaceship1)getPosition equals: 19.
+	self assert: (game spaceshipMatching: spaceship2)getPosition equals: 29.
+	self assert: (game spaceshipMatching: spaceship3)getPosition equals: 9.
 
 	game playInstant: redoCard of: spaceship1 to: spaceship2.
-	self assert: (game getPositionOf: spaceship1) equals: 19.
-	self assert: (game getPositionOf: spaceship2) equals: 39.
-	self assert: (game getPositionOf: spaceship3) equals: 9.
+	self assert: (game spaceshipMatching: spaceship1)getPosition equals: 19.
+	self assert: (game spaceshipMatching: spaceship2)getPosition equals: 39.
+	self assert: (game spaceshipMatching: spaceship3)getPosition equals: 9.
 ]
 
 { #category : 'tests' }
@@ -127,7 +127,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingACancellationCardThenTheFirstAct
 	aGame playRound.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (aGame spaceshipMatching: aSpaceship) getPosition
 		equals: position1 * 3 + 1.
 ]
 
@@ -156,7 +156,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAMercenaryCardThenTheSpaceshipHa
 	aGame playRoundUsing: aMercenaryCard of: aSpaceship to: aSpaceship2.
 	aGame playRoundUsing: aRedoCard of: aSpaceship to: aSpaceship3.
 
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
 ]
 
 { #category : 'tests' }
@@ -185,7 +185,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingARedoCardThenTheFirstEffectIsRea
 	aGame playRound.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (aGame spaceshipMatching: aSpaceship) getPosition
 		equals: position1 * 4 + 6
 ]
 
@@ -210,7 +210,7 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingASpeedCardThenTheSpaceshipDouble
 	aGame playRound.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (aGame spaceshipMatching: aSpaceship) getPosition
 		equals: position1 * 3 + 3
 ]
 
@@ -242,11 +242,11 @@ RedoCardTest >> testWhenUsingARedoCardAfterUsingAnAccelerationCardThenAllSpacesh
 	aGame playRound.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship)
+		assert: (aGame spaceshipMatching: aSpaceship) getPosition
 		equals: position1 * 3 + 3.
 
 	self
-		assert: (aGame getPositionOf: aSpaceship2)
+		assert: (aGame spaceshipMatching: aSpaceship2) getPosition
 		equals: position2 * 3 + 5
 ]
 

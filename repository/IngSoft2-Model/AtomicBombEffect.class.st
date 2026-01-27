@@ -8,6 +8,11 @@ Class {
 { #category : 'operations' }
 AtomicBombEffect >> applyTo: aSpaceship in: aGame [
 
-	aGame produceAtomicBombEffectTo: aSpaceship.
-	aGame registerAppliedEffect: self
+	aGame spaceshipsExcept: nil do: [ :ship |
+		ship moveToPosition: 0.
+		ship lowerAShield
+	].
+
+	aGame disableBattleForThisTurn.
+	aGame registerAppliedEffect: self.
 ]

@@ -55,14 +55,6 @@ Game >> getAllDiceValuesFrom: diceCollection [
 		  into: [ :sumOfValues :aDie | sumOfValues + aDie roll ]
 ]
 
-{ #category : 'behavior' }
-Game >> getCardsOf: aSpaceship [ 
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getCards.
-]
-
 { #category : 'getter' }
 Game >> getLapsCompletedOf: aSpaceship [
 
@@ -70,21 +62,6 @@ Game >> getLapsCompletedOf: aSpaceship [
 	spaceshipResult := spaceships detect: [ :each |
 		                   each = aSpaceship ].
 	^ spaceshipResult getLapsCompleted.
-]
-
-{ #category : 'getter' }
-Game >> getMercenariesOf: aSpaceship [ 
-	| spaceshipResult |
-	spaceshipResult := spaceships detect: [ :each |
-		                   each = aSpaceship ].
-	^ spaceshipResult getMercenaries.
-]
-
-{ #category : 'getter' }
-Game >> getPositionOf: aSpaceship [
-    | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
-	 ^ (spaceshipResult getPosition).
 ]
 
 { #category : 'behavior' }
@@ -95,10 +72,8 @@ Game >> getPositionTable [
 ]
 
 { #category : 'getter' }
-Game >> getShieldsOf: aSpaceship [ 
-    | spaceshipResult |
-spaceshipResult := (spaceships detect: [:each | each = aSpaceship]).
-	 ^ (spaceshipResult getShields).
+Game >> getShieldsOf: aSpaceship [
+	^ (spaceships detect: [ :each | each = aSpaceship ]) getShields
 ]
 
 { #category : 'initialization' }
@@ -153,12 +128,6 @@ Game >> makeAllSpaceShipsMoveAtLowerVelocity [
 
 	spaceships do: [ :spaceship |
 		spaceship moveAtLowerVelocity ]
-]
-
-{ #category : 'behavior' }
-Game >> numberOfActivePermanentCards [
-
-	^ activePermanentCards size
 ]
 
 { #category : 'behavior' }
@@ -298,22 +267,9 @@ Game >> playTurnUsing: aCard of: theSpaceship to: targetSpaceship [
 
 ]
 
-{ #category : 'behavior' }
-Game >> produceAtomicBombEffectTo: aSpaceship [
-	"Mejor decirle a cada spaceship que se activo la bomba, que el game aplique sobre estas el efecto"
-	"Tell, dont ask"
-    spaceships do: [ :ship | ship applyAtomicBomb ].
-    self disableBattleForThisTurn.
-]
-
-{ #category : 'behavior' }
-Game >> produceMoonwalkEffectTo: exclusionSpaceship with: aNumberOfPositions [
-    | otherSpaceships |
-    otherSpaceships := spaceships reject: [ :each | each == exclusionSpaceship ].
-    
-    otherSpaceships do: [ :ship | 
-        ship moveBack: aNumberOfPositions on: board ]
-
+{ #category : 'initialization' }
+Game >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
+	^ board positionAfterMovingBack: positionsToGoBack for: aSpaceship.
 ]
 
 { #category : 'behavior' }
@@ -326,4 +282,16 @@ Game >> registerAppliedEffect: anEffect [
 Game >> registerThrownCard: aCard [
 
 	cardsThrown := aCard
+]
+
+{ #category : 'getter' }
+Game >> spaceshipMatching: aSpaceship [
+    | spaceshipResult |
+^ spaceshipResult := (spaceships detect: [:each | each = aSpaceship]) deepCopy.
+]
+
+{ #category : 'behavior' }
+Game >> spaceshipsExcept: aSpaceship do: aBlock [
+	(spaceships reject: [ :each | each = aSpaceship ]) do: aBlock
+
 ]

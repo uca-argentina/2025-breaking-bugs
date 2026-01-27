@@ -23,11 +23,11 @@ MercenaryCardTest >> testInvalidWhenSpaceshipTriesToHireASpaceshipThatIsAlreadyA
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
 	
 	aGame playRoundUsing: aCard of: aSpaceship3 to: aSpaceship2.
-	self deny: (aGame getMercenariesOf: aSpaceship3) equals: (OrderedCollection with: aSpaceship2 ).
-	self assert: (aGame getMercenariesOf: aSpaceship3)size equals: 0.
+	self deny: (aGame spaceshipMatching: aSpaceship3) getMercenaries equals: (OrderedCollection with: aSpaceship2 ).
+	self assert: (aGame spaceshipMatching: aSpaceship2) getMercenaries size equals: 0.
 ]
 
 { #category : 'tests' }
@@ -74,10 +74,10 @@ MercenaryCardTest >> testIsInvalidIfSpaceshipCanPlayTwiceTheMercenaryCard [
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	
 ]
 
@@ -98,10 +98,10 @@ MercenaryCardTest >> testIsValidIfASpaceship [
 		
 	
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship)size equals: 1.
-	self assert: (aGame getMercenariesOf: aSpaceship2)size equals: 0.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getMercenaries size equals: 0.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  2.
 ]
 
 { #category : 'tests' }
@@ -122,13 +122,13 @@ MercenaryCardTest >> testIsValidIfASpaceshipThatUseMercenaryCardHastwoSpaceships
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
 	
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship3.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
-	self assert: (aGame getPositionOf: aSpaceship) equals: 10.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 12.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 10.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 10.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 12.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 10.
 	
 ]
 
@@ -150,11 +150,11 @@ MercenaryCardTest >> testIsValidIfASpashipThatUseMercenaryCardHasAShaceshipThatH
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 10.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 12.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 10.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 12.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
 	
 ]
 
@@ -177,20 +177,20 @@ MercenaryCardTest >> testIsValidIfNoBattleOccursWhenSpaceshipAndMercenaryLandOnS
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 6.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 6.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 13.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 6.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 6.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 13.
 	
 ]
 
 { #category : 'tests' }
 MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercenaryHasHighestDice [
 
-	| aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard |
+	| aGameBuilder aSpaceship aSpaceship2 aSpaceship3 aGame aCard mercenary |
 	aGameBuilder := GameBuilder new.
 	aCard := MercenaryCard new.
 	aSpaceship := Spaceship with: (OrderedCollection with: aCard).
@@ -208,13 +208,14 @@ MercenaryCardTest >> testIsValidIfSpaceshipAndMercenaryWinsWhenSpaceshipOrMercen
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 0.
 	
 	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (((aGame getMercenariesOf: aSpaceship) at:1)getShields) equals: 3.
+	mercenary := (aGame spaceshipMatching: aSpaceship) getMercenaries first.
+	self assert: (mercenary getShields) equals: 3.
 	
 ]
 
@@ -239,12 +240,12 @@ MercenaryCardTest >> testIsValidIfSpaceshipCanPlayAnotherCardHavingAMercenary [
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	aGame playRoundUsing: aSecondCard of: aSpaceship to: aSpaceship2.
 	aGame playRound.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship) equals: position*3 +1.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position*3 +1.
 	
 ]
 
@@ -269,12 +270,12 @@ MercenaryCardTest >> testWhenASpaceshipAndHisMercenaryLoseABattleThenBothLoseASh
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getPositionOf: aSpaceship) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 19.
 	
 	self assert: (aGame getShieldsOf: aSpaceship) equals: 2.
-	self assert: (((aGame getMercenariesOf: aSpaceship) at:1)getShields) equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getMercenaries first getShields) equals: 2.
 	
 ]
 
@@ -296,10 +297,10 @@ MercenaryCardTest >> testisvalidIfASpaceshipCannotHireSameMercenaryTwiceEvenWith
 		         build.
 
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
 	
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	
 ]

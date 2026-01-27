@@ -24,13 +24,13 @@ AccelerationCardTest >> testIsValidIfAcelerationCardAppliesEffectCorrectlyToAllS
 		         build.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals: 2.
 	
 	aGame playRound.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2*2 + 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position1*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: position2*2 + 2.
 	
 	
 	

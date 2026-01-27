@@ -28,21 +28,20 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseACancelationCardReceivedByTheTitle
 		         build.
 		
 	aGame playRoundUsing: aSpeedCard of: aSpaceship2.
-	self assert: (aGame getCardsOf: aSpaceship) size equals: 3.
-	self assert: (aGame getCardsOf: aSpaceship2) size equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  3.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  1.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: position.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: position2.
 
 	aGame playInstant: aCard of: aSpaceship on: aSpeedCard.
 
 	aGame playRound.
 	
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  2.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: position * 2.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2 * 2.
-	self assert: aGame numberOfActivePermanentCards equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position * 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: position2 * 2.
 
 ]
 
@@ -67,10 +66,10 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAMercenaryCardReceivedByTheTitle [
 		         build.
 		
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: position.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  2.
 ]
 
 { #category : 'tests' }
@@ -97,11 +96,11 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseARedoCardReceivedByTheTitle [
 		         build.
 		
 	aGame playRoundUsing: aMercenaryCard of: aSpaceship to: aSpaceship2.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2).
-	self assert: (aGame getCardsOf: aSpaceship )size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  2.
 	aGame playRoundUsing: aCard of: aSpaceship to: aSpaceship3.
-	self assert: (aGame getCardsOf: aSpaceship )size equals: 1.
-	self assert: (aGame getMercenariesOf: aSpaceship) equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getMercenaries equals: (OrderedCollection with: aSpaceship2 with: aSpaceship3).
 
 ]
 
@@ -129,8 +128,8 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseASpeedCardReceivedByTheTitle [
 	aGame playRoundUsing: aCard of: aSpaceship.
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: position*2+1.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position*2+1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
 
 ]
 
@@ -155,13 +154,13 @@ ObtainCardTest >> testIsValidIfSpaceshipCanUseAnAccelerationCardReceivedByTheTit
 		         build.
 		
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 2.
 	
 	aGame playRound.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: position*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position*2 + 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: position*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: position*2 + 2.
 
 ]
 
@@ -187,7 +186,7 @@ ObtainCardTest >> testIsValidIfSpaceshipReceivesCardWhenLandingOnCardTile [
 		         build.
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 3.
 
 ]

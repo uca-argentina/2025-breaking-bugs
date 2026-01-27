@@ -19,11 +19,11 @@ SpeedCardTest >> testIsValidIfASpaceshipCreatedWithVelocityCardsMakesTheEffectAf
 					addDice: (FixedDice onFace: positions);
 		         build.
 		
-	self assert: (aGame getCardsOf: aSpaceship )size equals: 2.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  2.
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship )size equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship) getCards size) equals:  1.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: positions*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: positions*2 + 1.
 	
 	
 
@@ -43,13 +43,13 @@ SpeedCardTest >> testIsValidIfASpaceshipCreatedWithVelocityCardsMakesTwiceTheEff
 					addDice: (FixedDice onFace: positions);
 		         build.
 		
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 2.
 
 	aGame playRoundUsing: aCard of: aSpaceship.
 	aGame playRound.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: positions*3 + 2.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: positions*3 + 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
 	
 	
 
@@ -84,15 +84,15 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest [
 		         build.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getCards size equals: 2.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 0.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getCards size equals: 2.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: positions*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: positions*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
 	
 	
 	
@@ -116,15 +116,15 @@ SpeedCardTest >> testIsValidIfCardUsageAffectsOnlyOwnerAndNotTheRest2 [
 		         build.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 2.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 0.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 2.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: positions*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: positions*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 8.
 	
 	
 	
@@ -148,13 +148,13 @@ SpeedCardTest >> testIsValidIfCardUsageIsOnlyRemovedFromOwnersHand [
 					addDice: (SequentialFixedDice onFaces: {position1. position2});
 		         build.
 		
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 1.
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1*2 + 1.
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1*2 + 1.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 0.
 	
 	
 
@@ -179,17 +179,17 @@ SpeedCardTest >> testIsValidIfVelocityCardAppliesEffectCorrectlyToEachSpaceshipA
 		         build.
 	
 	aGame playRoundUsing: aCard of: aSpaceship.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 2.
 	
 	aGame playRoundUsing: aCard of: aSpaceship2.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2)size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 1.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getCards size equals: 1.
 	
 	aGame playRound.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: position1*3 + 2.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: position2*3 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: position1*3 + 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: position2*3 + 1.
 	
 	
 	
@@ -210,12 +210,12 @@ SpeedCardTest >> testSpaceshipUsesTwoVelocityCardsInTwoRoundsAndMovesOnlyOnePosi
 					addDice: (FixedDice onFace: positions);
 		         build.
 		
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship) getCards size equals: 2.
 	aGame playRoundUsing: aCard of: aSpaceship.
 	aGame playRoundUsing: aCard of: aSpaceship.
 	
-	self assert: (aGame getPositionOf: aSpaceship) equals: positions*2 + 1.
-	self assert: (aGame getCardsOf: aSpaceship)size equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: positions*2 + 1.
+	self assert: (aGame spaceshipMatching: aSpaceship)getCards size equals: 0.
 	
 	
 

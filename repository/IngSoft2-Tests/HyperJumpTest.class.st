@@ -33,9 +33,9 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 		         build.
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 14.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
 ]
 
 { #category : 'tests' }
@@ -66,7 +66,7 @@ HyperJumpTest >> testWhenSpaceshipsLandOnHyperSpaceJumpThenTheyAreMovedForwardAn
 		         build.
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 14.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 14.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 9.
 ]

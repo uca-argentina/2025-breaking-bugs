@@ -172,3 +172,22 @@ Board >> initializeWith: aTileCollection andSize: aDistanceSize andWormholeFrom:
 Board >> move: aSpaceship by: positionsToAdvance withLapLimit: lapLimit [
     aSpaceship moveBy: positionsToAdvance on: self withLapLimit: lapLimit.
 ]
+
+{ #category : 'initialization' }
+Board >> positionAfterMovingBack: positionsToGoBack for: aSpaceship [
+	| boardSize currentPosition newPosition currentLap |
+
+	boardSize := self getSize asParsec. 
+	currentPosition := aSpaceship getPosition.
+	currentLap := aSpaceship getLapsCompleted.
+
+	newPosition := currentPosition - positionsToGoBack.
+
+	newPosition < 0 ifTrue: [
+		currentLap = 0 ifTrue: [ ^ 0 ].
+		aSpaceship incrementLapsBy: -1.
+		^ boardSize + newPosition
+	].
+
+	^ newPosition
+]

@@ -144,7 +144,7 @@ BoardTest >> testPositionResetsAfterPassingBoardLimit [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 5.
 ]
 
 { #category : 'tests' }

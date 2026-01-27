@@ -29,14 +29,14 @@ BattleTest >> testPenalizedSpaceshipMovesAndThenRecoversShieldsAfterSkipTurn [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
 	aGame playRound.
 	"self assert: (aGame getPositionOf: aSpaceship2) equals: 4."
 	aGame playRoundSkipping: {aSpaceship2}.
 	"self assert: aSpaceship2 getPosition equals: 9."
 	"self assert: (aGame getPositionOf: aSpaceship2) equals: 9."
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
 	
 ]
 
@@ -59,11 +59,11 @@ BattleTest >> testSpaceshipRecoversAfterTwoPenaltyRoundsAndResumesMovementWithSh
 	aGame playRound.
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 3.
 	
 	
 ]
@@ -84,11 +84,11 @@ BattleTest >> testSpaceshipRecoversShieldsAfterSkippingTurn [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 2.
 	aGame playRoundSkipping: {aSpaceship2}.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 3.
 	
 ]
 
@@ -109,11 +109,11 @@ BattleTest >> testSpaceshipWithNoShieldsCannotMoveDuringPenalty [
 	aGame playRound.
 	aGame playRound.
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 0.
 	aGame playRound. "Se queda sin escudos por lo cual no va a poder moverse"
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getShields equals: 0.
 	
 ]
 
@@ -132,10 +132,10 @@ BattleTest >> testSpaceshipsBattleWhenLandingOnSamePositionAndLoserIsPenalized [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
-	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
-	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship)getShields equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getShields equals: 2.
 ]
 
 { #category : 'tests' }
@@ -154,9 +154,9 @@ BattleTest >> testWhenBattleIsTiedThenSpaceshipAlreadyOnTileWins [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
 	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
 	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
 ]
 
@@ -176,8 +176,8 @@ BattleTest >> testWhenTwoSpaceshipsLandOnSamePositionThenLoserReturnsToStartAndL
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship)getPosition equals: 9.
 	self assert: (aGame getShieldsOf: aSpaceship) equals: 3.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2)getPosition equals: 0.
 	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
 ]

@@ -45,18 +45,18 @@ GameTest >> testAllTheEffectsOnGame [
 	"Ronda 1"
 	game playRound.
 
-	self assert: (game getPositionOf: aSpaceship1) equals: 0.
-	self assert: (game getPositionOf: aSpaceship2) equals: 5.
-	self assert: (game getPositionOf: aSpaceship3) equals: 5.
-	self assert: (game getPositionOf: aSpaceship4) equals: 15.
+	self assert: (game spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 5.
+	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 5.
+	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 15.
 
 	"Ronda 2"
 	game playRound.
 	
-	self assert: (game getPositionOf: aSpaceship1) equals: 23. "Pisa HyperJump → avanza 10 parsecs"
-	self assert: (game getPositionOf: aSpaceship2) equals: 18. "Pisa HyperSpaceJump → avanza 4"
-	self assert: (game getPositionOf: aSpaceship3) equals: 19. "MoonWalk, pero no retrocede"
-	self assert: (game getPositionOf: aSpaceship4) equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
+	self assert: (game spaceshipMatching: aSpaceship1)getPosition equals: 23. "Pisa HyperJump → avanza 10 parsecs"
+	self assert: (game spaceshipMatching: aSpaceship2) getPosition equals: 18. "Pisa HyperSpaceJump → avanza 4"
+	self assert: (game spaceshipMatching: aSpaceship3) getPosition equals: 19. "MoonWalk, pero no retrocede"
+	self assert: (game spaceshipMatching: aSpaceship4) getPosition equals: 17. "Retrocedido por MoonWalk (estaba en 4)"
 	
 	self assert: (game getShieldsOf: aSpaceship1) equals: 2.
 	self assert: (game getShieldsOf: aSpaceship2) equals: 1.
@@ -117,10 +117,10 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 
 	aGame playRound.
 
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 5.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 4.
 	
 	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
 	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
@@ -133,30 +133,30 @@ GameTest >> testFullGameSimulationWithCardsAndEffectsAndWinner [
 	
 
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 20.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 7.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 12.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 20.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 7.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 12.
 	
 	aGame playInstant: aCancellationCard of: aSpaceship2 on: aAccelerationCard .
 	
-	self assert: (aGame getCardsOf: aSpaceship3) size equals: 1.
-	self assert: (aGame getCardsOf: aSpaceship2) size equals: 1.
+	self assert: ((aGame spaceshipMatching: aSpaceship3) getCards size) equals:  1.
+	self assert: ((aGame spaceshipMatching: aSpaceship2) getCards size) equals:  1.
 
 	
 	aGame playRoundUsing:  aSpeedCard of: aSpaceship1 .
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 28.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 35.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
-	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 28.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 35.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 26.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals:  25.
 	
 	aGame playRound.
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 32.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine .
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 26.
-	self assert: (aGame getPositionOf: aSpaceship4) equals:  25.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 32.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: finishLine .
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 26.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals:  25.
 	
 	
 	self assert: aGame hasFinished.
@@ -207,10 +207,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 
 
 
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 0.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 5.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 0.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 5.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 4.
 	
 	self assert: (aGame getShieldsOf: aSpaceship1) equals: 2.
 	self assert: (aGame getShieldsOf: aSpaceship2) equals: 2.
@@ -226,10 +226,10 @@ GameTest >> testFullGameSimulationWithEffectsAndWinner [
 	self deny: (aPositionTable isWinner: aSpaceship3).
 	self deny: (aPositionTable isWinner: aSpaceship4).
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: 19.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: finishLine.
-	self assert: (aGame getPositionOf: aSpaceship3) equals: 4.
-	self assert: (aGame getPositionOf: aSpaceship4) equals: 3.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: 19.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: finishLine.
+	self assert: (aGame spaceshipMatching: aSpaceship3) getPosition equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship4) getPosition equals: 3.
 
 	self assert: aGame hasFinished
 ]
@@ -254,8 +254,8 @@ GameTest >> testFullGameSimulationWithWinner [
 	aGame playRound.
 
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
-	self assert: (aGame getPositionOf: aSpaceship2) equals: 8.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: finishLine.
+	self assert: (aGame spaceshipMatching: aSpaceship2) getPosition equals: 8.
 	self assert: aGame hasFinished.
 ]
 
@@ -274,7 +274,7 @@ GameTest >> testIsValidIfASpacehipMovesCertainPosition [
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 5.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 5.
 ]
 
 { #category : 'tests' }
@@ -290,7 +290,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeEntryThenItEndsInWormholeExitVa
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 9.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 9.
 ]
 
 { #category : 'tests' }
@@ -306,7 +306,7 @@ GameTest >> testIsValidIfASpacehipMovesToWormholeExitThenItEndsInWormholeEntryVa
 		         build.
 
 	aGame playRound.
-	self assert: (aGame getPositionOf: aSpaceship) equals: 4.
+	self assert: (aGame spaceshipMatching: aSpaceship) getPosition equals: 4.
 ]
 
 { #category : 'tests' }
@@ -347,7 +347,7 @@ GameTest >> testWhenASpaceshipReachesTheFinishLineBeforeTheOtherThenTheGameEnds 
 
 	self assert: aGame hasFinished.
 	
-	self assert: (aGame getPositionOf: aSpaceship1) equals: finishLine.
+	self assert: (aGame spaceshipMatching: aSpaceship1) getPosition equals: finishLine.
 	self assert: (aSpaceship2 isAtPosition: 0)
 ]
 
