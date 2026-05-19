@@ -206,6 +206,14 @@ Spaceship >> initializeWithPosition: aPosition laps: aLaps shields: aShields tur
 	^ self
 ]
 
+{ #category : 'comparing' }
+Spaceship >> isAheadOf: anotherSpaceship [ 
+    laps = anotherSpaceship getLapsCompleted
+        ifTrue: [ ^ position > anotherSpaceship getPosition ].
+    ^ laps > anotherSpaceship getLapsCompleted
+
+]
+
 { #category : 'testing' }
 Spaceship >> isAtPosition: aPosition [
 

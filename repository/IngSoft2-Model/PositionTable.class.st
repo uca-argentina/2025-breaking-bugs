@@ -16,13 +16,9 @@ PositionTable class >> with: spaceships and: aFinishLine [
 ]
 
 { #category : 'behavior' }
-PositionTable >> getRanking [
-
-	^ spaceships asSortedCollection: [ :s1 :s2 |
-		(s1 getLapsCompleted = s2 getLapsCompleted)
-			ifTrue: [ s1 getPosition > s2 getPosition ]
-			ifFalse: [ s1 getLapsCompleted > s2 getLapsCompleted ]
-	]
+PositionTable >> getRanking [ 
+    ^ spaceships asSortedCollection: [ :s1 :s2 |
+        s1 isAheadOf: s2 ]
 ]
 
 { #category : 'checking' }
