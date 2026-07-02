@@ -6,6 +6,40 @@ Class {
 }
 
 { #category : 'tests' }
+TitleBuilderTest >> testDummy [
+
+
+	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
+	finishLine := 15000. 
+	aTileBuilder := TilesBuilder with: finishLine.
+	aTileBuilder setRandomness: #(35 19 19 9 7 2 9).
+	aTileCollection := aTileBuilder buildRandom.
+
+	countsOfTitles := OrderedCollection new.
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: NoEffect ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: BlackHole ]).
+	
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperSpaceJump ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: MoonWalk ]).
+	countsOfTitles add: (aTileCollection count: [:tile | tile hasThisEffect: HyperJump ]).
+	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: AtomicBomb ]).
+	countsOfTitles add: ( aTileCollection count: [:tile | tile hasThisEffect: ObtainCard ]).
+	
+	percentages := countsOfTitles collect: [ :count | (count asFloat / finishLine) * 100 ].
+
+	tolerance := 0.
+
+	self assert: ((percentages at: 1) between: (34-tolerance) and: (37+tolerance)).
+	self assert: ((percentages at: 2) between: (18-tolerance) and: (20+tolerance)).
+	self assert: ((percentages at: 3) between: (18-tolerance) and: (20+tolerance)).
+	self assert: ((percentages at: 4) between: (8-tolerance) and: (10+tolerance)).
+	self assert: ((percentages at: 5) between: (6-tolerance) and: (8+tolerance)).
+	self assert: ((percentages at: 6) between: (1-tolerance) and: (3+tolerance)).
+	self assert: ((percentages at: 7) between: (8-tolerance) and: (10+tolerance)).
+
+]
+
+{ #category : 'tests' }
 TitleBuilderTest >> testIsValidIfTileEffectDistributionMatchesExpectedProbabilities [
 
 	| finishLine aTileBuilder aTileCollection percentages tolerance countsOfTitles |
